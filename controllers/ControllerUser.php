@@ -101,12 +101,12 @@ class ControllerUser extends Controller{
 	***/
 	public function afficherResetMDPPerdu(){
 		$this->vue = new Vue("ResetMDPPerdu");
-
+		
 		if(empty($_GET["email"]) || empty($_GET["hash_validation"])){
 			$this->addErreur("Le lien que vous avez utilisé pour récupérer votre mot de passe n'est pas valide");
-		} else{
+		} else{ 
 			$this->user->setEmail($_GET["email"]);
-			$this->user->setHash_validation($_GET["hash_validation"]);
+			$this->user->setHashValidation($_GET["hash_validation"]);
 			
 			if( false === $this->user->is_valid_email_hash())
 				$this->addErreur("Le lien que vous avez utilisé pour récupérer votre mot de passe n'est pas valide");
@@ -348,12 +348,15 @@ class ControllerUser extends Controller{
 				$this->afficherMDPPerdu(); // On réaffiche le formulaire de mot de passe perdu avec les erreurs
 		// Envoi de l'email à l'utilisateur
 		} else{
+			$this->user->generateHashValidation();
+			$this->user->updateUser();
+			
 			// email_valide() est définit dans ~/modeles/membres.php
 			$infos_utilisateur = $this->user->is_valid_email();
 
 			// Si l'email existe en base
 			if (false !== $infos_utilisateur) {
-				$hash_validation = $infos_utilisateur['cl_hash_validation'];
+				$hash_validation = $infos_utilisateur['hash_validation'];
 				
 				// Preparation du mail
 				$mail = new Mail('recuperationMDPPerdu', array($hash_validation, $this->user->getEmail()));
@@ -373,7 +376,7 @@ class ControllerUser extends Controller{
 					$this->afficherMDPPerdu();
 				}	
 			} else {
-				$this->addErreur("Cet adresse email ne correspond à aucun client de notre site");
+				$this->addErreur("Cet adresse email ne correspond à aucun utilisateur de notre site");
 
 				// On réaffiche le formulaire de mot de passe perdu avec les erreurs
 				$this->afficherMDPPerdu();

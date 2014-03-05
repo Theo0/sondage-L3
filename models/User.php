@@ -222,13 +222,17 @@ class User extends BD {
 			password = ?,
 			date_inscription = ?,
 			administrateur_site = ?,
+			hash_validation = ?,
 			WHERE id = ?';
 
-		$updateUser = $this->executerRequete($sql, array($this->nom_utilisateur,
-							       $this->prenom_utilisateur ,
+		$updateUser = $this->executerRequete($sql, array($this->nom,
+							       $this->prenom ,
 							       $this->email ,
 							       $this->mdp ,
-							       $this->id_utilisateur));
+							       $this->date_inscription,
+							       $this->administrateur_site,
+							       $this->hash_validation,
+							       $this->id));
 
 		return ($updateUser->rowCount() == 1);
 	}
@@ -266,9 +270,9 @@ class User extends BD {
 
 	/*Retourne le hash de validation de l'utilisateur si cet utilisateur existe avec l'email $this->email*/
 	public function is_valid_email(){
-		$sql = "SELECT cl_hash_validation
-			FROM client
-			WHERE cl_mail=?";
+		$sql = "SELECT hash_validation
+			FROM user
+			WHERE email=?";
 			
 		$select = $this->executerRequete($sql, array($this->email));
 		
@@ -280,10 +284,10 @@ class User extends BD {
 	
 	/*Retourne l'identifiant de l'utilisateur si un utilisateur existe avec l'email $email et le hash_validation $hash*/
 	public function is_valid_email_hash(){
-		$sql = "SELECT cl_id
-			FROM client
-			WHERE cl_mail=?
-			AND cl_hash_validation = ?";
+		$sql = "SELECT id
+			FROM user
+			WHERE email=?
+			AND hash_validation = ?";
 			
 		$select = $this->executerRequete($sql, array($this->email, $this->hash_validation));
 		
@@ -295,27 +299,22 @@ class User extends BD {
 	
 	public function construct_with_email_hash(){
 		$sql = "SELECT *
-			FROM client
-			WHERE cl_mail=?
-			AND cl_hash_validation = ?";
+			FROM user
+			WHERE email=?
+			AND hash_validation = ?";
 			
 		$lectBdd = $this->executerRequete($sql, array($this->email, $this->hash_validation));
 		
 		if (($enrBdd = $lectBdd->fetch()) != false) {
-			$this->id_utilisateur = $enrBdd['cl_id'];
-			$this->nom_utilisateur = $enrBdd['cl_nom'];
-			$this->prenom_utilisateur = $enrBdd['cl_prenom'];
-			$this->adresse_livraison = $enrBdd['cl_adresse_livraison'];
-			$this->email = $enrBdd['cl_mail'];
-			$this->telephone = $enrBdd['cl_telephone'];
-			$this->hash_validation = $enrBdd['cl_hash_validation'];
-			$this->date_naissance= $enrBdd['cl_date_naissance'];
-			$this->date_inscription= $enrBdd['cl_date_inscription'];
-			$this->newsletter = $enrBdd['cl_newsletter'];
-			$this->vip = $enrBdd['cl_vip'];
-			$this->adresse_facturation = $enrBdd['cl_adresse_facturation'];
-			$this->compte_valide = $enrBdd['cl_compte_valide'];
-			$this->pays = $enrBdd['cl_pays'];
+			$this->id = $enrBdd['id'];
+			$this->prenom = $enrBdd['prenom'];
+			$this->nom = $enrBdd['nom'];
+			$this->email = $enrBdd['email'];
+			$this->hash_validation = $enrBdd['hash_validation'];
+			$this->mdp_verif = $enrBdd['password'];
+			$this->mdp = $enrBdd['password'];
+			$this->date_inscription = $enrBdd['date_inscription'];
+			$this->administrateur_site = $enrBdd['administrateur_site'];
 			
 			return $enrBdd;
 		}
