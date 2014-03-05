@@ -14,7 +14,7 @@ abstract class BD {
 			$resultat = $this->getBdd()->prepare($sql);  // requête préparée
 			$resultat->execute($params);
 		}
-		
+
 		return $resultat;
 	}
 

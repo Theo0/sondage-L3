@@ -12,7 +12,7 @@
     </p>
     
     <input type="hidden" name="email" value="<?= $user->getEmail() ?>" />
-    <input type="hidden" name="hash_validation" value="<?= $user->getHash_validation() ?>" />
+    <input type="hidden" name="hash_validation" value="<?= $user->getHashValidation() ?>" />
            
     <p>
             <input type="button" name="envoiNouveauMDPPerdu" value="Valider" />

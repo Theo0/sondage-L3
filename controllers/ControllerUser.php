@@ -348,9 +348,6 @@ class ControllerUser extends Controller{
 				$this->afficherMDPPerdu(); // On réaffiche le formulaire de mot de passe perdu avec les erreurs
 		// Envoi de l'email à l'utilisateur
 		} else{
-			$this->user->generateHashValidation();
-			$this->user->updateUser();
-			
 			// email_valide() est définit dans ~/modeles/membres.php
 			$infos_utilisateur = $this->user->is_valid_email();
 
@@ -408,7 +405,7 @@ class ControllerUser extends Controller{
 		}
 
 		/* Vérification de la concordance du mot de passe de confirmation */
-		if( $this->user->getMdp() != $this->user->getMdp_verif() ){
+		if( $this->user->getMdp() != $this->user->getMdpVerif() ){
 			$this->addErreur("Le mot de passe de vérification n'est pas identique à votre mot de passe");
 		}
 
@@ -422,6 +419,8 @@ class ControllerUser extends Controller{
 				$this->addErreur("Impossible de récupérer votre compte sur notre site");
 				$this->afficherResetMDPPerdu();
 			} else{
+				$this->user->setMdp($_POST["mdp"]);
+				
 				//Mise à jour du mot de passe de l'utilisateur
 				if(false === $this->user->updateUser()){
 					$this->addErreur("Nous somme dans l'impossibilité de réinitialiser votre mot de passe, merci de réessayer dans un instant");

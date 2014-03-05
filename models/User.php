@@ -13,6 +13,7 @@ class User extends BD {
 	private $mdp_verif;
 	private $mdp;
 	private $administrateur_site;
+	private $compte_valide;
 
 
 	public function __construct() 
@@ -39,6 +40,8 @@ class User extends BD {
 		$this->mdp_verif = '';
 		$this->date_inscription='0000-00-00 00:00:00';
 		$this->administrateur_site = false;
+		$this->compte_valide = 0;
+
 	}
 
 	public function constructeurPlein($idUser)
@@ -59,6 +62,7 @@ class User extends BD {
 			$this->mdp = $enrBdd['password'];
 			$this->date_inscription = $enrBdd['date_inscription'];
 			$this->administrateur_site = $enrBdd['administrateur_site'];
+			$this->compte_valide = $enrBdd['compte_valide'];
 		}
 		else 
 		{
@@ -71,6 +75,7 @@ class User extends BD {
 			$this->mdp = '';
 			$this->date_inscription='0000-00-00 00:00:00';
 			$this->administrateur_site = false;
+			$this->compte_valide = 0;
 		}
 	}
 
@@ -222,7 +227,7 @@ class User extends BD {
 			password = ?,
 			date_inscription = ?,
 			administrateur_site = ?,
-			hash_validation = ?,
+			hash_validation = ?
 			WHERE id = ?';
 
 		$updateUser = $this->executerRequete($sql, array($this->nom,
@@ -242,7 +247,7 @@ class User extends BD {
 	*/
 	public function valider_compte_avec_hash($hash_validation) {
 		$sql = "UPDATE user SET
-			hash_validation = ''
+			compte_valide = true
 			WHERE
 			hash_validation = ?";
 
@@ -258,7 +263,7 @@ class User extends BD {
 			WHERE
 			email = ? AND 
 			password = ? AND
-			hash_validation = ''";
+			compte_valide = true";
 
 		$connexion = $this->executerRequete($sql, array($this->email, $this->mdp));
 
@@ -315,6 +320,7 @@ class User extends BD {
 			$this->mdp = $enrBdd['password'];
 			$this->date_inscription = $enrBdd['date_inscription'];
 			$this->administrateur_site = $enrBdd['administrateur_site'];
+			$this->compte_valide = $enrBdd['compte_valide'];
 			
 			return $enrBdd;
 		}
