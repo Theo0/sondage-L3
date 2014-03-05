@@ -23,8 +23,9 @@ $form_connexion->bound($_POST);
 echo $form_connexion;
 
 ?>
-
-<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherMDPPerdu' ?>">Mot de passe oublié?</a>
+<p id="mdpPerdu">
+	<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherMDPPerdu' ?>">Mot de passe oublié?</a>
+</p>
 <script>
 
 $( "#formulaire_connexion input[name=submitConnexion]" ).click(function() {

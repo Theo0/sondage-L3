@@ -2,41 +2,44 @@
 <html lang="fr">
 <head>
 	<meta charset="UTF-8" />
-	<link rel="stylesheet" href="<?= ABSOLUTE_ROOT . '/public/css/style.css'; ?>" />
-	<link rel="stylesheet" href="<?= ABSOLUTE_ROOT . '/public/css/reset.css'; ?>" />
+	<link rel="stylesheet" href="<?= ABSOLUTE_ROOT . '/public/css/responsive/main.css'; ?>" />
 	<script src="http://code.jquery.com/jquery-1.9.0rc1.js"></script>
 	<script src="http://code.jquery.com/jquery-migrate-1.0.0rc1.js"></script>
 	<script src="<?= ABSOLUTE_ROOT . '/public/js/CryptoJS.js'; ?>"> </script>
 	<script src="<?= ABSOLUTE_ROOT . '/public/js/user.js'; ?>"> </script>
-	<script src="<?= ABSOLUTE_ROOT . '/public/js/jquery.cookie.js'; ?>"> </script>
-	<script src="<?= ABSOLUTE_ROOT . '/public/js/panier.js'; ?>"> </script>
 	<title><?= NOM_SITE . ' - ' .$titre ?></title>
 </head>
 <body>
 
-	<header>
-		<div id="logo">
-			<a href="<?= ABSOLUTE_ROOT . '/index.php' ?>"></a>
-		</div>
-		<div id ="bloc_session">
-			<div id="connexion">
-				<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">CONNEXION</a>
+	<header id="header">
+		<nav id="navigation">
+			<div id="navigation_wrap">
+				<div id="conteactinfo"><strong><?= NOM_SITE ?></strong> </div>
+				<div id="navi">
+					<ul>
+						<li><a href="<?= ABSOLUTE_ROOT . '/index.php' ?>">Sondages</a></li>
+						<li><a href="<?= ABSOLUTE_ROOT . '/index.php' ?>">Groupes</a></li>
+						<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherInscription' ?>">Inscription </a></li>
+						<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Connexion </a></li>
+					</ul>
+				</div>
+				<!-- End navigation -->
 			</div>
-
-			<div id="inscription">
-				<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherInscription' ?>">INSCRIPTION </a>
-			</div>
-		</div>
-		<nav>
-			<ul>
-				<li><a href="<?= ABSOLUTE_ROOT . '/index.php' ?>">Sondages</a></li>
-			</ul>
 		</nav>
+		
+		<!-- Start H1 Title -->
+		<div class="titles">
+		
+		    <h1><?= $titre ?></h1>
+		    
+		    <span></span>
+		
+		</div>
 	</header>
 
 
-	<section id="global">
-		<h1 id="titrePage"><?= $titre ?></h1>
+	<section id="main">
+
 		
 		<div id="erreur">
 			<ul>
@@ -53,8 +56,10 @@
 			<?= $contenu //<==== Affichage de le vue?>
 		</div> <!-- #contenu -->
 
-		<footer>
-			Site réalisé avec PHP, HTML5 et CSS.
+		<footer id="footerbottom">
+			<div class="footerwrap">
+				<div id="copyright">&copy;2014.Sondage - Développé par Théo Chambon et Lucas Lafon</div>		
+			</div>
 		</footer>
 	</section> <!-- #global -->
 </body>
