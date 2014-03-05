@@ -259,7 +259,7 @@ class User extends BD {
 
 
 	public function combinaison_connexion_valide() {
-		$sql = "SELECT id, email FROM user
+		$sql = "SELECT id, email, nom, prenom FROM user
 			WHERE
 			email = ? AND 
 			password = ? AND

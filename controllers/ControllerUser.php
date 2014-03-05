@@ -3,6 +3,7 @@
 require_once "Controller.php";
 require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/Mail.php";
+require_once ROOT . "/controllers/ControllerAccueil.php";
 
 class ControllerUser extends Controller{
 	
@@ -304,6 +305,8 @@ class ControllerUser extends Controller{
 			if (false !== $infos_utilisateur) {
 				// On enregistre les informations dans la session
 				$_SESSION['id']     = $infos_utilisateur['id'];
+				setcookie('nom', $infos_utilisateur['nom'], time()+360000, '/');
+				setcookie('prenom', $infos_utilisateur['prenom'], time()+360000, '/');
 				
 				// On enregistre "token" : user agent et IP de l'utilisateur concaténé et hashé
 				$token = $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'];
@@ -328,6 +331,15 @@ class ControllerUser extends Controller{
 				}
 			}
 		}
+	}
+	
+	public function deconnexion(){
+		session_destroy();
+		setcookie('nom', '', time()-360000, '/');
+		setcookie('prenom', '', time()-360000, '/');
+		header('location:' . ABSOLUTE_ROOT );
+		//$controllerAccueil = new ControllerAccueil();
+		//$controllerAccueil->afficherAccueil();
 	}
 	
 	/* Envoi d'un email à l'utilisateur possédant l'adresse email $_POST["email"] avec un lien pour enrer un nouveau mot de passe

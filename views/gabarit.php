@@ -19,8 +19,17 @@
 					<ul>
 						<li><a href="<?= ABSOLUTE_ROOT . '/index.php' ?>">Sondages</a></li>
 						<li><a href="<?= ABSOLUTE_ROOT . '/index.php' ?>">Groupes</a></li>
+						
+						<?php if(empty($_SESSION["id"])): ?>
 						<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherInscription' ?>">Inscription </a></li>
 						<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Connexion </a></li>
+						<?php elseif(!empty($_COOKIE["nom"]) && !empty($_COOKIE["prenom"])): ?>
+						<li id="pseudo"><?= $_COOKIE["nom"] . ' ' . $_COOKIE["prenom"] ?></li>
+						<? endif; ?>
+						
+						<?php if(!empty($_SESSION["id"])): ?>
+						<li id="deconnexion"><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=deconnexion' ?>">Déconnexion</a></li>
+						<?php endif; ?>
 					</ul>
 				</div>
 				<!-- End navigation -->
@@ -40,7 +49,70 @@
 
 	<section id="main">
 
-		
+<div id="main-wrap">
+        
+        <!-- Start Left Section -->
+        <div class="leftsection leftsectionalt">
+        
+        	<!-- Start Blog Post -->
+        	<div class="blogwrapstart">
+            
+            	<div class="blogtitle"><h3><?= $titre ?></a></div>
+                
+                <div class="blogbody">
+			<div id="contenu">
+				<?= $contenu //<==== Affichage de le vue?>
+			</div> <!-- #contenu -->
+                </div>
+                
+                <span class="box-arrow"></span>
+            
+            </div>
+            <!-- End Blog Post -->        
+        </div>
+        <!-- End Left Section -->
+        
+        <!-- Start Right Section -->
+        <div class="rightsection rightsectionalt">
+        
+        	<!-- Start Blog Widget -->
+            <div class="blogwidgetstart">
+            	<!-- Start Categories Widget -->
+            	<div class="widgettitle"><h4>Groupes</h4></div>
+                
+                <div class="widgetbody">
+                
+                	<div class="blogcategories">
+                    
+                    	<ul>
+                        	<li><a href="#" title="All Blogs">All Blogs</a></li>
+                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
+                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>
+                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
+                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>
+                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
+                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>
+                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
+                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>
+                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
+                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>
+                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
+                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>                            
+                        </ul>
+                    
+                    </div>
+                
+              </div>
+              <!-- End Categories Widget -->
+              <span class="box-arrow"></span>           
+            </div>
+            <!-- End Blog Widget -->
+
+        
+        </div>
+        <!-- End Right Section -->
+    
+    </div>		
 		<div id="erreur">
 			<ul>
 				<?php if(!empty($erreur)): //Si il existe des erreurs dans la vue?>
@@ -51,10 +123,6 @@
 			</ul>
 		</div> <!-- #erreur -->
 		
-
-		<div id="contenu">
-			<?= $contenu //<==== Affichage de le vue?>
-		</div> <!-- #contenu -->
 
 		<footer id="footerbottom">
 			<div class="footerwrap">

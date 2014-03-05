@@ -2366,7 +2366,7 @@ input[type=submit]:hover, input[type=button]:hover{
 	padding: 10px 22px;
 	font-family: 'BebasNeueRegular',Arial, Helvetica, sans-serif;
 	font-size:16pt;
-	float:right;
+	/*float:right;*/
 	border:0px;
 	color:white;
 }
