@@ -14,7 +14,7 @@ abstract class BD {
 			$resultat = $this->getBdd()->prepare($sql);  // requête préparée
 			$resultat->execute($params);
 		}
-
+		//print_r($resultat->errorInfo()); // Message d'erreur
 		return $resultat;
 	}
 
@@ -62,6 +62,12 @@ abstract class BD {
 			}
 		}
 		return $this->bdd;
+	}
+	
+	/* Fonction appelée pour serialiser le bdd */
+	public function __sleep()
+	{
+	    return array();
 	}
 }
 

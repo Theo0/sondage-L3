@@ -52,6 +52,15 @@
 
 	<section id="main">
 
+			<div id="erreur">
+			<ul>
+				<?php if(!empty($erreur)): //Si il existe des erreurs dans la vue?>
+					<?php foreach($erreur as $error): //Ecriture de chaque erreur de la vue?>
+					<li class="errorEntry"><?= $error ?></li>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</ul>
+		</div> <!-- #erreur -->
 <div id="main-wrap">
         
         <!-- Start Left Section -->
@@ -88,9 +97,12 @@
                 	<div class="blogcategories">
                     
                     	<ul>
-			    <li><a href="#" title="All Blogs">All Blogs</a></li>
-                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
-			    <li><a href="#" title="Créer un groupe..." id="lienCreerGroupe" onclick="afficherDialogueCreationGroupe()">Créer un groupe</a></li>
+				<?php if(!empty($_SESSION["listeGroupes"])): ?>
+					<?php foreach($_SESSION["listeGroupes"] as $groupe): ?>
+					<li><a href="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=afficherGroupe&params=' . $groupe->getId() ?>" title="<?= $groupe->getNom() ?>"><?= $groupe->getNom() ?></a></li>
+					<?php endforeach; ?>
+				<?php endif; ?>
+				<li><a href="#" title="Créer un groupe..." id="lienCreerGroupe" onclick="afficherDialogueCreationGroupe()">Créer un groupe</a></li>
                         </ul>
                     
                     </div>
@@ -106,15 +118,7 @@
         <!-- End Right Section -->
     
     </div>		
-		<div id="erreur">
-			<ul>
-				<?php if(!empty($erreur)): //Si il existe des erreurs dans la vue?>
-					<?php foreach($erreur as $error): //Ecriture de chaque erreur de la vue?>
-					<li class="errorEntry"><?= $error ?></li>
-					<?php endforeach; ?>
-				<?php endif; ?>
-			</ul>
-		</div> <!-- #erreur -->
+
 		
 
 		<footer id="footerbottom">
@@ -126,12 +130,13 @@
 	
 	
 	<div id="dialogCreationGroupe" title="Créer un groupe">
-		<form action="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=creerGroupe' ?>" method="post" >
+		<form id="formCreationGroupe" action="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=creerGroupe' ?>" method="post" >
+			<div id="dialogErreur" class="erreurs"></div>
 			<table>
 				<tbody>
 					<tr>
 						<th><label for="nomGroupe">Nom du groupe</label></th>
-						<td><input type="text" name="nom" id="nomGroupe" /></td>
+						<td><input type="text" name="nom" id="nomGroupe" required="required" value="<?php if(!empty($_POST["nom"])) echo $_POST["nom"]; ?>"/></td>
 					</tr>
 					
 				</tbody>
@@ -144,21 +149,21 @@
 								<li class="bottomSeparator">
 									<div class="visibiliteRadioInput">
 										<label for="visibiliteGroupePublic"> Public </label>
-										<input type="radio" name="visibilite" id="visibiliteGroupePublic" value="public" checked="checked"/>
+										<input type="radio" name="visibilite" id="visibiliteGroupePublic" value="public" <?php if((!empty($_POST["visibilite"]) && $_POST["visibilite"] == "public") || empty($_POST["visibilite"])) echo 'checked="checked"'; ?>/>
 										<p>N'importe qui peut afficher le groupe et ses membres.N'importe qui peut le rejoindre sans validation de votre part</p>
 									</div>		
 								</li>
 								<li class="bottomSeparator">
 									<div class="visibiliteRadioInput">
 										<label for="visibiliteGroupeFerme"> Fermé </label>
-										<input type="radio" name="visibilite" id="visibiliteGroupeFerme" value="privé_visible"/>
+										<input type="radio" name="visibilite" id="visibiliteGroupeFerme" value="privé_visible" <?php if(!empty($_POST["visibilite"]) && $_POST["visibilite"] == "privé_visible") echo 'checked="checked"'; ?>/>
 										<p>N'importe qui peut afficher le groupe et ses membres. Seul vous pourrez accepter des membres</p>
 									</div>	
 								</li>
 								<li>
 									<div class="visibiliteRadioInput">
 										<label for="visibiliteGroupeCache"> Secret </label>
-										<input type="radio" name="visibilite" id="visibiliteGroupeCache" value="privé_caché"/>
+										<input type="radio" name="visibilite" id="visibiliteGroupeCache" value="privé_caché" <?php if(!empty($_POST["visibilite"]) && $_POST["visibilite"] == "privé_caché") echo 'checked="checked"'; ?>/>
 										<p>Personne ne peut afficher le groupe et ses membres. Seul vous pourrez ajouter des membres</p>
 									</div>	
 								</li>
@@ -171,9 +176,16 @@
 			</table>
 			
 			<div class="dialogButtons">
-				<input type="button" name="creerGroupe" value="Créer" />
+				<input id="creerGroupe" type="button" name="creerGroupe" value="Créer"/>
 				<input type="button" name="annulerGroupe" value="Annuler" id="boutonAnnulerGroupe" />
 			</div>
+			
+			<script>
+				//Listener clic pour bouton créer groupe
+				$('#creerGroupe').click(function(){
+					creerGroupe($('#nomGroupe').val(), $('#visibiliteGroupePublic').val());
+				});
+			</script>
 		</form>	
 	</div>
 </body>

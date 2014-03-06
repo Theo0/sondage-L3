@@ -1,3 +1,4 @@
+var ABSOLUTE_ROOT = 'http://localhost/sondage-L3';
 
 function afficherDialogueCreationGroupe() {
        
@@ -19,8 +20,20 @@ function afficherDialogueCreationGroupe() {
     $('#boutonAnnulerGroupe').click(function () {
         $( "#dialogCreationGroupe" ).dialog("close");
     });
-    
+}
 
-
-
+function creerGroupe(nomGroupe, visibilite){
+    if (nomGroupe.length==0) {
+        $("#dialogErreur").text("Le nom du groupe ne peut pas être vide");
+    } else{
+        //Retourne vrai si le groupe avec un même nom n'existe pas
+        $.get( ABSOLUTE_ROOT + "/index.php?controller=Groupe&action=ajaxIsUniqueNomGroupe&params=" + nomGroupe, function( uniqueNomGroupe ) {
+            if (uniqueNomGroupe==1) { 
+                $("#formCreationGroupe").submit();
+            }
+            else{
+                $("#dialogErreur").text("Le nom de ce groupe n'est pas disponible");
+            }
+        });
+    }
 }

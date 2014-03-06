@@ -3,6 +3,7 @@
 require_once "Controller.php";
 require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/Mail.php";
+require_once ROOT . "/models/ListeGroupes.php";
 
 class ControllerUser extends Controller{
 	
@@ -307,10 +308,10 @@ class ControllerUser extends Controller{
 				setcookie('nom', $infos_utilisateur['nom'], time()+360000, '/');
 				setcookie('prenom', $infos_utilisateur['prenom'], time()+360000, '/');
 				
-				// On enregistre "token" : user agent et IP de l'utilisateur concaténé et hashé
-				$token = $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'];
-				$_SESSION['token']  = sha1($token);
-		
+				$listeGroupes = new ListeGroupes($infos_utilisateur['id']);
+				
+				$_SESSION['listeGroupes'] = $listeGroupes->getArrayGroupes();
+	
 				// Affichage de la confirmation de la connexion
 				if(isset($_POST["redirect"])){//Si le formulaire d'inscription provient d'une autre page que la page d'inscription
 					//Redirection vers la page contenant le formulaire avec envoi des erreurs

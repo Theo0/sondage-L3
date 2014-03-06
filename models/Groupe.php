@@ -67,7 +67,7 @@ class Groupe extends BD {
 		return $this->administrateurId;
 	}
         
-        public functiong getVisibilite(){
+        public function getVisibilite(){
             return $this->visibilite;
         }
 
@@ -87,15 +87,17 @@ class Groupe extends BD {
             $this->visibilite = $v;
         }
 
-	/* Vérification de la validité nom d'utilisateur */ 
-	public function validateNom(){
-		$regexp = "/[a-zA-Z0-9_]{2,15}/";
-		if(empty($this->nom) || (!empty($this->nom) && !preg_match($regexp, $this->nom)) ){
-			return "Votre nom d'utilisateur doit comporter entre 2 et 15 caractères";
+	/* Vérification de la validité de la visibilite */ 
+	public function validateVisibilite(){
+		$visibilites = array("public", "privé_visible", "privé_caché");
+		
+		if(!in_array($this->visibilite, $visibilites)){
+			return "La visibilité choisie n'existe pas";
 		} else{
 			return 1;
 		}
 	}
+	
 
 	/* Formate les variables récupérées d'un formulaire et les stocke dans $this */
 	public function POSTToVar($array){
@@ -146,7 +148,20 @@ class Groupe extends BD {
 		$updateGroupe = $this->executerRequete($sql, array($this->id));
 
 		return ($updateGroupe->rowCount() == 1);
-	}	
+	}
+	
+	/* 
+	   @return: l'identifiant du groupe ajouté
+	*/
+	public function isUniqueNom() {
+		$sql = 'SELECT id
+			FROM groupe
+			WHERE nom=?';
+
+		$selectGroupe = $this->executerRequete($sql, array($this->nom));
+
+		return ($selectGroupe->rowCount() == 0);
+	}
 }
 
 ?>

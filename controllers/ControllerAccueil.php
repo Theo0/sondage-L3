@@ -2,7 +2,6 @@
 
 require_once "Controller.php";
 
-
 class ControllerAccueil extends Controller{
 
   private $billet;
@@ -22,7 +21,7 @@ class ControllerAccueil extends Controller{
 
     if( !empty($this->erreurs) )
     	$this->vue->setErreurs($this->erreurs);
-
+	
     $this->vue->generer(array());
   }
 }

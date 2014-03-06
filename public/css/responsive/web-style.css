@@ -3225,4 +3225,26 @@ color: #7e7e7e;
 	font-size: 14pt;
 }
 
+#dialogCreationGroupe #dialogErreur{
+	height: 20px;
+}
+
+/* Messages d'erreurs */
+.erreurs{
+	color: red;
+	font-weight: bold;
+	font-size: small;
+}
+
+#erreur ul{
+	padding-left: 0;
+}
+#erreur li{
+	border: 1px solid #f7c7c9;
+	background: #f9e5e6 url(../../img/icon-box-error.png) no-repeat 1px 1px;
+	color: #b3696c;
+	list-style-type: none;
+	padding-left: 40px;
+	height: 25px;
+}
 
