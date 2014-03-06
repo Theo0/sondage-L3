@@ -3,10 +3,13 @@
 <head>
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="<?= ABSOLUTE_ROOT . '/public/css/responsive/main.css'; ?>" />
-	<script src="http://code.jquery.com/jquery-1.9.0rc1.js"></script>
-	<script src="http://code.jquery.com/jquery-migrate-1.0.0rc1.js"></script>
+	<link rel="stylesheet" href="<?= ABSOLUTE_ROOT . '/public/css/jquery-ui.css'; ?>" />
+	<script src="<?= ABSOLUTE_ROOT . '/public/js/jquery-1.9.0rc1.js' ?>"></script>
+	<script src="<?= ABSOLUTE_ROOT . '/public/js/jquery-migrate-1.0.0rc1.js' ?>"></script>
+	<script src="<?= ABSOLUTE_ROOT . '/public/js/jquery-ui.js' ?>"></script>
 	<script src="<?= ABSOLUTE_ROOT . '/public/js/CryptoJS.js'; ?>"> </script>
 	<script src="<?= ABSOLUTE_ROOT . '/public/js/user.js'; ?>"> </script>
+	<script src="<?= ABSOLUTE_ROOT . '/public/js/groupe.js'; ?>"> </script>
 	<title><?= NOM_SITE . ' - ' .$titre ?></title>
 </head>
 <body>
@@ -85,19 +88,9 @@
                 	<div class="blogcategories">
                     
                     	<ul>
-                        	<li><a href="#" title="All Blogs">All Blogs</a></li>
+			    <li><a href="#" title="All Blogs">All Blogs</a></li>
                             <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
-                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>
-                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
-                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>
-                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
-                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>
-                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
-                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>
-                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
-                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>
-                            <li><a href="#" title="All Blogs">Lorem ipsum dolor sit</a></li>
-                            <li><a href="#" title="All Blogs">Maecenas non ipsum </a></li>                            
+			    <li><a href="#" title="Créer un groupe..." id="lienCreerGroupe" onclick="afficherDialogueCreationGroupe()">Créer un groupe</a></li>
                         </ul>
                     
                     </div>
@@ -130,5 +123,58 @@
 			</div>
 		</footer>
 	</section> <!-- #global -->
+	
+	
+	<div id="dialogCreationGroupe" title="Créer un groupe">
+		<form action="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=creerGroupe' ?>" method="post" >
+			<table>
+				<tbody>
+					<tr>
+						<th><label for="nomGroupe">Nom du groupe</label></th>
+						<td><input type="text" name="nom" id="nomGroupe" /></td>
+					</tr>
+					
+				</tbody>
+		
+				<tbody>
+					<tr>
+						<th>Confidentialité</th>
+						<td>
+							<ul>
+								<li class="bottomSeparator">
+									<div class="visibiliteRadioInput">
+										<label for="visibiliteGroupePublic"> Public </label>
+										<input type="radio" name="visibilite" id="visibiliteGroupePublic" value="public" checked="checked"/>
+										<p>N'importe qui peut afficher le groupe et ses membres.N'importe qui peut le rejoindre sans validation de votre part</p>
+									</div>		
+								</li>
+								<li class="bottomSeparator">
+									<div class="visibiliteRadioInput">
+										<label for="visibiliteGroupeFerme"> Fermé </label>
+										<input type="radio" name="visibilite" id="visibiliteGroupeFerme" value="privé_visible"/>
+										<p>N'importe qui peut afficher le groupe et ses membres. Seul vous pourrez accepter des membres</p>
+									</div>	
+								</li>
+								<li>
+									<div class="visibiliteRadioInput">
+										<label for="visibiliteGroupeCache"> Secret </label>
+										<input type="radio" name="visibilite" id="visibiliteGroupeCache" value="privé_caché"/>
+										<p>Personne ne peut afficher le groupe et ses membres. Seul vous pourrez ajouter des membres</p>
+									</div>	
+								</li>
+							</ul>
+		
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>
+			
+			<div class="dialogButtons">
+				<input type="button" name="creerGroupe" value="Créer" />
+				<input type="button" name="annulerGroupe" value="Annuler" id="boutonAnnulerGroupe" />
+			</div>
+		</form>	
+	</div>
 </body>
 </html>

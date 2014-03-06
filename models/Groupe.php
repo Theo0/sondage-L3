@@ -124,7 +124,7 @@ class Groupe extends BD {
 	/* Modifie un groupe en base 
 	   @return: vrai si le groupe a été modifié, faux sinon
 	*/
-	public function updateGroupe() {
+	public function update() {
 		$sql = 'UPDATE groupe SET
 			nom = ?,
 			administrateur_id = ?,
@@ -139,7 +139,7 @@ class Groupe extends BD {
 	/* Supprimer un groupe en base
 	   @return: vrai si le groupe a été supprimé, faux sinon
 	*/
-	public function updateGroupe() {
+	public function remove() {
 		$sql = 'DELETE FROM groupe
 			WHERE id = ?';
 

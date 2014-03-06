@@ -3,7 +3,6 @@
 require_once "Controller.php";
 require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/Mail.php";
-require_once ROOT . "/controllers/ControllerAccueil.php";
 
 class ControllerUser extends Controller{
 	

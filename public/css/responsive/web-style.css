@@ -3131,6 +3131,7 @@ input[type=submit]:hover, input[type=button]:hover{
 
 /* MODIFS */
 
+/* Formulaires */
 form {
     width: 80%;
     margin: 0 auto;
@@ -3158,6 +3159,7 @@ form p{
 	text-align: center;
 }
 
+/* Liens */
 a, a:visited, a:hover {
 font-family: 'HelveticaLTStdRoman',Arial, Helvetica, sans-serif;
 font-size: 10pt;
@@ -3167,3 +3169,60 @@ color: #7e7e7e;
 #mdpPerdu{
 	text-align: center;
 }
+
+
+/* Dialogue création d'un groupe */
+#dialogCreationGroupe{
+	display: none;
+}
+
+#dialogCreationGroupe form{
+	width: 100%;
+}
+
+#dialogCreationGroupe label{
+	width: inherit;
+}
+
+#dialogCreationGroupe th{
+	font-size: small;
+	width: 120px;
+	color: #d25809;
+}
+
+#dialogCreationGroupe ul{
+	padding-left: 15px;
+}
+
+#dialogCreationGroupe li{
+	list-style: none;
+}
+
+#dialogCreationGroupe li.bottomSeparator{
+	border-bottom: solid 1px grey;
+}
+
+#dialogCreationGroupe .visibiliteRadioInput label{
+	font-size: small;
+	font-weight: bold;
+	width: 5%;
+}
+
+#dialogCreationGroupe .visibiliteRadioInput p{
+	font-size: 11px;
+	color: #7e7e7e;
+}
+
+#dialogCreationGroupe .dialogButtons{
+	text-align: right;
+}
+
+#dialogCreationGroupe .dialogButtons input{
+	width: 110px;
+}
+
+#dialogCreationGroupe .dialogButtons input:hover{
+	font-size: 14pt;
+}
+
+
