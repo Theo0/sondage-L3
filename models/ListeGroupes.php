@@ -43,10 +43,11 @@ class ListeGroupes extends BD {
 	public function getArrayGroupes(){
 		return $this->array_groupes;
 	}
-
+        
 	public function setArrayGroupes($a){
 		$this->array_groupes = $a;
 	}
+        
 
 	/* Ajoute un nouveau groupe
 	   @return: l'identifiant du groupe ajouté

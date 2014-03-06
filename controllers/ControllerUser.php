@@ -307,10 +307,6 @@ class ControllerUser extends Controller{
 				$_SESSION['id']     = $infos_utilisateur['id'];
 				setcookie('nom', $infos_utilisateur['nom'], time()+360000, '/');
 				setcookie('prenom', $infos_utilisateur['prenom'], time()+360000, '/');
-				
-				$listeGroupes = new ListeGroupes($infos_utilisateur['id']);
-				
-				$_SESSION['listeGroupes'] = $listeGroupes->getArrayGroupes();
 	
 				// Affichage de la confirmation de la connexion
 				if(isset($_POST["redirect"])){//Si le formulaire d'inscription provient d'une autre page que la page d'inscription

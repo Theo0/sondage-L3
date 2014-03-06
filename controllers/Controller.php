@@ -3,8 +3,11 @@ session_start();
 
 if (!defined('ROOT'))
 	require_once("../config.php");
+
+
 require_once ROOT . '/views/Vue.php';
 
+require_once ROOT . "/models/Groupe.php";
 
 class Controller{
 

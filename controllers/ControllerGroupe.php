@@ -55,6 +55,32 @@ class ControllerGroupe extends Controller{
             }
         }
         
+        /* Affiche '1' si le nom du groupe n'existe pas, '0' sinon */
+        public function ajaxGetListeGroupes(){
+            if(!empty($_SESSION["id"])){
+                $listeGroupes = new ListeGroupes($_SESSION['id']);
+                $return = array();
+                foreach($listeGroupes->getArrayGroupes() as $group){
+                    $return[] = array("id"=>$group->getId(), "nom"=>$group->getNom(), "visibilite"=>$group->getVisibilite());
+                }
+		echo json_encode($return);
+            }
+            else{
+                echo json_encode(array());
+            }
+        }
+        
+        /* Affiche '1' si le nom du groupe n'existe pas, '0' sinon */
+        public function ajaxSupprimerGroupe($idGroupe){
+            if(!empty($nomGroupe)){
+                $this->groupe->setId($idGroupe);
+                echo $this->groupe->remove();
+            }
+            else{
+                echo 0;
+            }
+        }
+        
         public function creerGroupe(){
             if(empty($_SESSION["id"])){
                 $controllerUser = new ControllerUser();

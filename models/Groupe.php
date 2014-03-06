@@ -108,7 +108,7 @@ class Groupe extends BD {
 		    $this->$key = htmlspecialchars($trimedValue);
 		}
 	}
-
+	
 	/* Ajoute un nouveau groupe
 	   @return: l'identifiant du groupe ajouté
 	*/

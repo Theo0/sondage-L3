@@ -96,12 +96,7 @@
                 
                 	<div class="blogcategories">
                     
-                    	<ul>
-				<?php if(!empty($_SESSION["listeGroupes"])): ?>
-					<?php foreach($_SESSION["listeGroupes"] as $groupe): ?>
-					<li><a href="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=afficherGroupe&params=' . $groupe->getId() ?>" title="<?= $groupe->getNom() ?>"><?= $groupe->getNom() ?></a></li>
-					<?php endforeach; ?>
-				<?php endif; ?>
+                    	<ul id="listeGroupes">
 				<li><a href="#" title="Créer un groupe..." id="lienCreerGroupe" onclick="afficherDialogueCreationGroupe()">Créer un groupe</a></li>
                         </ul>
                     

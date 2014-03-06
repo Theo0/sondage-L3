@@ -1,5 +1,19 @@
 var ABSOLUTE_ROOT = 'http://localhost/sondage-L3';
 
+$( document ).ready(function() {
+    $.getJSON( ABSOLUTE_ROOT + "/index.php?controller=Groupe&action=ajaxGetListeGroupes", function( listeGroupes ) {
+        console.log(listeGroupes);
+        
+        $.each( listeGroupes, function( key, val ) {
+            $("#listeGroupes").append( '<li> \
+                                      <img src="' + ABSOLUTE_ROOT + '/public/css/images/settings-icon.png" /> \
+                                      <a href="' + ABSOLUTE_ROOT + '/index.php?controller=Groupe&action=afficherGroupe&params=' + val.id + '" > \
+                                       '+ val.nom + '</a></li>' );
+        });        
+    });
+});
+
+
 function afficherDialogueCreationGroupe() {
        
     //Si le div du dialogue existe on l'affiche
