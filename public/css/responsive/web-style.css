@@ -3229,6 +3229,55 @@ color: #7e7e7e;
 	height: 20px;
 }
 
+/* Menu affichage liste des groupes */
+div.blogcategories ul#listeGroupes li a{
+	background: inherit;
+	padding-left: 0;
+}
+
+.menuEditGroup, ul#listeGroupes li ul.menuEditGroup{
+	display: none;
+	position: absolute;
+	width: 150px;
+	border: solid 1px #b3696c;
+	background: white;
+}
+
+.menuEditGroup li{
+	position: relative;
+	/*background: #7e7e7e;*/
+	height: 0;
+}
+
+
+ul#listeGroupes li ul.menuEditGroup li a, ul#listeGroupes li a#lienCreerGroupe{
+	/*color: white;*/
+	padding:4px 14px 5px 18px;
+	background-image: url(../images/cross.png);
+	background-repeat: no-repeat;
+	background-position: 0px 6px;
+}
+
+ul#listeGroupes li ul.menuEditGroup li:hover{
+	background-color: #D25809;
+	color: white;
+}
+
+ul#listeGroupes li ul.menuEditGroup li a:hover{
+	background-color: transparent;
+	background-image: url(../images/cross-hover.png);
+	color: white;
+}
+
+.editGroup{
+	cursor: pointer;
+}
+
+.editGroup:hover{
+	cursor: pointer;
+	border: solid 1px #b3696c;
+}
+
 /* Messages d'erreurs */
 .erreurs{
 	color: red;
@@ -3247,4 +3296,6 @@ color: #7e7e7e;
 	padding-left: 40px;
 	height: 25px;
 }
+
+
 

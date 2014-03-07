@@ -6,6 +6,7 @@ require_once ROOT . "/models/Mail.php";
 require_once ROOT . "/models/Groupe.php";
 require_once ROOT . "/controllers/ControllerUser.php";
 require_once ROOT . "/models/ListeGroupes.php";
+require_once ROOT . "/controllers/ControllerAccueil.php";
 
 class ControllerGroupe extends Controller{
 	
@@ -82,51 +83,76 @@ class ControllerGroupe extends Controller{
         }
         
         public function creerGroupe(){
-            if(empty($_SESSION["id"])){
-                $controllerUser = new ControllerUser();
-                $controllerUser->addErreur("Vous devez vous connecter pour créer un groupe");
-                $controllerUser->afficherConnexion();
-            }else{
-                $this->groupe->setAdministrateurId($_SESSION["id"]);
-                if(empty($_POST["nom"])){
-                    $this->addErreur("Le nom du groupe est requis");
-                    $this->afficherErreurGroupe();
-                }
-                else{
-                     $this->groupe->setNom($_POST["nom"]);
-                     
-                    
-                    if(false === $this->groupe->isUniqueNom()){
-                        $this->addErreur("Le nom de ce groupe n'est pas disponible");
-                        $this->afficherErreurGroupe();
-                    } else{
-                        if(empty($_POST["visibilite"])){
-                            $this->addErreur("La visibilité du groupe est obligatoire");
-                            $this->afficherErreurGroupe();
-                        }else{
-                            $this->groupe->setVisibilite($_POST["visibilite"]);
-                            
-                            if(1 !== $this->groupe->validateVisibilite()){
-                                $this->addErreur("La visibilité du groupe n'est pas valide");
-                                $this->afficherErreurGroupe();
-                            }else{
-                                $group = $this->groupe->add();
-                                if(false !== $group){
-                                     $listeGroupes = new ListeGroupes($_SESSION['id']);
-                                    $_SESSION['listeGroupes'] = $listeGroupes->getArrayGroupes();
-                                     $this->afficherGroupe();
-                                }
-                                else{
-                                    $this->addErreur("Nous sommes dans l'impossibilité d'ajouter le groupe, merci de réessayer ultérieurement");
-                                    $this->afficherErreurGroupe();
-                                }
-                               
-                            }
-                        }
-                    }
-                }            
-            }
+		if(empty($_SESSION["id"])){
+		    $controllerUser = new ControllerUser();
+		    $controllerUser->addErreur("Vous devez vous connecter pour créer un groupe");
+		    $controllerUser->afficherConnexion();
+		}else{
+		    $this->groupe->setAdministrateurId($_SESSION["id"]);
+		    if(empty($_POST["nom"])){
+			$this->addErreur("Le nom du groupe est requis");
+			$this->afficherErreurGroupe();
+		    }
+		    else{
+			 $this->groupe->setNom($_POST["nom"]);
+			 
+			
+			if(false === $this->groupe->isUniqueNom()){
+			    $this->addErreur("Le nom de ce groupe n'est pas disponible");
+			    $this->afficherErreurGroupe();
+			} else{
+			    if(empty($_POST["visibilite"])){
+				$this->addErreur("La visibilité du groupe est obligatoire");
+				$this->afficherErreurGroupe();
+			    }else{
+				$this->groupe->setVisibilite($_POST["visibilite"]);
+				
+				if(1 !== $this->groupe->validateVisibilite()){
+				    $this->addErreur("La visibilité du groupe n'est pas valide");
+				    $this->afficherErreurGroupe();
+				}else{
+				    $group = $this->groupe->add();
+				    if(false !== $group){
+					 $listeGroupes = new ListeGroupes($_SESSION['id']);
+					$_SESSION['listeGroupes'] = $listeGroupes->getArrayGroupes();
+					 $this->afficherGroupe();
+				    }
+				    else{
+					$this->addErreur("Nous sommes dans l'impossibilité d'ajouter le groupe, merci de réessayer ultérieurement");
+					$this->afficherErreurGroupe();
+				    }
+				   
+				}
+			    }
+			}
+		    }            
+		}
         }
+	
+	
+	/* Supprime l'utilisateur connecté du groupe $idGroupe */
+	public function quitterGroupe($idGroupe){
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour quitter un groupe");
+			$controllerUser->afficherConnexion();
+		}else{
+			if(empty($idGroupe)){
+				$this->addErreur("Le groupe n'existe pas");
+				$this->afficherErreurGroupe();
+			} else{
+				$this->groupe->setId($idGroupe);
+				
+				if(false !== $this->groupe->quitterGroupe($_SESSION["id"])){
+					$controllerAccueil = new ControllerAccueil();
+					$controllerAccueil->afficherAccueil();					
+				} else{
+					$this->addErreur("Impossible de quitter le groupe");
+					$this->afficherErreurGroupe();
+				}
+			}
+		}
+	}
 }
 
 ?>

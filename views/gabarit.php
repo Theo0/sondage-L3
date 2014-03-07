@@ -92,7 +92,7 @@
             	<!-- Start Categories Widget -->
             	<div class="widgettitle"><h4>Groupes</h4></div>
                 
-                <div class="widgetbody">
+                <div class="widgetbody" id="divListeGroupes">
                 
                 	<div class="blogcategories">
                     

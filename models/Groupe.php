@@ -145,9 +145,20 @@ class Groupe extends BD {
 		$sql = 'DELETE FROM groupe
 			WHERE id = ?';
 
-		$updateGroupe = $this->executerRequete($sql, array($this->id));
+		$rmGroupe = $this->executerRequete($sql, array($this->id));
 
-		return ($updateGroupe->rowCount() == 1);
+		return ($rmGroupe->rowCount() == 1);
+	}
+	
+	/* Supprimer un utilisateur d'un groupe */
+	public function quitterGroupe($idUser){
+		$sql = "DELETE FROM groupe
+			WHERE administrateur_id=?
+			AND id=?";
+			
+		$rmGroupe = $this->executerRequete($sql, array($idUser, $this->id));
+		echo $idUser . ' ' . $this->id;
+		return ($rmGroupe->rowCount() == 1);
 	}
 	
 	/* 
