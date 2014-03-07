@@ -45,6 +45,19 @@ class ControllerGroupe extends Controller{
 		$this->vue->generer(array("erreur" => $this->erreurs[0]));
 	}
         
+	/* Affichage de la page de la liste des groupes publics */
+	public function afficherListeGroupesPublic(){
+		$this->vue = new Vue("ListeGroupes");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+		$listeGroupes = new ListeGroupes('id', 'DESC', 0, 50, "public");
+		
+		$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "public"));		
+	}
+	
         /* Affiche '1' si le nom du groupe n'existe pas, '0' sinon */
         public function ajaxIsUniqueNomGroupe($nomGroupe){
             if(!empty($nomGroupe)){

@@ -3229,7 +3229,7 @@ color: #7e7e7e;
 	height: 20px;
 }
 
-/* Menu affichage liste des groupes */
+/* Menu affichage liste des groupes (menu gauche)*/
 div.blogcategories ul#listeGroupes li a{
 	background: inherit;
 	padding-left: 0;
@@ -3276,6 +3276,106 @@ ul#listeGroupes li ul.menuEditGroup li a:hover{
 .editGroup:hover{
 	cursor: pointer;
 	border: solid 1px #b3696c;
+}
+
+
+/* Page affichage de la liste des groupes */
+#navigationListeGroupes{
+	width:620px;
+	float:left;
+}
+
+#navigationListeGroupes ul{
+	width:auto;
+	float:left;
+	padding:0px;
+	margin:0px;
+}
+
+#navigationListeGroupes ul li{
+	float:left;
+	display:inline-block;
+	padding:12px 12px 13px 12px;
+	list-style-type: none;
+	position:relative;
+	border-right: 1px dotted #CCC;
+}
+
+#navigationListeGroupes ul li:first-child{
+	float:left;
+	display:inline-block;
+	padding:12px 12px 13px 12px;
+	list-style-type: none;
+	position:relative;
+	border-right: 1px dotted #CCC;
+	border-left: 1px dotted #CCC;
+}
+
+#navigationListeGroupes ul li a, #navi ul li a:visited{
+	font-family: 'HelveticaLTStdRoman',Arial, Helvetica, sans-serif;
+	color: #807f7f;
+	font-size:10pt;
+	font-weight:normal;
+	text-decoration:none;
+}
+
+#navigationListeGroupes ul li a:hover, #navigationListeGroupes ul li.selected a{
+	font-family: 'HelveticaLTStdRoman',Arial, Helvetica, sans-serif;
+	color: #da600a;
+	font-size:10pt;
+	font-weight:normal;
+	text-decoration:none;
+	text-shadow: 1px 1px 2px #999;
+}
+
+#navigationListeGroupes ul li ul{
+	width:auto;
+	position:absolute;
+	display: none;
+	z-index: 2000;
+	padding-top:13px;
+	margin-left:-13px;
+	background-color:white;
+}
+
+#navigationListeGroupes ul li ul li{
+	padding: 6px 0px 6px 14px !important;
+	position:relative;
+	border-right: 1px solid #d5d5d5 !important;
+	border-bottom: 1px solid #d5d5d5 !important;
+	border-left: 1px solid #d5d5d5 !important;
+	width:120px;
+}
+
+#navigationListeGroupes ul li ul li ul{
+	width:auto;
+	position:absolute;
+	display: none;
+	z-index: 2000;
+	left: 100% !important;
+	top: -1px !important;
+	padding:0px !important;
+	margin:0px !important;
+}
+
+#navigationListeGroupes ul li ul li ul li:first-child{
+	padding: 6px 25px 6px 14px !important;
+	position:relative;
+	border-right: 1px solid #d5d5d5 !important;
+	border-top: 1px solid #d5d5d5 !important;
+	border-bottom: 1px solid #d5d5d5 !important;
+	background-color:white;
+	margin-top:0px;
+}
+
+#navigationListeGroupes ul li ul li ul li{
+	padding: 6px 25px 6px 14px !important;
+	position:relative;
+	border-right: 1px solid #d5d5d5 !important;
+	border-top: 1px solid #d5d5d5 !important;
+	border-bottom: 1px solid #d5d5d5 !important;
+	background-color:white;
+	margin-top:-1px;
 }
 
 /* Messages d'erreurs */

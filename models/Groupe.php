@@ -152,13 +152,30 @@ class Groupe extends BD {
 	
 	/* Supprimer un utilisateur d'un groupe */
 	public function quitterGroupe($idUser){
+		
+		/* Suppression du groupe si c'est l'administrateur qui quitte le groupe */
 		$sql = "DELETE FROM groupe
 			WHERE administrateur_id=?
 			AND id=?";
 			
 		$rmGroupe = $this->executerRequete($sql, array($idUser, $this->id));
-		echo $idUser . ' ' . $this->id;
-		return ($rmGroupe->rowCount() == 1);
+		
+		/* Suppression du membre si l'utilisateur est un membre */
+		$sql = "DELETE FROM user_groupe_membre
+				   WHERE id_user=?
+				   AND id_groupe=?";
+				   
+		$rmGroupeMembre = $this->executerRequete($sql, array($idUser, $this->id));
+		
+		/* Suppression du moderateur si l'utilisateur est un modérateur */
+		$sql = "DELETE FROM user_groupe_moderateur
+				   WHERE id_user=?
+				   AND id_groupe=?";
+				   
+		$rmGroupeModerateur = $this->executerRequete($sql, array($idUser, $this->id));
+		
+		//Retourne vrai si l'utilisateur a été supprimé du groupe
+		return ($rmGroupe->rowCount() == 1 || $rmGroupeMembre->rowCount() == 1 || $rmGroupeModerateur->rowCount() == 1);
 	}
 	
 	/* 

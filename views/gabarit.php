@@ -21,7 +21,7 @@
 				<div id="navi">
 					<ul>
 						<li><a href="<?= ABSOLUTE_ROOT . '/index.php' ?>">Sondages</a></li>
-						<li><a href="<?= ABSOLUTE_ROOT . '/index.php' ?>">Groupes</a></li>
+						<li><a href="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=afficherListeGroupesPublic' ?>">Groupes</a></li>
 						
 						<?php if(empty($_SESSION["id"])): ?>
 						<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherInscription' ?>">Inscription </a></li>
