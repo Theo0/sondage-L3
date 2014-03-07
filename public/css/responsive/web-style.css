@@ -3385,6 +3385,113 @@ ul#listeGroupes li ul.menuEditGroup li a:hover{
 	font-size: small;
 }
 
+/* Affichage détail d'un groupe */
+/* Page affichage de la liste des groupes */
+#navigationGroupe{
+	width:620px;
+	float:left;
+}
+
+#navigationGroupe ul{
+	width:auto;
+	float:left;
+	padding:0px;
+	margin:0px;
+}
+
+#navigationGroupe ul li{
+	float:left;
+	display:inline-block;
+	padding:12px 12px 13px 12px;
+	list-style-type: none;
+	position:relative;
+	border-right: 1px dotted #CCC;
+}
+
+#navigationGroupe ul li:first-child{
+	float:left;
+	display:inline-block;
+	padding:12px 12px 13px 12px;
+	list-style-type: none;
+	position:relative;
+	border-right: 1px dotted #CCC;
+	border-left: 1px dotted #CCC;
+}
+
+#navigationGroupe ul li a, #navi ul li a:visited{
+	font-family: 'HelveticaLTStdRoman',Arial, Helvetica, sans-serif;
+	color: #807f7f;
+	font-size:10pt;
+	font-weight:normal;
+	text-decoration:none;
+}
+
+#navigationGroupe ul li a:hover, #navigationGroupe ul li.selected a{
+	font-family: 'HelveticaLTStdRoman',Arial, Helvetica, sans-serif;
+	color: #da600a;
+	font-size:10pt;
+	font-weight:normal;
+	text-decoration:none;
+	text-shadow: 1px 1px 2px #999;
+}
+
+#navigationGroupe ul li ul{
+	width:auto;
+	position:absolute;
+	display: none;
+	z-index: 2000;
+	padding-top:13px;
+	margin-left:-13px;
+	background-color:white;
+}
+
+#navigationGroupe ul li ul li{
+	padding: 6px 0px 6px 14px !important;
+	position:relative;
+	border-right: 1px solid #d5d5d5 !important;
+	border-bottom: 1px solid #d5d5d5 !important;
+	border-left: 1px solid #d5d5d5 !important;
+	width:120px;
+}
+
+#navigationGroupe ul li ul li ul{
+	width:auto;
+	position:absolute;
+	display: none;
+	z-index: 2000;
+	left: 100% !important;
+	top: -1px !important;
+	padding:0px !important;
+	margin:0px !important;
+}
+
+#navigationGroupe ul li ul li ul li:first-child{
+	padding: 6px 25px 6px 14px !important;
+	position:relative;
+	border-right: 1px solid #d5d5d5 !important;
+	border-top: 1px solid #d5d5d5 !important;
+	border-bottom: 1px solid #d5d5d5 !important;
+	background-color:white;
+	margin-top:0px;
+}
+
+#navigationGroupe ul li ul li ul li{
+	padding: 6px 25px 6px 14px !important;
+	position:relative;
+	border-right: 1px solid #d5d5d5 !important;
+	border-top: 1px solid #d5d5d5 !important;
+	border-bottom: 1px solid #d5d5d5 !important;
+	background-color:white;
+	margin-top:-1px;
+}
+
+/* Messages d'erreurs */
+.erreurs{
+	color: red;
+	font-weight: bold;
+	font-size: small;
+}
+
 #erreur ul{
 	padding-left: 0;
 }

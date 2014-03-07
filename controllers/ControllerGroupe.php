@@ -31,7 +31,7 @@ class ControllerGroupe extends Controller{
                     $this->groupe = new Groupe($idGroupe);
                 }
                 
-		$this->vue->generer(array("groupe" => $this->groupe));
+		$this->vue->generer(array("groupe" => $this->groupe, "pageSelected" => "mur"));
 	}
         
         /* Affichage de la page d'erreur de groupe */
@@ -56,6 +56,19 @@ class ControllerGroupe extends Controller{
 		$listeGroupes = new ListeGroupes('id', 'DESC', 0, 50, "public");
 		
 		$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "public"));		
+	}
+	
+	/* Affichage de la page de la liste des groupes privés visibles */
+	public function afficherListeGroupesPrivesVisibles(){
+		$this->vue = new Vue("ListeGroupes");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+		$listeGroupes = new ListeGroupes('id', 'DESC', 0, 50, "privé_visible");
+		
+		$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "privé_visible"));		
 	}
 	
         /* Affiche '1' si le nom du groupe n'existe pas, '0' sinon */
