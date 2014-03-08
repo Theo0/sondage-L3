@@ -146,6 +146,10 @@ class User extends BD {
 	public function setAdministrateurSite($b){
 		$this->administrateur_site = $b;
 	}
+	
+	public function setDateInscription($d){
+		$this->date_inscription = $d;
+	}
 
 	public function generateHashValidation(){
 		$this->hash_validation = md5(uniqid(rand(), true).$this->email); //génération d'un hashage aléatoire qui sera stocké en base pour l'utilisateur
@@ -325,7 +329,32 @@ class User extends BD {
 			return $enrBdd;
 		}
 		return false;		
-	}	
+	}
+	
+	
+	public function getMembresLikeAndNotInGroup($term, $idGroupe){
+		
+		$sql = 'SELECT id, nom, prenom
+			FROM user
+			WHERE (nom LIKE \'%'. $term . '%\'
+			OR prenom LIKE \'%'. $term . '%\')
+			AND user.id NOT IN (SELECT id_user FROM user_groupe_membre WHERE id_groupe=?)
+			AND user.id NOT IN (SELECT id_user FROM user_groupe_moderateur WHERE id_groupe=?)
+			AND user.id NOT IN (SELECT administrateur_id FROM groupe WHERE id=?)';
+
+		$selectGroupe = $this->executerRequete($sql, array($idGroupe, $idGroupe, $idGroupe ));
+
+		$result = array();
+		$i = 0;
+		while (($enrBdd = $selectGroupe->fetch()) != false)
+		{    
+		    $result[$i]["id"] = $enrBdd["id"];
+		    $result[$i]["label"] = $enrBdd["nom"] . ' ' . $enrBdd["prenom"];
+		    $result[$i]["value"] = $enrBdd["nom"] . ' ' . $enrBdd["prenom"];
+		    $i++;
+		}
+		return $result;		
+	}
 }
 
 ?>

@@ -1,6 +1,7 @@
 <?php
 
 require_once ROOT . '/models/BD.php';
+require_once ROOT . '/models/User.php';
 
 class Groupe extends BD {
 
@@ -8,7 +9,10 @@ class Groupe extends BD {
 	private $id;
 	private $nom;
 	private $administrateurId;
+	private $administrateur;
 	private $visibilite;
+	private $array_membres;
+	private $array_moderateurs;
 
 
 	public function __construct() 
@@ -30,28 +34,88 @@ class Groupe extends BD {
 		$this->nom = '';
 		$this->administrateurId = -1;
 		$this->visibilite = 'public';
+		$this->array_membres = array();
+		$this->array_moderateurs = array();
 	}
 
-	public function constructeurPlein($idGroupe)
-	{
-		$sql='SELECT *
-			FROM groupe
-			WHERE id=?';
+	public function constructeurPlein($idGroupe){
+		$sql='SELECT groupe.id as groupe_id,
+			     groupe.nom as groupe_nom,
+			     groupe.administrateur_id as groupe_administrateur_id,
+			     groupe.visibilite as groupe_visibilite,
+			     user.id as user_id,
+			     user.nom as user_nom,
+			     user.prenom as user_prenom,
+			     user.email as user_email,
+			     user.administrateur_site as user_administrateur_site,
+			     user.date_inscription as user_date_inscription
+			FROM groupe, user
+			WHERE groupe.id=?
+			AND groupe.administrateur_id=user.id';
 					
 		$lectBdd = $this->executerRequete($sql, array($idGroupe));
 		if (($enrBdd = $lectBdd->fetch()) != false)
 		{
-		    $this->id = $enrBdd['id'];
-                    $this->nom = $enrBdd['nom'];
-                    $this->administrateurId = $enrBdd['administrateur_id'];
-                    $this->visibilite = $enrBdd['visibilite'];
-		}
-		else 
-		{
-		    $this->id = -1;
-                    $this->nom = '';
-                    $this->administrateurId = -1;
-                    $this->visibilite = 'public';
+			$this->id = $enrBdd['groupe_id'];
+			$this->nom = $enrBdd['groupe_nom'];
+			$this->administrateurId = $enrBdd['groupe_administrateur_id'];
+			$this->visibilite = $enrBdd['groupe_visibilite'];
+			
+			$this->administrateur = new User();
+			$this->administrateur->setId($enrBdd['user_id']);
+			$this->administrateur->setNom($enrBdd['user_nom']);
+			$this->administrateur->setPrenom($enrBdd['user_prenom']);
+			$this->administrateur->setEmail($enrBdd['user_email']);
+			$this->administrateur->setAdministrateurSite($enrBdd['user_administrateur_site']);
+			$this->administrateur->setDateInscription($enrBdd['user_date_inscription']);
+			
+		    
+			/* Ajout des membres au groupe */
+			$sql = 'SELECT id, nom, prenom, administrateur_site, date_inscription
+				FROM user_groupe_membre, user
+				WHERE id_groupe=?
+				AND user_groupe_membre.id_user = user.id';
+			
+			$lectBdd = $this->executerRequete($sql, array($idGroupe));
+			
+			$i = 0;
+			while (($enrBdd = $lectBdd->fetch()) != false)
+			{    
+			    $this->array_membres[$i] = new User();
+			    $this->array_membres[$i]->setId($enrBdd["id"]);
+			    $this->array_membres[$i]->setNom($enrBdd["nom"]);
+			    $this->array_membres[$i]->setPrenom($enrBdd["prenom"]);
+			    $this->array_membres[$i]->setAdministrateurSite($enrBdd["administrateur_site"]);
+			    $this->array_membres[$i]->setDateInscription($enrBdd["date_inscription"]);
+			    $i++;
+			}
+			
+			/* Ajout des modérateurs au groupe */
+			$sql = 'SELECT id, nom, prenom, administrateur_site, date_inscription
+				FROM user_groupe_moderateur, user
+				WHERE id_groupe=?
+				AND user_groupe_moderateur.id_user = user.id';
+			
+			$lectBdd = $this->executerRequete($sql, array($idGroupe));
+			
+			$i = 0;
+			while (($enrBdd = $lectBdd->fetch()) != false)
+			{    
+			    $this->array_moderateurs[$i] = new User();
+			    $this->array_moderateurs[$i]->setId($enrBdd["id"]);
+			    $this->array_moderateurs[$i]->setNom($enrBdd["nom"]);
+			    $this->array_moderateurs[$i]->setPrenom($enrBdd["prenom"]);
+			    $this->array_moderateurs[$i]->setAdministrateurSite($enrBdd["administrateur_site"]);
+			    $this->array_moderateurs[$i]->setDateInscription($enrBdd["date_inscription"]);
+			    $i++;
+			}
+		} else{
+			$this->id = -1;
+			$this->nom = '';
+			$this->administrateurId = -1;
+			$this->visibilite = 'public';
+			$this->array_membres = array();
+			$this->array_moderateurs = array();
 		}
 	}
 
@@ -66,10 +130,22 @@ class Groupe extends BD {
 	public function getAdministrateurId(){
 		return $this->administrateurId;
 	}
+	
+	public function getAdministrateur(){
+		return $this->administrateur;
+	}
         
         public function getVisibilite(){
             return $this->visibilite;
         }
+	
+	public function getArrayMembres(){
+		return $this->array_membres;
+	}
+	
+	public function getArrayModerateurs(){
+		return $this->array_moderateurs;
+	}
 
 	public function setId($i){
 		$this->id = $i;
@@ -86,6 +162,14 @@ class Groupe extends BD {
         public function setVisibilite($v){
             $this->visibilite = $v;
         }
+	
+	public function setArrayMembres($a){
+		$this->array_membres = $a;
+	}
+	
+	public function setArrayModerateurs($a){
+		$this->array_moderateurs = $a;
+	}
 
 	/* Vérification de la validité de la visibilite */ 
 	public function validateVisibilite(){
@@ -176,6 +260,18 @@ class Groupe extends BD {
 		
 		//Retourne vrai si l'utilisateur a été supprimé du groupe
 		return ($rmGroupe->rowCount() == 1 || $rmGroupeMembre->rowCount() == 1 || $rmGroupeModerateur->rowCount() == 1);
+	}
+	
+	
+	/* Ajoute un membre dans un groupe */
+	public function ajouterMembre($idUser){
+		$sql = 'INSERT INTO user_groupe_membre SET
+			id_groupe = ?,
+			id_user = ?';
+
+		$insertGroupe = $this->insererValeur($sql, array($this->id, $idUser));
+
+		return $insertGroupe;		
 	}
 	
 	/* 

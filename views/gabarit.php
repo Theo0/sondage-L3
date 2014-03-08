@@ -69,7 +69,7 @@
         	<!-- Start Blog Post -->
         	<div class="blogwrapstart">
             
-            	<div class="blogtitle"><h3><?= $titre ?></a></div>
+            	<div class="blogtitle"><h3><?= $titre ?></h3></div>
                 
                 <div class="blogbody">
 			<div id="contenu">

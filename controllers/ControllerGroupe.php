@@ -33,6 +33,28 @@ class ControllerGroupe extends Controller{
                 
 		$this->vue->generer(array("groupe" => $this->groupe, "pageSelected" => "mur"));
 	}
+	
+	/* Affichage la liste des membres d'un groupe */
+	public function afficherMembresGroupe($idGroupe = null) {
+		$this->vue = new Vue("MembresGroupe");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+                if(!empty($idGroupe)){
+                    $this->groupe = new Groupe($idGroupe);
+                }
+		
+		if(!empty($_SESSION['id'])){
+			$user = new User($_SESSION["id"]);
+		}
+		else{
+			$user = new User();
+		}
+                
+		$this->vue->generer(array("groupe" => $this->groupe, "pageSelected" => "membres", "user" => $user));
+	}
         
         /* Affichage de la page d'erreur de groupe */
 	public function afficherErreurGroupe() {
@@ -176,6 +198,50 @@ class ControllerGroupe extends Controller{
 					$this->addErreur("Impossible de quitter le groupe");
 					$this->afficherErreurGroupe();
 				}
+			}
+		}
+	}
+	
+	public function rejoindreGroupe($idGroupe){
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour quitter un groupe");
+			$controllerUser->afficherConnexion();
+		}else{
+			if(empty($idGroupe)){
+				$this->addErreur("Le groupe n'existe pas");
+				$this->afficherErreurGroupe();
+			} else{
+				$this->groupe->setId($idGroupe);
+				
+				if(false !== $this->groupe->ajouterMembre($_SESSION["id"])){
+					$this->afficherGroupe($idGroupe);					
+				} else{
+					$this->addErreur("Impossible de quitter le groupe");
+					$this->afficherErreurGroupe();
+				}
+			}
+		}		
+	}
+	
+	public function ajaxAjouterMembreGroupe($user_groupe){
+		$idUser = explode(',' , $user_groupe)[0];
+		$idGroupe = explode(',' , $user_groupe)[1];
+		
+		
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour ajouter des membres au groupe");
+			$controllerUser->afficherConnexion();
+		}else{
+			$this->groupe = new Groupe($idGroupe);
+			$userConnecte = new User($_SESSION["id"]);
+			
+			if($userConnecte->getId() == $this->groupe->getAdministrateurId() || $userConnecte->getAdministrateurSite() == 1){
+				echo (ctype_digit($this->groupe->ajouterMembre($idUser)));
+			} else{
+				$this->addErreur("Vous devez être l'administrateur du groupe pour pouvoir modifier les membres");
+				$this->afficherGroupe($idGroupe);
 			}
 		}
 	}

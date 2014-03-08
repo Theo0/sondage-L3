@@ -3172,33 +3172,33 @@ color: #7e7e7e;
 
 
 /* Dialogue création d'un groupe */
-#dialogCreationGroupe{
+#dialogCreationGroupe, .dialog{
 	display: none;
 }
 
-#dialogCreationGroupe form{
+#dialogCreationGroupe form, .dialog form{
 	width: 100%;
 }
 
-#dialogCreationGroupe label{
+#dialogCreationGroupe label, .dialog label{
 	width: inherit;
 }
 
-#dialogCreationGroupe th{
+#dialogCreationGroupe th, .dialog th{
 	font-size: small;
 	width: 120px;
 	color: #d25809;
 }
 
-#dialogCreationGroupe ul{
+#dialogCreationGroupe ul, .dialog ul{
 	padding-left: 15px;
 }
 
-#dialogCreationGroupe li{
+#dialogCreationGroupe li, .dialog li{
 	list-style: none;
 }
 
-#dialogCreationGroupe li.bottomSeparator{
+#dialogCreationGroupe li.bottomSeparator, .dialog li.bottomSeparator{
 	border-bottom: solid 1px grey;
 }
 
@@ -3213,19 +3213,19 @@ color: #7e7e7e;
 	color: #7e7e7e;
 }
 
-#dialogCreationGroupe .dialogButtons{
+#dialogCreationGroupe .dialogButtons, .dialog .dialogButtons{
 	text-align: right;
 }
 
-#dialogCreationGroupe .dialogButtons input{
+#dialogCreationGroupe .dialogButtons input, .dialog .dialogButtons input{
 	width: 110px;
 }
 
-#dialogCreationGroupe .dialogButtons input:hover{
+#dialogCreationGroupe .dialogButtons input:hover.dialog .dialogButtons input:hover{
 	font-size: 14pt;
 }
 
-#dialogCreationGroupe #dialogErreur{
+#dialogCreationGroupe #dialogErreur, .diablog #dialogErreur{
 	height: 20px;
 }
 
@@ -3250,7 +3250,7 @@ div.blogcategories ul#listeGroupes li a{
 }
 
 
-ul#listeGroupes li ul.menuEditGroup li a, ul#listeGroupes li a#lienCreerGroupe{
+ul#listeGroupes li ul.menuEditGroup li a, ul#listeGroupes li a#lienCreerGroupe, .lienAjoutGroupe a{
 	/*color: white;*/
 	padding:4px 14px 5px 18px;
 	background-image: url(../images/cross.png);
@@ -3386,7 +3386,6 @@ ul#listeGroupes li ul.menuEditGroup li a:hover{
 }
 
 /* Affichage détail d'un groupe */
-/* Page affichage de la liste des groupes */
 #navigationGroupe{
 	width:620px;
 	float:left;
@@ -3484,6 +3483,13 @@ ul#listeGroupes li ul.menuEditGroup li a:hover{
 	background-color:white;
 	margin-top:-1px;
 }
+
+.lienAjoutGroupe a:hover{
+	background-image: url(../images/cross-hover.png);
+	color: #D25809;
+}
+
+
 
 /* Messages d'erreurs */
 .erreurs{

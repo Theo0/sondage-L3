@@ -91,6 +91,93 @@ function afficherDialogueCreationGroupe() {
     });
 }
 
+function afficherDialogueAjoutMembreGroupe() {
+       
+    //Si le div du dialogue existe on l'affiche
+    if ($("#dialogAjoutMembreGroupe").length>0) {
+        //Affichage du dialogue
+        $(function() {
+            $( "#dialogAjoutMembreGroupe" ).dialog({
+                closeOnEscape: false,
+                draggable: false,
+                height: 450,
+                width: 450,
+                modal: true
+            });
+            $(".ui-dialog-titlebar-close").hide(); //On cache le bouton pour fermer la fenêtre
+        });
+    }
+    //Bouton de fermeture de dialog
+    $('#boutonFermerAjoutMembreGroupe').click(function () {
+        $( "#dialogAjoutMembreGroupe" ).dialog("close");
+    });
+    
+    
+    /* Autocomplétion pour ajouter un membre */
+     $(function() {
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+ 
+    $( "#nomMembre" )
+      // don't navigate away from the field on tab when selecting an item
+      .bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).data( "ui-autocomplete" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        source: function( request, response ) {
+          $.getJSON( ABSOLUTE_ROOT + '/index.php', {
+            params: extractLast( request.term ) + ',' + $("#idGroupe").val(),
+            controller: "User",
+            action: "ajaxGetMembresLike"
+          }, response );
+        },
+        search: function() {
+          // custom minLength
+          var term = extractLast( this.value );
+          if ( term.length < 2 ) {
+            return false;
+          }
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          this.value = ui.item.value;
+          
+          //Listener clic pour bouton ajouter un membre au groupe
+            $('#lienAjoutMembre').click(function(){
+                    ajouterMembreGroupe(ui.item.id, $("#idGroupe").val(), ui.item.value);
+            });
+            
+          return false;
+        }
+      });
+      });    
+     
+}
+
+function ajouterMembreGroupe(idUser, idGroupe, nomUser){
+    //Retourne vrai si le membre a été ajouté au groupe
+    $.get( ABSOLUTE_ROOT + "/index.php?controller=Groupe&action=ajaxAjouterMembreGroupe&params=" + idUser + "," + idGroupe, function( addUserToGroupe ) {
+        if (addUserToGroupe==1) { 
+            $(".listeMembres").append("<li>" + nomUser + "</li>");
+            $("#aucunMembre").hide();
+        }
+        else{
+            $("#dialogErreur").text("Impossible d'ajouter le membre au groupe");
+        }
+    });    
+}
+
+
 function creerGroupe(nomGroupe, visibilite){
     if (nomGroupe.length==0) {
         $("#dialogErreur").text("Le nom du groupe ne peut pas être vide");
