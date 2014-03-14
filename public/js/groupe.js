@@ -167,12 +167,150 @@ function afficherDialogueAjoutMembreGroupe() {
 function ajouterMembreGroupe(idUser, idGroupe, nomUser){
     //Retourne vrai si le membre a été ajouté au groupe
     $.get( ABSOLUTE_ROOT + "/index.php?controller=Groupe&action=ajaxAjouterMembreGroupe&params=" + idUser + "," + idGroupe, function( addUserToGroupe ) {
-        if (addUserToGroupe==1) { 
-            $(".listeMembres").append("<li>" + nomUser + "</li>");
-            $("#aucunMembre").hide();
+        if (addUserToGroupe==1) {
+            $(".user" + idUser).hide();
+            
+            //Si la liste des membres en attente est vide on affiche qu'il n'y a plus de membres attente sinon on cache le message
+            if ($('.listeMembresEnAttente li').length == 2)
+                $(".aucunMembreEnAttente").show();
+            else
+                $(".aucunMembreEnAttente").hide();
+                
+            $(".listeMembres").append('<li class="user' + idUser + '">' + nomUser + '</li>');
+            if ($("#canDelete").length != 0) {
+                $(".user" + idUser).append('<span class="lienSupprimerMembre"><a href="#" id="supprimerMembre' + idUser + '" onclick="supprimerMembreGroupe(' + idUser + ', ' + idGroupe + ')"> supprimer </a></span>')
+            }
+            $(".aucunMembre").hide();
         }
         else{
             $("#dialogErreur").text("Impossible d'ajouter le membre au groupe");
+        }
+    });    
+}
+
+function supprimerMembreGroupe(idUser, idGroupe){
+    //Retourne vrai si le membre a été ajouté au groupe
+    $.get( ABSOLUTE_ROOT + "/index.php?controller=Groupe&action=ajaxSupprimerMembreGroupe&params=" + idUser + "," + idGroupe, function( rmUserToGroupe ) {
+        if (rmUserToGroupe==1) {
+            $(".user" + idUser).remove();
+            
+            //Si la liste des membres est vide on affiche qu'il n'y a plus de membres sinon on cache le message
+            if ($('.listeMembres li').length == 2)
+                $(".aucunMembre").show();
+            else
+                $(".aucunMembre").hide();
+        }
+        else{
+            $("#dialogErreur").text("Impossible de supprimer le membre au groupe");
+        }
+    });    
+}
+
+
+function afficherDialogueAjoutModerateurGroupe() {
+       
+    //Si le div du dialogue existe on l'affiche
+    if ($("#dialogAjoutModerateurGroupe").length>0) {
+        //Affichage du dialogue
+        $(function() {
+            $( "#dialogAjoutModerateurGroupe" ).dialog({
+                closeOnEscape: false,
+                draggable: false,
+                height: 450,
+                width: 450,
+                modal: true
+            });
+            $(".ui-dialog-titlebar-close").hide(); //On cache le bouton pour fermer la fenêtre
+        });
+    }
+    //Bouton de fermeture de dialog
+    $('#boutonFermerAjoutModerateurGroupe').click(function () {
+        $( "#dialogAjoutModerateurGroupe" ).dialog("close");
+    });
+    
+    
+    /* Autocomplétion pour ajouter un membre */
+     $(function() {
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+ 
+    $( "#nomModerateur" )
+      // don't navigate away from the field on tab when selecting an item
+      .bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).data( "ui-autocomplete" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        source: function( request, response ) {
+          $.getJSON( ABSOLUTE_ROOT + '/index.php', {
+            params: extractLast( request.term ) + ',' + $("#idGroupe").val(),
+            controller: "User",
+            action: "ajaxGetMembresLike"
+          }, response );
+        },
+        search: function() {
+          // custom minLength
+          var term = extractLast( this.value );
+          if ( term.length < 2 ) {
+            return false;
+          }
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          this.value = ui.item.value;
+          
+          //Listener clic pour bouton ajouter un membre au groupe
+            $('#lienAjoutModerateur').click(function(){
+                    ajouterModerateurGroupe(ui.item.id, $("#idGroupe").val(), ui.item.value);
+            });
+            
+          return false;
+        }
+      });
+      });    
+     
+}
+
+function ajouterModerateurGroupe(idUser, idGroupe, nomUser){
+    //Retourne vrai si le membre a été ajouté au groupe
+    $.get( ABSOLUTE_ROOT + "/index.php?controller=Groupe&action=ajaxAjouterModerateurGroupe&params=" + idUser + "," + idGroupe, function( addUserToGroupe ) {
+        if (addUserToGroupe==1) { 
+            $(".listeModerateurs").append('<li class="user' + idUser + '">' + nomUser + '</li>');
+            if ($("#canDelete").length != 0) {
+                $(".user" + idUser).append('<span class="lienSupprimerModerateur"><a href="#" id="supprimerModerateur' + idUser + '" onclick="supprimerModerateurGroupe(' + idUser + ', ' + idGroupe + ')"> supprimer </a></span>')
+            }
+            $(".aucunModerateur").hide();
+        }
+        else{
+            $("#dialogErreur").text("Impossible d'ajouter le moderateur au groupe");
+        }
+    });    
+}
+
+function supprimerModerateurGroupe(idUser, idGroupe){
+    //Retourne vrai si le modérateur a été ajouté au groupe
+    $.get( ABSOLUTE_ROOT + "/index.php?controller=Groupe&action=ajaxSupprimerModerateurGroupe&params=" + idUser + "," + idGroupe, function( rmUserToGroupe ) {
+        if (rmUserToGroupe==1) {
+            //Suppression du modérateur de la liste des modérateurs
+            $(".user" + idUser).remove(); 
+
+            //Si la liste des modérateurs est vide on affiche qu'il n'y a plus de modérateurs sinon on cache le message
+            if ($('.listeModerateurs li').length == 2)
+                $(".aucunModerateur").show();
+            else
+                $(".aucunModerateur").hide();
+        }
+        else{
+            $("#dialogErreur").text("Impossible de supprimer le membre au groupe");
         }
     });    
 }

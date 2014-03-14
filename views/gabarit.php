@@ -52,7 +52,7 @@
 
 	<section id="main">
 
-			<div id="erreur">
+		<div id="erreur">
 			<ul>
 				<?php if(!empty($erreur)): //Si il existe des erreurs dans la vue?>
 					<?php foreach($erreur as $error): //Ecriture de chaque erreur de la vue?>
@@ -61,6 +61,8 @@
 				<?php endif; ?>
 			</ul>
 		</div> <!-- #erreur -->
+		
+		<div id="message"><?php if(!empty($message)): ?><p class="success"><?= $message; endif;?></p></div>
 <div id="main-wrap">
         
         <!-- Start Left Section -->

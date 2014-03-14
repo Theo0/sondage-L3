@@ -3378,11 +3378,31 @@ ul#listeGroupes li ul.menuEditGroup li a:hover{
 	margin-top:-1px;
 }
 
+#tableListeGroupes{
+	width: 100%;
+	text-align: center;
+}
+
+#tableListeGroupes #columnRejoindre{
+	width: 50%;
+}
+
 /* Messages d'erreurs */
 .erreurs{
 	color: red;
 	font-weight: bold;
 	font-size: small;
+}
+
+/* Messages d'information */
+.success{
+	background: #e3ebc6 url(images//icon-box-success.png) no-repeat 12px 8px;
+	border: 1px solid #c2d288;
+	border-left-width: 4px;
+	color: #8fa442;
+	display: block;
+	padding: 10px 20px 10px 44px;
+	margin-bottom: 20px;
 }
 
 /* Affichage détail d'un groupe */

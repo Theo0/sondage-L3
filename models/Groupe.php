@@ -13,6 +13,7 @@ class Groupe extends BD {
 	private $visibilite;
 	private $array_membres;
 	private $array_moderateurs;
+	private $array_membres_en_attente;
 
 
 	public function __construct() 
@@ -36,6 +37,7 @@ class Groupe extends BD {
 		$this->visibilite = 'public';
 		$this->array_membres = array();
 		$this->array_moderateurs = array();
+		$this->array_membres_en_attente = array();
 	}
 
 	public function constructeurPlein($idGroupe){
@@ -71,23 +73,38 @@ class Groupe extends BD {
 			
 		    
 			/* Ajout des membres au groupe */
-			$sql = 'SELECT id, nom, prenom, administrateur_site, date_inscription
+			$sql = 'SELECT id, nom, prenom, administrateur_site, date_inscription, accepte
 				FROM user_groupe_membre, user
 				WHERE id_groupe=?
 				AND user_groupe_membre.id_user = user.id';
 			
 			$lectBdd = $this->executerRequete($sql, array($idGroupe));
 			
+			$this->array_membres = array();
+			$this->array_membres_en_attente = array();
 			$i = 0;
+			$j = 0;
 			while (($enrBdd = $lectBdd->fetch()) != false)
-			{    
-			    $this->array_membres[$i] = new User();
-			    $this->array_membres[$i]->setId($enrBdd["id"]);
-			    $this->array_membres[$i]->setNom($enrBdd["nom"]);
-			    $this->array_membres[$i]->setPrenom($enrBdd["prenom"]);
-			    $this->array_membres[$i]->setAdministrateurSite($enrBdd["administrateur_site"]);
-			    $this->array_membres[$i]->setDateInscription($enrBdd["date_inscription"]);
-			    $i++;
+			{
+				if(!$enrBdd["accepte"]){
+					/* Ajout des membres en attente dans le tableau $array_membres_en_attente */
+					$this->array_membres_en_attente[$j] = new User();
+					$this->array_membres_en_attente[$j]->setId($enrBdd["id"]);
+					$this->array_membres_en_attente[$j]->setNom($enrBdd["nom"]);
+					$this->array_membres_en_attente[$j]->setPrenom($enrBdd["prenom"]);
+					$this->array_membres_en_attente[$j]->setAdministrateurSite($enrBdd["administrateur_site"]);
+					$this->array_membres_en_attente[$j]->setDateInscription($enrBdd["date_inscription"]);
+					$j++;
+				} else{
+					/* Ajout des membres du groupe dans le tableau $array_membres */
+					$this->array_membres[$i] = new User();
+					$this->array_membres[$i]->setId($enrBdd["id"]);
+					$this->array_membres[$i]->setNom($enrBdd["nom"]);
+					$this->array_membres[$i]->setPrenom($enrBdd["prenom"]);
+					$this->array_membres[$i]->setAdministrateurSite($enrBdd["administrateur_site"]);
+					$this->array_membres[$i]->setDateInscription($enrBdd["date_inscription"]);
+					$i++;
+				}
 			}
 			
 			/* Ajout des modérateurs au groupe */
@@ -116,6 +133,7 @@ class Groupe extends BD {
 			$this->visibilite = 'public';
 			$this->array_membres = array();
 			$this->array_moderateurs = array();
+			$this->array_membres_en_attente = array();
 		}
 	}
 
@@ -141,6 +159,10 @@ class Groupe extends BD {
 	
 	public function getArrayMembres(){
 		return $this->array_membres;
+	}
+	
+	public function getArrayMembresEnAttente(){
+		return $this->array_membres_en_attente;
 	}
 	
 	public function getArrayModerateurs(){
@@ -264,14 +286,78 @@ class Groupe extends BD {
 	
 	
 	/* Ajoute un membre dans un groupe */
-	public function ajouterMembre($idUser){
-		$sql = 'INSERT INTO user_groupe_membre SET
+	public function ajouterMembre($idUser, $accepte=1){
+		$isWaiting = false;
+		foreach($this->array_membres_en_attente as $membre){
+			if($membre->getId() == $idUser){
+				$isWaiting = true;
+				break;
+			}
+		}
+		
+		$isMember = false;
+		foreach($this->array_membres as $membre){
+			if($membre->getId() == $idUser){
+				$isMember = true;
+				break;
+			}
+		}
+		
+		if($isWaiting){ 
+			$sql = 'UPDATE user_groupe_membre SET
+			accepte = ?
+			WHERE id_user = ?
+			AND id_groupe = ?';
+			
+			$updateGroupe = $this->executerRequete($sql, array($accepte, $idUser, $this->id));
+			
+			return ($updateGroupe->rowCount() == 1);
+		} elseif($isMember){
+			return true;	
+		}else{
+			
+			$sql = 'INSERT INTO user_groupe_membre SET
+				id_groupe = ?,
+				id_user = ?,
+				accepte = ?';
+	
+			$insertGroupe = $this->executerRequete($sql, array($this->id, $idUser, $accepte));
+	
+			return ($insertGroupe->rowCount() == 1);
+		}
+	}
+	
+	/* Supprimer un membre dans un groupe */
+	public function supprimerMembre($idUser){
+		$sql = 'DELETE FROM user_groupe_membre WHERE
+			id_groupe = ? AND
+			id_user = ?';
+
+		$rmMembreGroupe = $this->executerRequete($sql, array($this->id, $idUser));
+
+		return ($rmMembreGroupe->rowCount() == 1);		
+	}
+	
+	/* Ajoute un modérateur dans un groupe */
+	public function ajouterModerateur($idUser){
+		$sql = 'INSERT INTO user_groupe_moderateur SET
 			id_groupe = ?,
 			id_user = ?';
 
 		$insertGroupe = $this->insererValeur($sql, array($this->id, $idUser));
 
 		return $insertGroupe;		
+	}
+	
+	/* Supprimer un modérateur dans un groupe */
+	public function supprimerModerateur($idUser){
+		$sql = 'DELETE FROM user_groupe_moderateur WHERE
+			id_groupe = ? AND
+			id_user = ?';
+
+		$rmMembreGroupe = $this->executerRequete($sql, array($this->id, $idUser));
+		
+		return ($rmMembreGroupe->rowCount() == 1);		
 	}
 	
 	/* 

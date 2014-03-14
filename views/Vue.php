@@ -10,6 +10,8 @@ class Vue {
   private $fichierGabarit;
   //Erreurs à afficher
   private $erreurs;
+  //Messages à afficher
+  private $message = '';
 
   public function __construct($action) {
     // Détermination du nom du fichier vue à partir de l'action
@@ -20,6 +22,10 @@ class Vue {
   public function setErreurs( $tableau_erreurs ){
 	$this->erreurs = $tableau_erreurs;
   }
+  
+  public function setMessage( $mess ){
+      $this->message = $mess;
+  }
 
   // Génère et affiche la vue
   public function generer($donnees) {
@@ -27,7 +33,7 @@ class Vue {
     $contenu = $this->genererFichier($this->fichier, $donnees);
     // Génération du gabarit commun utilisant la partie spécifique
     $vue = $this->genererFichier($this->fichierGabarit,
-      array('titre' => $this->titre, 'contenu' => $contenu, 'erreur' => $this->erreurs));
+      array('titre' => $this->titre, 'contenu' => $contenu, 'erreur' => $this->erreurs, 'message' => $this->message));
     // Renvoi de la vue au navigateur
     echo $vue;
   }

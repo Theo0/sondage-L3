@@ -20,16 +20,22 @@ class ControllerGroupe extends Controller{
 	}
 
 	/* Affichage de la page d'un groupe */
-	public function afficherGroupe($idGroupe = null) {
+	public function afficherGroupe($idGroupe = null, $message = null) {
 		$this->vue = new Vue("Groupe");
 
 		//Si le contrôlleur possède des erreurs de référencées
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+			
+		//Si on doit afficher un message
+		if( !empty($message) ){
+			$this->vue->setMessage($message);//Envoi du message à la vue
+		}
 
                 if(!empty($idGroupe)){
                     $this->groupe = new Groupe($idGroupe);
                 }
+		
                 
 		$this->vue->generer(array("groupe" => $this->groupe, "pageSelected" => "mur"));
 	}
@@ -212,10 +218,17 @@ class ControllerGroupe extends Controller{
 				$this->addErreur("Le groupe n'existe pas");
 				$this->afficherErreurGroupe();
 			} else{
-				$this->groupe->setId($idGroupe);
+				$this->groupe = new Groupe($idGroupe);
 				
-				if(false !== $this->groupe->ajouterMembre($_SESSION["id"])){
-					$this->afficherGroupe($idGroupe);					
+				if(false !== $this->groupe->ajouterMembre($_SESSION["id"], 0)){
+					if($this->groupe->getVisibilite() == "privé_visible" ||  $this->groupe->getVisibilite() == "privé_caché"){
+						$message = 'Votre demande pour rejoindre le groupe a été prise en compte, vous devez attendre la validation d\'un modérateur pour rejoindre le groupe';
+					}
+					else{
+						$message = null;
+					}
+					
+					$this->afficherGroupe($idGroupe, $message);					
 				} else{
 					$this->addErreur("Impossible de quitter le groupe");
 					$this->afficherErreurGroupe();
@@ -238,12 +251,83 @@ class ControllerGroupe extends Controller{
 			$userConnecte = new User($_SESSION["id"]);
 			
 			if($userConnecte->getId() == $this->groupe->getAdministrateurId() || $userConnecte->getAdministrateurSite() == 1){
-				echo (ctype_digit($this->groupe->ajouterMembre($idUser)));
+				if(false !== $this->groupe->ajouterMembre($idUser))
+					echo '1';
+				else{
+					echo '0';
+				}
 			} else{
 				$this->addErreur("Vous devez être l'administrateur du groupe pour pouvoir modifier les membres");
 				$this->afficherGroupe($idGroupe);
 			}
 		}
+	}
+	
+	public function ajaxSupprimerMembreGroupe($user_groupe){
+		$idUser = explode(',' , $user_groupe)[0];
+		$idGroupe = explode(',' , $user_groupe)[1];
+		
+		
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour supprimer des membres au groupe");
+			$controllerUser->afficherConnexion();
+		}else{
+			$this->groupe = new Groupe($idGroupe);
+			$userConnecte = new User($_SESSION["id"]);
+			
+			if($userConnecte->getId() == $this->groupe->getAdministrateurId() || $userConnecte->getAdministrateurSite() == 1){
+				echo $this->groupe->supprimerMembre($idUser);
+			} else{
+				$this->addErreur("Vous devez être l'administrateur du groupe pour pouvoir modifier les membres");
+				$this->afficherGroupe($idGroupe);
+			}
+		}		
+	}
+	
+	
+	public function ajaxAjouterModerateurGroupe($user_groupe){
+		$idUser = explode(',' , $user_groupe)[0];
+		$idGroupe = explode(',' , $user_groupe)[1];
+		
+		
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour ajouter des modérateurs au groupe");
+			$controllerUser->afficherConnexion();
+		}else{
+			$this->groupe = new Groupe($idGroupe);
+			$userConnecte = new User($_SESSION["id"]);
+			
+			if($userConnecte->getId() == $this->groupe->getAdministrateurId() || $userConnecte->getAdministrateurSite() == 1){
+				echo (ctype_digit($this->groupe->ajouterModerateur($idUser)));
+			} else{
+				$this->addErreur("Vous devez être l'administrateur du groupe pour pouvoir modifier les modérateurs");
+				$this->afficherGroupe($idGroupe);
+			}
+		}
+	}
+	
+	public function ajaxSupprimerModerateurGroupe($user_groupe){
+		$idUser = explode(',' , $user_groupe)[0];
+		$idGroupe = explode(',' , $user_groupe)[1];
+		
+		
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour supprimer des modérateurs du groupe");
+			$controllerUser->afficherConnexion();
+		}else{
+			$this->groupe = new Groupe($idGroupe);
+			$userConnecte = new User($_SESSION["id"]);
+			
+			if($userConnecte->getId() == $this->groupe->getAdministrateurId() || $userConnecte->getAdministrateurSite() == 1){
+				echo $this->groupe->supprimerModerateur($idUser);
+			} else{
+				$this->addErreur("Vous devez être l'administrateur du groupe pour pouvoir supprimer les moderateurs");
+				$this->afficherGroupe($idGroupe);
+			}
+		}		
 	}
 }
 

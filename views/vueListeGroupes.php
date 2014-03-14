@@ -18,7 +18,7 @@
     <thead> <!-- En-tête du tableau -->
         <tr>
             <th>Nom</th>
-            <th>Rejoindre</th>
+            <th id="columnRejoindre">Rejoindre</th>
         </tr>
     </thead>
     <tbody> <!-- Corps du tableau -->
