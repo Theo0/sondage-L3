@@ -147,13 +147,18 @@ class ControllerUser extends Controller{
 		}
 	}
 
-	/* Inscription d'un utilisateur avec les informations reçues de $_POST: nom_utilisateur, password, email, avatar */
+	/* Inscription d'un utilisateur avec les informations reçues de $_POST: pseudo, nom_utilisateur,, prenom_utilisateur, password, email */
 	public function inscription(){
 		//Récupération des champs du formulaire et insertion dans le modèle
 		$this->user->POSTToVar($_POST);
 
-		/* Vérification de la validité nom d'utilisateur */ 
+		/* Vérification de la validité pseudo */ 
+		$validatePseudo = $this->user->validatePseudo();
+		if( $validatePseudo !== 1 ){
+			$this->addErreur($validatePseudo);
+		}
 		
+		/* Vérification de la validité nom d'utilisateur */ 
 		$validateNomUtilisateur = $this->user->validateNom();
 		if( $validateNomUtilisateur !== 1 ){
 			$this->addErreur($validateNomUtilisateur);

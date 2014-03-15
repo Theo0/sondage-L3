@@ -2,7 +2,7 @@
 
 <input id="idGroupe" type="hidden" value="<?= $groupe->getId() ?>" />
 
-<?php if($user->getId() == $groupe->getAdministrateurId() || $user->getAdministrateurSite() == 1): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
+<?php if($user->getId() == $groupe->getAdministrateurId() || $user->getAdministrateurSite() == 1 || $groupe->isModerateur($user->getId())): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
 <input id="canDelete" type="hidden" value="1" />
 <?php endif; ?>
 
@@ -58,8 +58,7 @@
                 <?php foreach($groupe->getArrayMembres() as $membre): ?>
                 <li class="user<?= $membre->getId() ?>">
                         <?= $membre->getPrenom() . ' ' . $membre->getNom() ?>
-                        
-                        <?php if($user->getId() == $groupe->getAdministrateurId() || $user->getAdministrateurSite() == 1): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
+                        <?php if($user->getId() == $groupe->getAdministrateurId() || $user->getAdministrateurSite() == 1 || $groupe->isModerateur($user->getId())): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
                         <span class="lienSupprimerMembre"><a href="#" id="supprimerMembre<?= $membre->getId() ?>" onclick="supprimerMembreGroupe(<?= $membre->getId() ?>, <?= $groupe->getId() ?>)"> supprimer </a></span>
                         <?php endif; ?>
                 </li>
@@ -71,7 +70,7 @@
         </ul>
 
         
-        <?php if($user->getId() == $groupe->getAdministrateurId() || $user->getAdministrateurSite() == 1): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
+        <?php if($user->getId() == $groupe->getAdministrateurId() || $user->getAdministrateurSite() == 1 || $groupe->isModerateur($user->getId())): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
         <p class="lienAjoutGroupe"><a href="#" onclick="afficherDialogueAjoutMembreGroupe()" > Ajouter un membre </a></p>
         <?php endif; ?>
         

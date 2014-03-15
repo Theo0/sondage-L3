@@ -9,6 +9,9 @@ $form_inscription = new Form('formulaire_inscription', 'POST');
 
 $form_inscription->action(ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=inscription');
 
+$form_inscription->add('Text', 'pseudo')
+                 ->label("Pseudo")->Required(true);
+		 
 $form_inscription->add('Text', 'prenom')
                  ->label("Prénom")->Required(true);
 		 

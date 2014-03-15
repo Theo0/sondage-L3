@@ -3182,6 +3182,11 @@ color: #7e7e7e;
 
 #dialogCreationGroupe label, .dialog label{
 	width: inherit;
+	display: inline;
+}
+
+#dialogCreationGroupe input, .dialog input{
+	display: inline;
 }
 
 #dialogCreationGroupe th, .dialog th{
@@ -3385,6 +3390,10 @@ ul#listeGroupes li ul.menuEditGroup li a:hover{
 
 #tableListeGroupes #columnRejoindre{
 	width: 50%;
+}
+
+#tableListeGroupes tr.lignePaire{
+	background: #f5f5f5;
 }
 
 /* Messages d'erreurs */

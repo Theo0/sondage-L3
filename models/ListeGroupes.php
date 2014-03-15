@@ -20,6 +20,9 @@ class ListeGroupes extends BD {
 		  	 case 1:
 			$this->constructeurPlein(func_get_arg(0));
 				break;
+			case 2:
+			$this->constructeurListeAdministre(func_get_arg(0), func_get_arg(1));
+				break;
 			case 5:
 			$this->constructeurListeVisibilite(func_get_arg(0), func_get_arg(1), func_get_arg(2), func_get_arg(3), func_get_arg(4));
 				break;
@@ -52,6 +55,20 @@ class ListeGroupes extends BD {
             }
 	}
 	
+	public function constructeurListeAdministre($idUser, $administre)
+	{
+            $sql='SELECT id
+                    FROM groupe
+                    WHERE administrateur_id=?
+		    ORDER BY id DESC';
+                               
+            $lectBdd = $this->executerRequete($sql, array($idUser));
+            while (($enrBdd = $lectBdd->fetch()) != false)
+            { 
+                $this->array_groupes[] = new Groupe($enrBdd["id"]);
+            }
+	}
+	
 	
 	public function constructeurListeVisibilite($orderBy, $asc, $limitOffset, $limitLignes, $visibilite)
 	{ 
@@ -65,11 +82,7 @@ class ListeGroupes extends BD {
 	    $i = 0;
             while (($enrBdd = $lectBdd->fetch()) != false)
             { 
-                $this->array_groupes[$i] = new Groupe();
-		$this->array_groupes[$i]->setId($enrBdd["id"]);
-		$this->array_groupes[$i]->setNom($enrBdd["nom"]);
-		$this->array_groupes[$i]->setAdministrateurId($enrBdd["administrateur_id"]);
-		$this->array_groupes[$i]->setVisibilite($enrBdd["visibilite"]);
+                $this->array_groupes[$i] = new Groupe($enrBdd["id"]);
 		$i++;
             }
 	}

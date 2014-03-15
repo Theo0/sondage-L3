@@ -115,6 +115,7 @@ class Groupe extends BD {
 			
 			$lectBdd = $this->executerRequete($sql, array($idGroupe));
 			
+			$this->array_moderateurs = array();
 			$i = 0;
 			while (($enrBdd = $lectBdd->fetch()) != false)
 			{    
@@ -204,6 +205,26 @@ class Groupe extends BD {
 		}
 	}
 	
+	/* Retourne vrai si l'utilisateur identifié par $userId est un modérateur du groupe */
+	public function isModerateur($userId){
+		foreach($this->array_moderateurs as $key=>$moderateur){
+			if($moderateur->getId() == $userId){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/* Retourne vrai si l'utilisateur identifié par $userId est un membre du groupe */
+	public function isMembre($userId){
+		foreach($this->array_membres as $key=>$membre){
+			if($membre->getId() == $userId){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 
 	/* Formate les variables récupérées d'un formulaire et les stocke dans $this */
 	public function POSTToVar($array){
@@ -236,9 +257,10 @@ class Groupe extends BD {
 		$sql = 'UPDATE groupe SET
 			nom = ?,
 			administrateur_id = ?,
-			visibilite = ?';
+			visibilite = ?
+			WHERE groupe = ?';
 
-		$updateGroupe = $this->executerRequete($sql, array($this->nom, $this->administrateurId , $this->visibilite));
+		$updateGroupe = $this->executerRequete($sql, array($this->nom, $this->administrateurId , $this->visibilite, $this->id));
 
 		return ($updateGroupe->rowCount() == 1);
 	}

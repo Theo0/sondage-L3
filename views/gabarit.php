@@ -17,7 +17,7 @@
 	<header id="header">
 		<nav id="navigation">
 			<div id="navigation_wrap">
-				<div id="conteactinfo"><strong><?= NOM_SITE ?></strong> </div>
+				<div id="conteactinfo"><strong><a href="<?= ABSOLUTE_ROOT ?>"><?= NOM_SITE ?></a></strong> </div>
 				<div id="navi">
 					<ul>
 						<li><a href="<?= ABSOLUTE_ROOT . '/index.php' ?>">Sondages</a></li>
@@ -92,14 +92,16 @@
         	<!-- Start Blog Widget -->
             <div class="blogwidgetstart">
             	<!-- Start Categories Widget -->
-            	<div class="widgettitle"><h4>Groupes</h4></div>
+            	<div class="widgettitle"><h4>Mes groupes</h4></div>
                 
                 <div class="widgetbody" id="divListeGroupes">
                 
                 	<div class="blogcategories">
                     
                     	<ul id="listeGroupes">
+				<?php if(!empty($_SESSION['id'])): ?>
 				<li><a href="#" title="Créer un groupe..." id="lienCreerGroupe" onclick="afficherDialogueCreationGroupe()">Créer un groupe</a></li>
+				<?php endif; ?>
                         </ul>
                     
                     </div>

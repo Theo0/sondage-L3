@@ -6,6 +6,7 @@ class User extends BD {
 
 
 	private $id;
+	private $pseudo;
 	private $nom;
 	private $prenom;
 	private $email;
@@ -41,7 +42,7 @@ class User extends BD {
 		$this->date_inscription='0000-00-00 00:00:00';
 		$this->administrateur_site = false;
 		$this->compte_valide = 0;
-
+		$this->pseudo = '';
 	}
 
 	public function constructeurPlein($idUser)
@@ -63,6 +64,7 @@ class User extends BD {
 			$this->date_inscription = $enrBdd['date_inscription'];
 			$this->administrateur_site = $enrBdd['administrateur_site'];
 			$this->compte_valide = $enrBdd['compte_valide'];
+			$this->pseudo = $enrBdd['pseudo'];
 		}
 		else 
 		{
@@ -76,9 +78,14 @@ class User extends BD {
 			$this->date_inscription='0000-00-00 00:00:00';
 			$this->administrateur_site = false;
 			$this->compte_valide = 0;
+			$this->pseudo = '';
 		}
 	}
 
+	public function getPseudo(){
+		return $this->pseudo;
+	}
+	
 	public function getMdp(){
 		return $this->mdp;
 	}
@@ -115,6 +122,10 @@ class User extends BD {
 		return $this->administrateur_site;
 	}
 
+	public function setPseudo($p){
+		$this->pseudo = $p;
+	}
+	
 	public function setMdp($m){
 		$this->mdp = $m;
 	}
@@ -156,6 +167,16 @@ class User extends BD {
 		return $this->hash_validation;
 	}
 
+	/* Vérification de la validité du pseudo */ 
+	public function validatePseudo(){
+		$regexp = "/[a-zA-Z0-9_]{2,15}/";
+		if(empty($this->nom) || (!empty($this->nom) && !preg_match($regexp, $this->nom)) ){
+			return "Votre pseudo doit comporter entre 2 et 15 caractères";
+		} else{
+			return 1;
+		}
+	}
+	
 	/* Vérification de la validité nom d'utilisateur */ 
 	public function validateNom(){
 		$regexp = "/[a-zA-Z0-9_]{2,15}/";
@@ -231,7 +252,8 @@ class User extends BD {
 			password = ?,
 			date_inscription = ?,
 			administrateur_site = ?,
-			hash_validation = ?
+			hash_validation = ?,
+			pseudo = ?,
 			WHERE id = ?';
 
 		$updateUser = $this->executerRequete($sql, array($this->nom,
@@ -241,6 +263,7 @@ class User extends BD {
 							       $this->date_inscription,
 							       $this->administrateur_site,
 							       $this->hash_validation,
+							       $this->pseudo,
 							       $this->id));
 
 		return ($updateUser->rowCount() == 1);

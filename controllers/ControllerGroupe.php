@@ -36,8 +36,15 @@ class ControllerGroupe extends Controller{
                     $this->groupe = new Groupe($idGroupe);
                 }
 		
+		if(!empty($_SESSION['id'])){
+			$user = new User($_SESSION["id"]);
+		}
+		else{
+			$user = new User();
+		}
+		
                 
-		$this->vue->generer(array("groupe" => $this->groupe, "pageSelected" => "mur"));
+		$this->vue->generer(array("groupe" => $this->groupe, "pageSelected" => "mur", "user" => $user));
 	}
 	
 	/* Affichage la liste des membres d'un groupe */
@@ -99,6 +106,44 @@ class ControllerGroupe extends Controller{
 		$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "privé_visible"));		
 	}
 	
+	/* Affichage de la page de la liste des groupes dans lequel l'utilisateur connecté appartient */
+	public function afficherListeGroupesUser(){
+		if(empty($_SESSION["id"])){
+		    $controllerUser = new ControllerUser();
+		    $controllerUser->addErreur("Vous devez vous connecter pour voir vos groupes");
+		    $controllerUser->afficherConnexion();
+		}else{
+			$this->vue = new Vue("ListeGroupes");
+	
+			//Si le contrôlleur possède des erreurs de référencées
+			if( !empty($this->erreurs) )
+				$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+	
+			$listeGroupes = new ListeGroupes($_SESSION["id"]);
+			
+			$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "groupesUser"));
+		}
+	}
+	
+	/* Affichage de la page de la liste des groupes dans lequel l'utilisateur connecté est l'administrateur */
+	public function afficherListeGroupesAdministres(){
+		if(empty($_SESSION["id"])){
+		    $controllerUser = new ControllerUser();
+		    $controllerUser->addErreur("Vous devez vous connecter pour voir les groupe que vous administrez");
+		    $controllerUser->afficherConnexion();
+		}else{
+			$this->vue = new Vue("ListeGroupes");
+	
+			//Si le contrôlleur possède des erreurs de référencées
+			if( !empty($this->erreurs) )
+				$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+	
+			$listeGroupes = new ListeGroupes($_SESSION["id"], true);
+			
+			$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "groupesAdministre"));
+		}
+	}
+	
         /* Affiche '1' si le nom du groupe n'existe pas, '0' sinon */
         public function ajaxIsUniqueNomGroupe($nomGroupe){
             if(!empty($nomGroupe)){
@@ -138,48 +183,51 @@ class ControllerGroupe extends Controller{
         
         public function creerGroupe(){
 		if(empty($_SESSION["id"])){
-		    $controllerUser = new ControllerUser();
-		    $controllerUser->addErreur("Vous devez vous connecter pour créer un groupe");
-		    $controllerUser->afficherConnexion();
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour créer un groupe");
+			$controllerUser->afficherConnexion();
 		}else{
-		    $this->groupe->setAdministrateurId($_SESSION["id"]);
-		    if(empty($_POST["nom"])){
-			$this->addErreur("Le nom du groupe est requis");
-			$this->afficherErreurGroupe();
-		    }
-		    else{
-			 $this->groupe->setNom($_POST["nom"]);
-			 
-			
-			if(false === $this->groupe->isUniqueNom()){
-			    $this->addErreur("Le nom de ce groupe n'est pas disponible");
-			    $this->afficherErreurGroupe();
-			} else{
-			    if(empty($_POST["visibilite"])){
-				$this->addErreur("La visibilité du groupe est obligatoire");
+			//L'utilisateur connecté devient l'administrateur du groupe
+			$this->groupe->setAdministrateurId($_SESSION["id"]);
+			if(empty($_POST["nom"])){
+				$this->addErreur("Le nom du groupe est requis");
 				$this->afficherErreurGroupe();
-			    }else{
-				$this->groupe->setVisibilite($_POST["visibilite"]);
-				
-				if(1 !== $this->groupe->validateVisibilite()){
-				    $this->addErreur("La visibilité du groupe n'est pas valide");
-				    $this->afficherErreurGroupe();
-				}else{
-				    $group = $this->groupe->add();
-				    if(false !== $group){
-					 $listeGroupes = new ListeGroupes($_SESSION['id']);
-					$_SESSION['listeGroupes'] = $listeGroupes->getArrayGroupes();
-					 $this->afficherGroupe();
-				    }
-				    else{
-					$this->addErreur("Nous sommes dans l'impossibilité d'ajouter le groupe, merci de réessayer ultérieurement");
-					$this->afficherErreurGroupe();
-				    }
-				   
-				}
-			    }
 			}
-		    }            
+			else{
+				//Ajout du nom du groupe au modèle
+				$this->groupe->setNom($_POST["nom"]);
+
+				if(false === $this->groupe->isUniqueNom()){
+					$this->addErreur("Le nom de ce groupe n'est pas disponible");
+					$this->afficherErreurGroupe();
+				} else{
+					if(empty($_POST["visibilite"])){
+						$this->addErreur("La visibilité du groupe est obligatoire");
+						$this->afficherErreurGroupe();
+					}else{
+						//Ajout de la visibilité au modèle
+						$this->groupe->setVisibilite($_POST["visibilite"]);
+						
+						if(1 !== $this->groupe->validateVisibilite()){
+							$this->addErreur("La visibilité du groupe n'est pas valide");
+							$this->afficherErreurGroupe();
+						}else{
+							//Ajout du groupe en base
+							$group = $this->groupe->add();
+							if(false !== $group){
+								$this->groupe->setId($group);
+								
+								//Redirection vers la groupe créé
+								$this->afficherGroupe();
+							}
+							else{
+								$this->addErreur("Nous sommes dans l'impossibilité d'ajouter le groupe, merci de réessayer ultérieurement");
+								$this->afficherErreurGroupe();
+							}
+						}
+					}
+				}
+			}            
 		}
         }
 	
@@ -220,12 +268,18 @@ class ControllerGroupe extends Controller{
 			} else{
 				$this->groupe = new Groupe($idGroupe);
 				
-				if(false !== $this->groupe->ajouterMembre($_SESSION["id"], 0)){
+				if($this->groupe->getVisibilite() == "public")
+					$accepter = 1;
+				else{
+					$accepter = 0;
+				}
+				
+				if(false !== $this->groupe->ajouterMembre($_SESSION["id"], $accepter)){
 					if($this->groupe->getVisibilite() == "privé_visible" ||  $this->groupe->getVisibilite() == "privé_caché"){
 						$message = 'Votre demande pour rejoindre le groupe a été prise en compte, vous devez attendre la validation d\'un modérateur pour rejoindre le groupe';
 					}
 					else{
-						$message = null;
+						$message = 'Vous faites maintenant parti du groupe ' . $this->groupe->getNom();
 					}
 					
 					$this->afficherGroupe($idGroupe, $message);					
@@ -250,14 +304,14 @@ class ControllerGroupe extends Controller{
 			$this->groupe = new Groupe($idGroupe);
 			$userConnecte = new User($_SESSION["id"]);
 			
-			if($userConnecte->getId() == $this->groupe->getAdministrateurId() || $userConnecte->getAdministrateurSite() == 1){
+			if($userConnecte->getId() == $this->groupe->getAdministrateurId() || $userConnecte->getAdministrateurSite() == 1 || $this->groupe->isModerateur($userConnecte->getId())){
 				if(false !== $this->groupe->ajouterMembre($idUser))
 					echo '1';
 				else{
 					echo '0';
 				}
 			} else{
-				$this->addErreur("Vous devez être l'administrateur du groupe pour pouvoir modifier les membres");
+				$this->addErreur("Vous devez être l'administrateur du groupe ou modérateur pour pouvoir modifier les membres");
 				$this->afficherGroupe($idGroupe);
 			}
 		}
@@ -276,7 +330,7 @@ class ControllerGroupe extends Controller{
 			$this->groupe = new Groupe($idGroupe);
 			$userConnecte = new User($_SESSION["id"]);
 			
-			if($userConnecte->getId() == $this->groupe->getAdministrateurId() || $userConnecte->getAdministrateurSite() == 1){
+			if($userConnecte->getId() == $this->groupe->getAdministrateurId() || $userConnecte->getAdministrateurSite() == 1 || $this->groupe->isModerateur($userConnecte->getId())){
 				echo $this->groupe->supprimerMembre($idUser);
 			} else{
 				$this->addErreur("Vous devez être l'administrateur du groupe pour pouvoir modifier les membres");
