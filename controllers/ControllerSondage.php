@@ -4,7 +4,7 @@ require_once "Controller.php";
 require_once ROOT . "/models/Sondage.php";
 require_once ROOT . "/models/Mail.php";
 
-class ControllerUser extends Controller{
+class ControllerSondage extends Controller{
 	
 	private $sondage;
 
@@ -82,10 +82,6 @@ class ControllerUser extends Controller{
 
 				// On transforme la chaine en entier
 				$id_sondage = (int) $id_sondage;
-	
-				// Preparation du mail
-				$mail = new Mail('activationInscription', array($this->user->getHashValidation()));
-				
 	
 			// Gestion des doublons
 			} else {
