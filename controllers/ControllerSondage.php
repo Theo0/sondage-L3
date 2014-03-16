@@ -1,7 +1,7 @@
 <?php
 
 require_once "Controller.php";
-require_once ROOT . "/models/User.php";
+require_once ROOT . "/models/Sondage.php";
 require_once ROOT . "/models/Mail.php";
 
 class ControllerUser extends Controller{
