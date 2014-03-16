@@ -162,6 +162,22 @@ class Sondage extends BD{
 			{return -1;}
 	} 
 
+
+	public function add() {
+		$sql = 'INSERT INTO sondage SET
+		titre=?,
+		description=?,
+		visibilite=?,
+		administrateur_id=?,
+		date_creation= NOW()
+		date_fin=?,
+		secret=?,
+		id_groupe=?';
+
+		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_groupe);
+
+		return $insertSondage;
+	}
 	public function update(){
 		$sql = 'UPDATE sondage SET 
 		titre=?,
@@ -182,3 +198,30 @@ class Sondage extends BD{
 		$this->executerRequete($sql, array($this->id));
 	}
 }
+
+
+
+	/* Formate les variables récupérées d'un formulaire et les stocke dans $this */
+	public function POSTToVar($array){
+		foreach ($array as $key => $value) {
+		    //Suppression des espaces en début et en fin de chaîne
+		    $trimedValue = trim($value);
+		    //Conversion des tags HTML par leur entité HTML
+		    $this->$key = htmlspecialchars($trimedValue);
+		}
+	}
+
+
+	public function validateVisibilite(){
+		if($this->visiblite='public' || $this->visiblite='inscrits' || $this->visiblite='groupe' || $this->visiblite='prive')
+			{return 1;}
+		else
+			{return "La visibilite doit être public/inscrits/groupe/prive";}
+	}
+
+	public function validateSecret(){
+		if($this->secret='secret' || $this->secret='secret_scrutin' || $this->secret='public')
+			{return 1;}
+		else
+			{return "La valeur de secret doit être secret/secret_scrutin/public";}
+	}
