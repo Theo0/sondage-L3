@@ -43,15 +43,20 @@ $( "#formulaire_inscription input[name=submitInscription]" ).click(function() {
 	var email = $("#formulaire_inscription input[name=email]").val(); 
 	var password = $("#formulaire_inscription input[name=mdp]").val();
 	var password_verif = $("#formulaire_inscription input[name=mdp_verif]").val();
+	
+	$("#erreur ul").text("");
 
 	if( !isValidPassword(password) ){
 		$("#erreur ul").append("<li> Votre mot de passe doit comporter entre 6 et 15 caractères </li>");
+	} else if (password != password_verif) {
+	    $("#erreur ul").append("<li> Votre mot de passe de vérification n'est pas identique à votre mot de passe </li>");
 	}
 	else if( password == password_verif ) {
 		var hash = CryptoJS.SHA1(email + password + email);
 		$("#formulaire_inscription input[name=mdp]").val(hash);
 		$("#formulaire_inscription input[name=mdp_verif]").val(hash);
 		$( "#formulaire_inscription" ).submit();
+		$("#formulaire_inscription input[name=mdp_verif]").val(password);
 	}
 });
 

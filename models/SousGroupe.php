@@ -124,7 +124,7 @@ class SousGroupe extends BD {
 			nom = ?,
 			id_groupe = ?';
 
-		$insertGroupe = $this->insererValeur($sql, array($this->nom, $this->groupe_id));
+		$insertGroupe = $this->insererValeur($sql, array($this->nom, $this->id_groupe));
 
 		return $insertGroupe;
 	}
@@ -138,7 +138,7 @@ class SousGroupe extends BD {
 			id_groupe = ?,
 			WHERE id = ?';
 
-		$updateGroupe = $this->executerRequete($sql, array($this->nom, $this->groupe_id , $this->id));
+		$updateGroupe = $this->executerRequete($sql, array($this->nom, $this->id_groupe , $this->id));
 
 		return ($updateGroupe->rowCount() == 1);
 	}

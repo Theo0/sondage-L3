@@ -32,13 +32,19 @@ $( "#formulaire_connexion input[name=submitConnexion]" ).click(function() {
 	var email = $("#formulaire_connexion input[name=email]").val(); 
 	var password = $("#formulaire_connexion input[name=mdp]").val();
 
-	if( !isValidPassword(password) ){
-		$("#erreur ul").append("<li> Votre mot de passe doit comporter entre 6 et 15 caractères </li>");
+	$("#erreur ul").text("");
+	
+	if ( !isValidEmailAddress(email) ) {
+		$("#erreur ul").append("<li>Votre adresse email n'est pas valide</li>");
+	}
+	else if( !isValidPassword(password) ){
+		$("#erreur ul").append("<li>Votre mot de passe doit comporter entre 6 et 15 caractères</li>");
 	}
 	else{
 		var hash = CryptoJS.SHA1(email + password + email);
 		$("#formulaire_connexion input[name=mdp]").val(hash);
 		$( "#formulaire_connexion" ).submit();
+		$("#formulaire_connexion input[name=mdp]").val(password);
 	}
 });
 

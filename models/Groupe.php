@@ -127,6 +127,25 @@ class Groupe extends BD {
 			    $this->array_moderateurs[$i]->setDateInscription($enrBdd["date_inscription"]);
 			    $i++;
 			}
+			
+			/* Ajout des sous groupes */
+			$sql = 'SELECT id, nom
+			FROM sous_groupe
+			WHERE id_groupe=?';
+			
+			$lectBdd = $this->executerRequete($sql, array($idGroupe));
+			
+			$this->array_sous_groupes = array();
+			$i = 0;
+			while (($enrBdd = $lectBdd->fetch()) != false)
+			{    
+			    $this->array_sous_groupes[$i] = new SousGroupe();
+			    $this->array_sous_groupes[$i]->setId($enrBdd["id"]);
+			    $this->array_sous_groupes[$i]->setNom($enrBdd["nom"]);
+			    $this->array_sous_groupes[$i]->setIdGroupe($idGroupe);
+			    $this->array_sous_groupes[$i]->setGroupe($this);
+			    $i++;
+			}
 		} else{
 			$this->id = -1;
 			$this->nom = '';
@@ -383,7 +402,7 @@ class Groupe extends BD {
 	}
 	
 	/* 
-	   @return: l'identifiant du groupe ajouté
+	   @return: vrai si le nom du groupe n'existe pas en base
 	*/
 	public function isUniqueNom() {
 		$sql = 'SELECT id
@@ -394,6 +413,23 @@ class Groupe extends BD {
 
 		return ($selectGroupe->rowCount() == 0);
 	}
+	
+	
+	/* 
+	   @return: vrai si le nom du sous groupe n'existe pas dans ce groupe
+	*/
+	public function IsUniqueNomSousGroupe($nomSousGroupe) {
+		$sql = 'SELECT id
+			FROM sous_groupe
+			WHERE id_groupe=?
+			AND nom = ?';
+
+		$selectGroupe = $this->executerRequete($sql, array($this->id, $nomSousGroupe));
+
+		return ($selectGroupe->rowCount() == 0);
+	}
+	
+	
 }
 
 ?>

@@ -331,3 +331,19 @@ function creerGroupe(nomGroupe, visibilite){
         });
     }
 }
+
+function ajouterSousGroupe(nomSousGroupe, idGroupe){
+    if (nomSousGroupe.length==0) {
+        $("#erreur").html('<li class="errorEntry">Le nom du sous groupe ne peut pas être vide</li>');
+    } else{
+        //Retourne vrai si le groupe avec un même nom n'existe pas
+        $.get( ABSOLUTE_ROOT + "/index.php?controller=Groupe&action=ajaxIsUniqueNomGroupe&params=" + nomSousGroupe + ',' + idGroupe, function( uniqueNomGroupe ) {
+            if (uniqueNomGroupe==1) { 
+                $("#formCreationSousGroupe").submit();
+            }
+            else{
+                $("#erreur").text("Le nom du sous groupe n'est pas disponible");
+            }
+        });
+    }
+}

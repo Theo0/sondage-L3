@@ -4,8 +4,10 @@ require_once "Controller.php";
 require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/Mail.php";
 require_once ROOT . "/models/Groupe.php";
+require_once ROOT . "/models/SousGroupe.php";
 require_once ROOT . "/controllers/ControllerUser.php";
 require_once ROOT . "/models/ListeGroupes.php";
+require_once ROOT . "/models/ListeSousGroupes.php";
 require_once ROOT . "/controllers/ControllerAccueil.php";
 
 class ControllerGroupe extends Controller{
@@ -34,6 +36,7 @@ class ControllerGroupe extends Controller{
 
                 if(!empty($idGroupe)){
                     $this->groupe = new Groupe($idGroupe);
+		    $sousGroupes = new ListeSousGroupes($idGroupe);
                 }
 		
 		if(!empty($_SESSION['id'])){
@@ -44,7 +47,7 @@ class ControllerGroupe extends Controller{
 		}
 		
                 
-		$this->vue->generer(array("groupe" => $this->groupe, "pageSelected" => "mur", "user" => $user));
+		$this->vue->generer(array("groupe" => $this->groupe, "pageSelected" => "mur", "user" => $user, "sousGroupes" => $sousGroupes));
 	}
 	
 	/* Affichage la liste des membres d'un groupe */
@@ -154,6 +157,22 @@ class ControllerGroupe extends Controller{
                 echo 0;
             }
         }
+	
+	/* Affiche '1' si le nom du sous groupe n'existe pas, '0' sinon */
+        public function ajaxIsUniqueNomSousGroupe($nom_id_groupe){
+		$explode = explode(',', $nom_id_groupe);
+		$nomSousGroupe = $explode[0];
+		$idGroupe = $explode[1];
+		
+		$this->groupe->setId($idGroupe);
+		
+		if(!empty($nomSousGroupe)){
+		    echo $this->groupe->IsUniqueNomSousGroupe($nomSousGroupe);
+		}
+		else{
+		    echo 0;
+		}
+        }
         
         /* Affiche '1' si le nom du groupe n'existe pas, '0' sinon */
         public function ajaxGetListeGroupes(){
@@ -181,6 +200,7 @@ class ControllerGroupe extends Controller{
             }
         }
         
+	/* Créé un nouveau groupe */
         public function creerGroupe(){
 		if(empty($_SESSION["id"])){
 			$controllerUser = new ControllerUser();
@@ -256,6 +276,7 @@ class ControllerGroupe extends Controller{
 		}
 	}
 	
+	/* Ajoute un membre au groupe si le groupe est public ou un demande pour le rejoindre sinon */
 	public function rejoindreGroupe($idGroupe){
 		if(empty($_SESSION["id"])){
 			$controllerUser = new ControllerUser();
@@ -291,9 +312,11 @@ class ControllerGroupe extends Controller{
 		}		
 	}
 	
+	/* Ajoute un membre au groupe */
 	public function ajaxAjouterMembreGroupe($user_groupe){
-		$idUser = explode(',' , $user_groupe)[0];
-		$idGroupe = explode(',' , $user_groupe)[1];
+		$explode = explode(',' , $user_groupe);
+		$idUser = $explode[0];
+		$idGroupe = $explode[1];
 		
 		
 		if(empty($_SESSION["id"])){
@@ -317,9 +340,11 @@ class ControllerGroupe extends Controller{
 		}
 	}
 	
+	/* Supprime un membre au groupe */
 	public function ajaxSupprimerMembreGroupe($user_groupe){
-		$idUser = explode(',' , $user_groupe)[0];
-		$idGroupe = explode(',' , $user_groupe)[1];
+		$explode = explode(',' , $user_groupe);
+		$idUser = $explode[0];
+		$idGroupe = $explode[1];
 		
 		
 		if(empty($_SESSION["id"])){
@@ -339,10 +364,11 @@ class ControllerGroupe extends Controller{
 		}		
 	}
 	
-	
+	/* Ajoute un modérateur au groupe */
 	public function ajaxAjouterModerateurGroupe($user_groupe){
-		$idUser = explode(',' , $user_groupe)[0];
-		$idGroupe = explode(',' , $user_groupe)[1];
+		$explode = explode(',' , $user_groupe);
+		$idUser = $explode[0];
+		$idGroupe = $explode[1];
 		
 		
 		if(empty($_SESSION["id"])){
@@ -362,9 +388,11 @@ class ControllerGroupe extends Controller{
 		}
 	}
 	
+	/* Supprime un modérateur au groupe */
 	public function ajaxSupprimerModerateurGroupe($user_groupe){
-		$idUser = explode(',' , $user_groupe)[0];
-		$idGroupe = explode(',' , $user_groupe)[1];
+		$explode = explode(',' , $user_groupe);
+		$idUser = $explode[0];
+		$idGroupe = $explode[1];
 		
 		
 		if(empty($_SESSION["id"])){
@@ -382,6 +410,46 @@ class ControllerGroupe extends Controller{
 				$this->afficherGroupe($idGroupe);
 			}
 		}		
+	}
+	
+	
+	/* Ajoute un sous groupe au groupe $idGroupe avec $nom pour nom du sous groupe */
+	public function ajouterSousGroupe(){
+		//Remplissage du modèle Groupe avec le groupe concerné
+		if(!empty($_POST["groupeId"]))
+			$this->groupe = new Groupe($_POST["groupeId"]);
+		
+		//Vérification de l'unicité du nom de sous groupe
+		if(!empty($_POST["nom"]) && false === $this->groupe->IsUniqueNomSousGroupe($_POST["nom"])){
+			$this->addErreur("Un sous groupe existe déja avec ce nom");
+			$this->afficherGroupe($_POST["groupeId"]);
+		} else{
+			if(empty($_SESSION["id"])){
+				$controllerUser = new ControllerUser();
+				$controllerUser->addErreur("Vous devez vous connecter pour ajouter des modérateurs au groupe");
+				$controllerUser->afficherConnexion();
+			}else{
+				$sousGroupe = new SousGroupe();
+				$sousGroupe->setIdGroupe($_POST["groupeId"]);
+				$sousGroupe->setNom($_POST["nom"]);
+				
+				$userConnecte = new User($_SESSION["id"]);
+				
+				if($userConnecte->getId() == $this->groupe->getAdministrateurId() || $userConnecte->getAdministrateurSite() == 1){
+					if(false === $sousGroupe->add()){
+						$this->addErreur("Inpossible d'ajouter les sous groupe en base, merci de réessayer ultèrieurement");
+						$this->afficherGroupe($_POST["groupeId"]);
+					} else{
+						$this->afficherGroupe($_POST["groupeId"]);
+					}
+				} else{
+					$this->addErreur("Vous devez être l'administrateur du groupe pour pouvoir ajouter des sous groupes");
+					$this->afficherGroupe($_POST["groupeId"]);
+				}
+			}			
+		}
+		
+		
 	}
 }
 

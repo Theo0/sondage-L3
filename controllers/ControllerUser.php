@@ -448,8 +448,9 @@ class ControllerUser extends Controller{
 	
 	/* Affiche la liste des membres contenant le terme $term */
 	public function ajaxGetMembresLike($term_group){
-		$term = explode(',' , $term_group)[0];
-		$idGroup = explode(',' , $term_group)[1];
+		$explode = explode(',' , $term_group);
+		$term = $explode[0];
+		$idGroup = $explode[1];
 		echo json_encode($this->user->getMembresLikeAndNotInGroup($term, $idGroup));
 	}
 	

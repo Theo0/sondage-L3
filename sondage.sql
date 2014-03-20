@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Mer 05 Mars 2014 à 17:02
+-- Généré le: Sam 15 Mars 2014 à 17:37
 -- Version du serveur: 5.6.14
 -- Version de PHP: 5.5.6
 
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `groupe` (
   `visibilite` enum('public','privé_visible','privé_caché') DEFAULT 'public',
   PRIMARY KEY (`id`),
   KEY `idx_groupe` (`administrateur_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 -- --------------------------------------------------------
 
@@ -117,15 +117,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `administrateur_site` tinyint(1) DEFAULT '0',
   `date_inscription` datetime DEFAULT NULL,
   `compte_valide` tinyint(1) DEFAULT '0',
+  `pseudo` varchar(15) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Contenu de la table `user`
---
-
-INSERT INTO `user` (`id`, `prenom`, `nom`, `email`, `password`, `hash_validation`, `administrateur_site`, `date_inscription`, `compte_valide`) VALUES
-(1, 'Lucas', 'Lafon', 'lucas.lafon@laposte.net', '4cdfbf178f3cdd5efb2b4a06dd611bcebb16c96b', '', 0, '2014-03-05 00:00:00', NULL);
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
@@ -150,6 +144,7 @@ CREATE TABLE IF NOT EXISTS `user_commentaire_like` (
 CREATE TABLE IF NOT EXISTS `user_groupe_membre` (
   `id_user` int(11) NOT NULL,
   `id_groupe` int(11) NOT NULL,
+  `accepte` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id_user`,`id_groupe`),
   KEY `idx_user_groupe_membre` (`id_groupe`),
   KEY `idx_user_groupe_membre2` (`id_user`)
