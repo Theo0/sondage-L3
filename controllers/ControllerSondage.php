@@ -4,7 +4,7 @@ require_once "Controller.php";
 require_once ROOT . "/models/Sondage.php";
 require_once ROOT . "/models/Mail.php";
 
-class ControllerSondage extends Controller{
+class ControllerUser extends Controller{
 	
 	private $sondage;
 
@@ -83,6 +83,10 @@ class ControllerSondage extends Controller{
 				// On transforme la chaine en entier
 				$id_sondage = (int) $id_sondage;
 	
+				// Preparation du mail
+				$mail = new Mail('activationInscription', array($this->user->getHashValidation()));
+				
+	
 			// Gestion des doublons
 			} else {
 
@@ -115,8 +119,28 @@ class ControllerSondage extends Controller{
 			}			
 		}
 			
+}
+
+}
+
+?>
+
+<?php
+	if( !empty( $_GET["action"] ) && empty($_GET["controller"])){ // Appel d'une méthode de la classe sans passer par l'index.php
+		$controller = new controllerUser();
+		if( method_exists( $controller , $_GET["action"] ) ){ // Vérification: la méthode demandée existe dans le contrôleur
+			if( !empty( $_GET["params"] ) ){
+				$controller->$_GET["action"]( $_GET["params"] ); // Exécution de l'action demandée avec des paramètres
+			}
+			else{
+				$controller->$_GET["action"](); // Exécution de l'action demandée sans paramètres
+			}
+		}
+		else{
+			$erreur = "Impossible d'effectuer l'action demandée";
+		}
 	}
+?>
 
 
 	
-?>
