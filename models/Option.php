@@ -108,7 +108,7 @@ class Option extends BD{
 		$sql = 'INSERT INTO option SET
 		texte=?,
 		id_sondage=?';
-		$insertSondage = $this->insererValeur($sql, array($this->texte, $this->id_sondage);
+		$insertSondage = $this->insererValeur($sql, array($this->texte, $this->id_sondage));
 
 		return $insertSondage;
 	}
