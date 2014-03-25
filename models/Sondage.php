@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 // Auteur : Théo, Lucas
 
@@ -6,15 +6,15 @@
 require_once ROOT. '/models/BD.php';
 
 class Sondage extends BD{
-	private id;
-	private titre;
-	private description;
-	private visibilite;
-	private administrateur_id;
-	private date_creation;
-	private date_fin;
-	private secret;
-	private id_groupe;
+	private $id;
+	private $titre;
+	private $description;
+	private $visibilite;
+	private $administrateur_id;
+	private $date_creation;
+	private $date_fin;
+	private $secret;
+	private $id_groupe;
 
 
 	public function __construct() 
@@ -143,7 +143,8 @@ class Sondage extends BD{
 	}
 
 
-	public function setDatefin(){
+	public function setDatefin($dateF){
+		$this->date_fin=$dateF;
 
 	}
 
@@ -156,7 +157,7 @@ class Sondage extends BD{
 
 	public function setGroupe($groupSond){
 		if(is_numeric($groupSond)){
-			this->id_groupe=$groupSond;
+			$this->id_groupe=$groupSond;
 		}
 		else
 			{return -1;}
@@ -174,7 +175,7 @@ class Sondage extends BD{
 		secret=?,
 		id_groupe=?';
 
-		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_groupe);
+		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_groupe));
 
 		return $insertSondage;
 	}
@@ -197,7 +198,7 @@ class Sondage extends BD{
 
 		$this->executerRequete($sql, array($this->id));
 	}
-}
+
 
 
 
@@ -225,3 +226,5 @@ class Sondage extends BD{
 		else
 			{return "La valeur de secret doit être secret/secret_scrutin/public";}
 	}
+
+}
