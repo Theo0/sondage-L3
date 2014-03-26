@@ -165,17 +165,31 @@ class Sondage extends BD{
 
 
 	public function add() {
+
+		if($this->id_groupe!=-1){
 		$sql = 'INSERT INTO sondage SET
 		titre=?,
 		description=?,
 		visibilite=?,
 		administrateur_id=?,
-		date_creation= NOW()
+		date_creation= NOW(),
 		date_fin=?,
 		secret=?,
 		id_groupe=?';
-
 		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_groupe));
+	}
+	else{
+		$sql = 'INSERT INTO sondage SET
+		titre=?,
+		description=?,
+		visibilite=?,
+		administrateur_id=?,
+		date_creation= NOW(),
+		date_fin=?,
+		secret=?';
+		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret));
+	}
+		
 
 		return $insertSondage;
 	}
