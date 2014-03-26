@@ -105,11 +105,12 @@ class Option extends BD{
 
 
 	public function add(){
-		$sql = 'INSERT INTO option SET
-		texte=?,
-		id_sondage=?';
+		$sql = "INSERT INTO `option`(`texte`, `id_sondage`) VALUES (?,?)";
 		$insertSondage = $this->insererValeur($sql, array($this->texte, $this->id_sondage));
 
+		echo $this->texte;
+		echo "<br />";
+		echo $this->id_sondage;
 		return $insertSondage;
 	}
 
