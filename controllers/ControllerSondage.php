@@ -79,29 +79,21 @@ class ControllerUser extends Controller{
 
 			// Ajout du membre en base et récupération de l'identifiant (ou du message d'erreur)
 			$id_sondage = $this->sondage->add();
+			
 
 			// Si la base de données a bien voulu ajouter l'utliisateur (pas de doublons)
-			if (ctype_digit($id_utilisateur)) {
-
-				// On transforme la chaine en entier
-				$id_sondage = (int) $id_sondage;
-	
-				// Preparation du mail
-				$mail = new Mail('activationInscription', array($this->user->getHashValidation()));
+			if (ctype_digit($id_sondage)) {
 				
-	
+			$this->afficherNouveauSondageTermine();
 			// Gestion des doublons
 			} else {
+				var_dump($id_sondage);
 
 				// Changement de nom de variable (plus lisible)
 				$erreur =& $id_sondage;
 	
 				// On vérifie que l'erreur concerne bien un doublon
 				if (23000 == $erreur[0]) { // Le code d'erreur 23000 siginife "doublon" dans le standard ANSI SQL
-					
-					//Récupération de la valeur dupliquée
-					preg_match("`Duplicate entry '(.+)' for key '(.+)'`is", $erreur[2], $valeur_probleme);
-					$valeur_probleme = $valeur_probleme[1];
 		
 
 					$this->addErreur("Erreur ajout SQL : Doublon");
@@ -125,6 +117,20 @@ class ControllerUser extends Controller{
 }
 
 
+/* Affichage de la page de la liste des groupes publics */
+	public function afficherSondagesGroupe(){
+		$this->vue = new Vue("ListeSondage");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+
+
+		$listeSondage = new ListeSondage('17');
+		
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage()));		
+	}
 
 
 
