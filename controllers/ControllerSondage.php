@@ -3,6 +3,8 @@
 require_once "Controller.php";
 require_once ROOT . "/models/Sondage.php";
 require_once ROOT . "/models/Option.php";
+require_once ROOT . "/models/ListeSondage.php";
+require_once ROOT . "/models/ListeOption.php";
 require_once ROOT . "/models/Mail.php";
 
 class ControllerUser extends Controller{
@@ -74,9 +76,6 @@ class ControllerUser extends Controller{
 		} else{
 			
 
-			//Début d'une transaction
-			$this->sondage->beginTransaction();
-
 			// Ajout du membre en base et récupération de l'identifiant (ou du message d'erreur)
 			$id_sondage = $this->sondage->add();
 			
@@ -87,7 +86,6 @@ class ControllerUser extends Controller{
 			$this->afficherNouveauSondageTermine();
 			// Gestion des doublons
 			} else {
-				var_dump($id_sondage);
 
 				// Changement de nom de variable (plus lisible)
 				$erreur =& $id_sondage;
@@ -96,7 +94,7 @@ class ControllerUser extends Controller{
 				if (23000 == $erreur[0]) { // Le code d'erreur 23000 siginife "doublon" dans le standard ANSI SQL
 		
 
-					$this->addErreur("Erreur ajout SQL : Doublon");
+					$this->addErreur("Erreur ajout SQL");
 					
 	
 				} else {
@@ -116,22 +114,33 @@ class ControllerUser extends Controller{
 			
 }
 
-
-/* Affichage de la page de la liste des groupes publics */
-	public function afficherSondagesGroupe(){
+/* Affichage des sondages administrés par l'user connecté */
+public function afficherSondagesAdmin(){
 		$this->vue = new Vue("ListeSondage");
 
 		//Si le contrôlleur possède des erreurs de référencées
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
-
-
-		$listeSondage = new ListeSondage('17');
+		$ListeSondage = new ListeSondage($_SESSION['id']);
 		
 		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage()));		
 	}
 
+
+public function afficherFicheSondage(){
+	$this->vue = new Vue("Sondage");
+	//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+	$sondage = new Sondage($_GET['params']);
+
+	$ListeOption = new ListeOption($_GET['params']);
+
+	$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption()));
+
+}
 
 
 
@@ -143,7 +152,9 @@ class ControllerUser extends Controller{
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
-		$this->vue->generer(array());
+		$ListeSondage = new ListeSondage($_SESSION['id']);
+		
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage()));	
 	}
 
 	/* Affichage de la page quand la creation a terminé avec succès */
@@ -164,7 +175,6 @@ class ControllerUser extends Controller{
 		$this->option->POSTToVar($_POST);
 
 		
-		/* Vérification de la validité nom d'utilisateur */ 
 		$validateIDSondage = $this->option->validateIDSondage();
 		if( $validateIDSondage !== 1 ){
 			$this->addErreur($validateIDSondage);
@@ -178,24 +188,23 @@ class ControllerUser extends Controller{
 				//Redirection vers la page contenant le formulaire avec envoi des erreurs
 				header("Location:" . $_POST["redirect"] . "&erreurs=" . serialize($this->erreurs));
 			} else{
-				$this->afficherNouveauSondage(); // On réaffiche le formulaire de creation avec les erreurs
+				$this->afficherNouvelleOption(); // On réaffiche le formulaire de creation avec les erreurs
 			}
 
 		// Ajout de l'utilisateur en base
 		} else{
 			
 
-			//Début d'une transaction
-			$this->option->beginTransaction();
-
 			// Ajout du membre en base et récupération de l'identifiant (ou du message d'erreur)
 			$id_option = $this->option->add();
+			var_dump($id_option);
 
 			// Si la base de données a bien voulu ajouter l'utliisateur (pas de doublons)
 			if (ctype_digit($id_option)) {
 
 				// On transforme la chaine en entier
 				$id_option = (int) $id_option;
+				
 	
 	
 			// Gestion des doublons
@@ -206,13 +215,10 @@ class ControllerUser extends Controller{
 	
 				// On vérifie que l'erreur concerne bien un doublon
 				if (23000 == $erreur[0]) { // Le code d'erreur 23000 siginife "doublon" dans le standard ANSI SQL
-					
-					//Récupération de la valeur dupliquée
-					preg_match("`Duplicate entry '(.+)' for key '(.+)'`is", $erreur[2], $valeur_probleme);
-					$valeur_probleme = $valeur_probleme[1];
+
 		
 
-					$this->addErreur("Erreur ajout SQL : Doublon");
+					$this->addErreur("Erreur ajout SQL");
 					
 	
 				} else {
