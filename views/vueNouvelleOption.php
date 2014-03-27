@@ -1,42 +1,21 @@
 <?php 
 
-$this->titre = "Nouveau Sondage";
+$this->titre = "Ajout d'une option";
 
-//Inclusion de la libarairie Form ( http://fr.openclassrooms.com/informatique/cours/votre-site-php-presque-complet-architecture-mvc-et-bonnes-pratiques/gestion-des-formulaires-avec-la-classe-form )
-include ROOT.'/models/Form.php';
+if(isset($optionTermine)){
+	echo "<h3>L'option a bien été ajoutée ! Vous pouvez maintenant en ajouter une nouvelle.</h3>";
+}
+?> 
 
-// "formulaire_nouveau_sondage" est l'ID unique du formulaire
-$formulaire_nouvelle_option = new Form('formulaire_nouv_opt', 'POST');
+<div>
 
-$formulaire_nouvelle_option->action(ABSOLUTE_ROOT . '/controllers/ControllerOption.php?action=NouvelleOption');
-
-$formulaire_nouvelle_option->add('Text', 'titre')
-                 ->label("Titre")->Required(true);
-		 
-$formulaire_nouvelle_option->add('Text', 'description')
-                 ->label("Description")->Required(true);
-
-$formulaire_nouvelle_option->add('Radio', 'visiblite')
-         ->choices(array(
-           'public' => 'public',
-           'inscrits' => 'inscrits',
-           'groupe' => 'groupe',
-           'prive' => 'prive'
-         ));
-		 //->label("Visibilite")->Required(true);
-
-$formulaire_nouvelle_option->add('Date', 'date_fin')
-         ->format('dd/mm/yyyy');
-
-$formulaire_nouvelle_option->add('Radio', 'secret')
-        ->choices(array(
-          'secret' => 'secret',
-          'secret_scrutin' => 'secret_scrutin',
-          'public' => 'public'
-          ));              
-
-$formulaire_nouvelle_option->add('Submit', 'submit');    
-
-
-
-echo $formulaire_nouvelle_option;
+<form method="POST" action="http://localhost/sondage-L3/controllers/ControllerSondage.php?action=nouvelleOption" id="formulaire_nouv_opt" >
+<p><label>Option :   </label><input name="texte" type="text" required="required" /></p>
+<p><label>Sondage :   </label><select name="id_sondage">
+<?php foreach($ListeSondage as $key=>$sondage){ ?>
+<option value="<?php echo($sondage->getId());?>"><?php echo($sondage->getTitre()); ?></option>
+<?php } ?>
+</select></p>
+<p><input name="submit" type="submit" /></p>
+</form>  
+</div>
