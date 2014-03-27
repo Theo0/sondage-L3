@@ -20,7 +20,7 @@
 				<div id="conteactinfo"><strong><a href="<?= ABSOLUTE_ROOT ?>"><?= NOM_SITE ?></a></strong> </div>
 				<div id="navi">
 					<ul>
-						<li><a href="<?= ABSOLUTE_ROOT . '/index.php' ?>">Sondages</a></li>
+						<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherSondagesPublic' ?>">Sondages</a></li>
 						<li><a href="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=afficherListeGroupesPublic' ?>">Groupes</a></li>
 						
 						<?php if(empty($_SESSION["id"])): ?>
