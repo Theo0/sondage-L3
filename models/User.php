@@ -15,6 +15,7 @@ class User extends BD {
 	private $mdp;
 	private $administrateur_site;
 	private $compte_valide;
+	private $array_user;
 
 
 	public function __construct() 
@@ -43,6 +44,7 @@ class User extends BD {
 		$this->administrateur_site = false;
 		$this->compte_valide = 0;
 		$this->pseudo = '';
+		$this->array_user = array();
 	}
 
 	public function constructeurPlein($idUser)
@@ -65,6 +67,7 @@ class User extends BD {
 			$this->administrateur_site = $enrBdd['administrateur_site'];
 			$this->compte_valide = $enrBdd['compte_valide'];
 			$this->pseudo = $enrBdd['pseudo'];
+			$this->array_user = array();
 		}
 		else 
 		{
@@ -79,6 +82,7 @@ class User extends BD {
 			$this->administrateur_site = false;
 			$this->compte_valide = 0;
 			$this->pseudo = '';
+			$this->array_user = array();
 		}
 	}
 
@@ -122,6 +126,10 @@ class User extends BD {
 		return $this->administrateur_site;
 	}
 
+	public function getArrayUser(){
+		return $this->array_user;
+	}
+
 	public function setPseudo($p){
 		$this->pseudo = $p;
 	}
@@ -160,6 +168,10 @@ class User extends BD {
 	
 	public function setDateInscription($d){
 		$this->date_inscription = $d;
+	}
+
+	public function setArrayUser($a){
+		$this->array_user = $a;
 	}
 
 	public function generateHashValidation(){
@@ -377,6 +389,20 @@ class User extends BD {
 		    $i++;
 		}
 		return $result;		
+	}
+
+	public function remplirArrayUser(){
+		$sql='SELECT id
+                    FROM user
+		    ORDER BY id DESC';
+                               
+            $lectBdd = $this->executerRequete($sql, array());
+            while (($enrBdd = $lectBdd->fetch()) != false)
+            { 
+
+                $this->array_user[] = new Sondage($enrBdd["id"]);
+            }
+
 	}
 }
 
