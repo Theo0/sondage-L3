@@ -243,12 +243,13 @@ public function afficherFicheSondage(){
 
 	/* Affichage de la page quand la creation a terminé avec succès */
 	public function afficherNouvelleOptionTermine(){
-		$this->vue = new Vue("NouvelleOptionTermine");
+		$this->vue = new Vue("NouvelleOption");
 
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);
+		$ListeSondage = new ListeSondage($_SESSION['id']);
 
-		$this->vue->generer(array());
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(), "optionTermine" => "1"));
 	}
 	
 
@@ -281,7 +282,6 @@ public function afficherFicheSondage(){
 
 			// Ajout du membre en base et récupération de l'identifiant (ou du message d'erreur)
 			$id_option = $this->option->add();
-			var_dump($id_option);
 
 			// Si la base de données a bien voulu ajouter l'utliisateur (pas de doublons)
 			if (ctype_digit($id_option)) {
@@ -289,6 +289,7 @@ public function afficherFicheSondage(){
 				// On transforme la chaine en entier
 				$id_option = (int) $id_option;
 				
+				$this->afficherNouvelleOptionTermine();
 	
 	
 			// Gestion des doublons
