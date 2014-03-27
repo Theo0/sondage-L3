@@ -114,8 +114,49 @@ class ControllerUser extends Controller{
 			
 }
 
+
+/* Affichage des sondages administrés par l'user connecté */
+public function afficherSondagesPublic(){
+		$this->vue = new Vue("ListeSondage");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+		$ListeSondage = new ListeSondage();
+		
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "public"));	
+		
+
+}
+
+
+public function afficherSondagesInscrit(){
+		$this->vue = new Vue("ListeSondage");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+		$a = -1;
+		$b = -1;
+		$c = -1;
+		$ListeSondage2 = new ListeSondage($a, $b, $c);
+		
+		$this->vue->generer(array("ListeSondage" => $ListeSondage2->getArraySondage(),  "pageSelected" => "sondageInscrit"));	
+		
+
+}
+
 /* Affichage des sondages administrés par l'user connecté */
 public function afficherSondagesAdmin(){
+
+	if(empty($_SESSION['id'])){
+		?>
+		<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Vous devez vous connecter pour accéder à vos sondages. Cliquez ici. </a>
+		<?php
+	}
+	else{	
 		$this->vue = new Vue("ListeSondage");
 
 		//Si le contrôlleur possède des erreurs de référencées
@@ -124,8 +165,51 @@ public function afficherSondagesAdmin(){
 
 		$ListeSondage = new ListeSondage($_SESSION['id']);
 		
-		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage()));		
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondageAdministre"));	
+		}	
 	}
+
+
+/* Affichage des sondages complétés par l'user connecté */
+public function afficherSondagesComplet(){
+
+	if(empty($_SESSION['id'])){
+		?>
+		<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Vous devez vous connecter pour accéder à vos sondages. Cliquez ici. </a>
+		<?php
+	}
+	else{	
+		$this->vue = new Vue("ListeSondage");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+		$b = -1; $c = -1; $d = -1;
+		$ListeSondage = new ListeSondage($_SESSION['id'], $b, $c, $d);
+		
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondageComplet"));	
+		}	
+	}
+
+public function afficherSondagesPrive(){
+
+	if(empty($_SESSION['id'])){
+		?>
+		<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Vous devez vous connecter pour accéder à vos sondages. Cliquez ici. </a>
+		<?php
+	}
+	else{	
+		$this->vue = new Vue("ListeSondage");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+		$a = -1; $b = -1; $c = -1; $d = -1;
+		$ListeSondage = new ListeSondage($_SESSION['id'], $a, $b, $c, $d);
+		
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondagePrive"));	
+		}	
+	}		
 
 
 public function afficherFicheSondage(){
