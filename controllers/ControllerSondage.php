@@ -3,6 +3,7 @@
 require_once "Controller.php";
 require_once ROOT . "/models/Sondage.php";
 require_once ROOT . "/models/Option.php";
+require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/ListeSondage.php";
 require_once ROOT . "/models/ListeOption.php";
 require_once ROOT . "/models/Mail.php";
@@ -225,6 +226,40 @@ public function afficherFicheSondage(){
 	$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption()));
 
 }
+
+	public function afficheAjoutUserSondage(){
+		$this->vue = new Vue("ajoutUserSondage");
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+		//$sondage = new Sondage($_GET['params']);
+		$ListeUser = new User();
+		$ListeUser->remplirArrayUser();
+		
+		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser()));
+	
+
+
+	}
+
+	public function afficheAjoutUserSondageTermine(){
+		//this->vue = new Vue();
+	}
+
+
+	/*public function ajoutUserSondage(){
+		$this->vue = new Vue("ajoutUserSondage");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+		
+		$sondage = new Sondage($_GET['params']);
+
+		$id = $this->sondage->addUser($);
+
+	}
 
 
 
