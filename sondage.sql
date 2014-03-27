@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Sam 15 Mars 2014 à 17:37
+-- Généré le: Jeu 27 Mars 2014 à 15:22
 -- Version du serveur: 5.6.14
 -- Version de PHP: 5.5.6
 
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `groupe` (
   `visibilite` enum('public','privé_visible','privé_caché') DEFAULT 'public',
   PRIMARY KEY (`id`),
   KEY `idx_groupe` (`administrateur_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
 
 -- --------------------------------------------------------
 
@@ -63,8 +63,9 @@ CREATE TABLE IF NOT EXISTS `option` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `texte` varchar(250) DEFAULT NULL,
   `id_sondage` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  KEY `fk_options_sondage` (`id_sondage`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
 
 -- --------------------------------------------------------
 
@@ -85,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `sondage` (
   PRIMARY KEY (`id`),
   KEY `idx_sondage` (`administrateur_id`),
   KEY `idx_sondage_0` (`id_groupe`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
 
 -- --------------------------------------------------------
 
@@ -99,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `sous_groupe` (
   `nom` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_sous_groupe` (`id_groupe`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -119,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `compte_valide` tinyint(1) DEFAULT '0',
   `pseudo` varchar(15) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -247,7 +248,7 @@ ALTER TABLE `groupe`
 -- Contraintes pour la table `option`
 --
 ALTER TABLE `option`
-  ADD CONSTRAINT `fk_options_sondage` FOREIGN KEY (`id`) REFERENCES `sondage` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_options_sondage` FOREIGN KEY (`id_sondage`) REFERENCES `sondage` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `sondage`
