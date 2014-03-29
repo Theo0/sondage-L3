@@ -27,7 +27,7 @@
 			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>"><?php echo($sondage->getDesc()); ?></a></td>
 			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>"><?php echo($sondage->getDateFin()); ?></a></td>
 			<?php
-			if($sondage->getVisibilite() == 'privé' )
+			if($sondage->getVisibilite() == 'privé' && $sondage->getAdministrateur() == $_SESSION['id'])
 			{
 			?>
 			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficheAjoutUserSondage&params=' . $sondage->getId() ?>">Ajouter des utilisateurs</a></td>

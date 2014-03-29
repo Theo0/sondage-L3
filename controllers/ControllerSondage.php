@@ -134,6 +134,13 @@ public function afficherSondagesPublic(){
 
 
 public function afficherSondagesInscrit(){
+
+	if(empty($_SESSION['id'])){
+		?>
+		<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Vous devez vous connecter pour accéder à vos sondages. Cliquez ici. </a>
+		<?php
+	}
+	else{
 		$this->vue = new Vue("ListeSondage");
 
 		//Si le contrôlleur possède des erreurs de référencées
@@ -146,7 +153,7 @@ public function afficherSondagesInscrit(){
 		$ListeSondage2 = new ListeSondage($a, $b, $c);
 		
 		$this->vue->generer(array("ListeSondage" => $ListeSondage2->getArraySondage(),  "pageSelected" => "sondageInscrit"));	
-		
+		}
 
 }
 
