@@ -240,7 +240,17 @@ class Sondage extends BD{
 		return $insertCom;
 	}
 
+	public function dejaVote($idUser){
 
+		$sql='SELECT COUNT( * ) 
+		FROM user_sondage_reponse
+		WHERE id_user =?
+		AND id_sondage =?';
+
+		$verifVote = $this->executerRequete($sql, array($idUser, $this->id));
+		return $verifVote;
+
+	}
 
 
 	/* Formate les variables récupérées d'un formulaire et les stocke dans $this */
