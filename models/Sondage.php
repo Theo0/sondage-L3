@@ -224,9 +224,14 @@ class Sondage extends BD{
 		$this->executerRequete($sql, array($this->id));
 	}
 	
-	public function ajouterCommentaire($texteCommentaire){
-		$sql = 'INSERT INTO sondage SET
-			';
+	public function ajouterCommentaire($texteCommentaire, $idUser){
+		$sql = 'INSERT INTO commentaire SET
+		id_sondage = ?,
+		id_user = ?,
+		texte = ?;';
+		$insertCom = $this->insererValeur($sql, array($this->id, $idUser , $texteCommentaire));
+		
+		return $insertCom;
 	}
 
 

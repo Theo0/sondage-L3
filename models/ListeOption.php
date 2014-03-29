@@ -30,20 +30,14 @@ class ListeOption extends BD {
 
 	
 	public function cconstructeurPlein($idSond)
-	{
-<<<<<<< HEAD
-            $sql="SELECT id FROM option WHERE id_sondage=?";
-                       
-=======
+	{                       
             $sql="SELECT id
             FROM `option`
             WHERE id_sondage = ?";
                                
->>>>>>> 7e892f60dbf19ce95896c894704099c4b3a8baf8
             $lectBdd = $this->executerRequete($sql, array($idSond));
             while (($enrBdd = $lectBdd->fetch()) != false)
-            { 
-		echo 'aa';        
+            {
                 $this->array_option[] = new Option($enrBdd["id"]);
             }
 	}

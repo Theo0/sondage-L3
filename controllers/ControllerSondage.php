@@ -9,7 +9,7 @@ require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/ListeUser.php";
 require_once ROOT . "/models/Mail.php";
 
-class ControllerUser extends Controller{
+class ControllerSondage extends Controller{
 	
 	private $sondage;
 	private $option;
@@ -475,7 +475,7 @@ public function afficherFicheSondage(){
 			$this->sondage = new Sondage($_POST["sondageId"]);
 			$userConnecte = new User($_SESSION["id"]);
 			
-			if(false !== $this->sondage->ajouterCommentaire($_POST["texteCommentaire"]))
+			if(false !== $this->sondage->ajouterCommentaire($_POST["texteCommentaire"], $userConnecte->getId()))
 				echo '1';
 			else{
 				echo "Impossible d'ajouter le commentaire";
@@ -489,7 +489,7 @@ public function afficherFicheSondage(){
 
 <?php
 	if( !empty( $_GET["action"] ) && empty($_GET["controller"])){ // Appel d'une méthode de la classe sans passer par l'index.php
-		$controller = new controllerUser();
+		$controller = new controllerSondage();
 		if( method_exists( $controller , $_GET["action"] ) ){ // Vérification: la méthode demandée existe dans le contrôleur
 			if( !empty( $_GET["params"] ) ){
 				$controller->$_GET["action"]( $_GET["params"] ); // Exécution de l'action demandée avec des paramètres
