@@ -8,7 +8,7 @@ if(isset($membreTermine)){
 ?> 
 
 <div>
-
+<p>Ajouter un membre au sondage <?php echo $NomSondage; ?>.</p>
 <form method="POST" action="http://localhost/sondage-L3/controllers/ControllerSondage.php?action=ajoutUserSondage" id="formulaire_nouv_opt" >
 <p><label>Utilisateur :   </label><select name="user_votant">
 <?php foreach($ListeUser as $key=>$user){ ?>

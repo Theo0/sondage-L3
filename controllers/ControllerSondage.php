@@ -263,10 +263,15 @@ public function afficherFicheSondage(){
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
-		//$sondage = new Sondage($_GET['params']);
-		$ListeUser = new ListeUser();
+		if(isset($_GET['params'])){
+		$ListeUser = new ListeUser($_GET['params']);
+		$sondage = new Sondage($_GET['params']);
+		}
+		else{
+		$ListeUser = new ListeUser();	
+		}
 		
-		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser()));
+		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser(), "NomSondage" => $sondage->getTitre()));
 	
 
 
@@ -278,10 +283,15 @@ public function afficherFicheSondage(){
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
-		//$sondage = new Sondage($_GET['params']);
-		$ListeUser = new ListeUser();
+		if(isset($_GET['params'])){
+		$ListeUser = new ListeUser($_GET['params']);
+		$sondage = new Sondage($_GET['params']);
+		}
+		else{
+		$ListeUser = new ListeUser();	
+		}
 		
-		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser(), "membreTermine" => "1"));
+		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser(), "membreTermine" => "1", "NomSondage" => $sondage->getTitre()));
 	}
 
 
