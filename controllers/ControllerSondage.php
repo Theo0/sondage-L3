@@ -256,16 +256,66 @@ public function afficherFicheSondage(){
 	}
 
 
-	/*public function ajoutUserSondage(){
-		$this->vue = new Vue("ajoutUserSondage");
+	public function ajoutUserSondage(){
 
-		//Si le contrôlleur possède des erreurs de référencées
-		if( !empty($this->erreurs) )
-			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+		//Récupération des champs du formulaire et insertion dans le modèle
+		$this->sondage->POSTToVar($_POST);
+
+
+		//Si au moins un des champs n'est pas valide
+		if( !empty($this->erreurs) ){
+			if(isset($_POST["redirect"])){//Si le formulaire de creation provient d'une autre page que la page de creation
+				//Redirection vers la page contenant le formulaire avec envoi des erreurs
+				header("Location:" . $_POST["redirect"] . "&erreurs=" . serialize($this->erreurs));
+			} else{
+				$this->afficheAjoutUserSondage(); // On réaffiche le formulaire de creation avec les erreurs
+			}
+
+		// Ajout de l'utilisateur en base
+		} else{
+			
+
+			// Ajout du membre en base et récupération de l'identifiant (ou du message d'erreur)
+			$id_ajout = $this->sondage->addUser();
+
+			// Si la base de données a bien voulu ajouter l'utliisateur (pas de doublons)
+			if (ctype_digit($id_ajout)) {
+
+				// On transforme la chaine en entier
+				$id_ajout = (int) $id_ajout;
+				
+				$this->afficheAjoutUserSondageTermine();
+	
+	
+			// Gestion des doublons
+			} else {
+
+				// Changement de nom de variable (plus lisible)
+				$erreur =& $id_ajout;
+	
+				// On vérifie que l'erreur concerne bien un doublon
+				if (23000 == $erreur[0]) { // Le code d'erreur 23000 siginife "doublon" dans le standard ANSI SQL
+
 		
-		$sondage = new Sondage($_GET['params']);
 
-		$id = $this->sondage->addUser($);
+					$this->addErreur("Erreur ajout SQL");
+					
+	
+				} else {
+					//Ajout du message d'erreur SQL
+					$this->addErreur(sprintf("Erreur ajout SQL (SQLSTATE = %d).", $erreur[0]));
+				}
+	
+				if(isset($_POST["redirect"])){//Si le formulaire d'inscription provient d'une autre page que la page d'inscription
+					//Redirection vers la page contenant le formulaire avec envoi des erreurs
+					header("Location:" . $_POST["redirect"] . "&erreurs=" . serialize($this->erreurs));
+				} else{
+					// On reaffiche le formulaire d'inscription avec l'erreur de doublon
+					$this->afficheAjoutUserSondage();
+				}
+			}			
+		}
+			
 
 	}
 
