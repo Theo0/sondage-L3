@@ -106,12 +106,8 @@ class Option extends BD{
 
 	public function add(){
 		$sql = "INSERT INTO `option`(`texte`, `id_sondage`) VALUES (?,?)";
-		$insertSondage = $this->insererValeur($sql, array($this->texte, $this->id_sondage));
-
-		echo $this->texte;
-		echo "<br />";
-		echo $this->id_sondage;
-		return $insertSondage;
+		$insertOption = $this->insererValeur($sql, array($this->texte, $this->id_sondage));
+		return $insertOption;
 	}
 
 
@@ -121,12 +117,14 @@ class Option extends BD{
 		id_sondage=?
 		WHERE id=?';
 
-		$this->executerRequete($sql, array($this->texte, $this->id_sondage, $this->id));
+		$updateOption = $this->executerRequete($sql, array($this->texte, $this->id_sondage, $this->id));
+		return $updateOption;
 	}
 
 	public function remove(){
 		$sql='DELETE FROM option WHERE id=?';
 
-		$this->executerRequete($sql, array($this->id));
+		$deleteOption = $this->executerRequete($sql, array($this->id));
+		return $deleteOption;
 	}
 }

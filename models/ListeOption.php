@@ -39,6 +39,8 @@ class ListeOption extends BD {
 
                 $this->array_option[] = new Option($enrBdd["id"]);
             }
+
+            return $lectBdd;
 	}
 	
 

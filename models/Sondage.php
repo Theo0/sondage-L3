@@ -173,6 +173,7 @@ class Sondage extends BD{
 				id_sondage=?,
 				id_user=?';
 		$insertUserSondage = $this->insererValeur($sql, array($this->id, $this->user_votant));		
+		return $insertUserSondage;
 	}
 
 	public function add() {
@@ -188,6 +189,8 @@ class Sondage extends BD{
 		secret=?,
 		id_groupe=?';
 		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_groupe));
+		return $insertSondage;
+
 	}
 	else{
 		$sql = 'INSERT INTO sondage SET
@@ -199,6 +202,7 @@ class Sondage extends BD{
 		date_fin=?,
 		secret=?';
 		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret));
+		return $insertSondage;
 	}
 		
 
@@ -215,13 +219,15 @@ class Sondage extends BD{
 		id_groupe=?
 		WHERE id=?';
 
-		$this->executerRequete($sql, array($this->titre, $this->description, $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_groupe, $this->id));
+		$updateSondage = $this->executerRequete($sql, array($this->titre, $this->description, $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_groupe, $this->id));
+		return $updateSondage;
 	}
 
 	public function remove(){
 		$sql='DELETE FROM sondage WHERE id=?';
 
-		$this->executerRequete($sql, array($this->id));
+		$removeSondage = $this->executerRequete($sql, array($this->id));
+		return $removeSondage;
 	}
 	
 	public function ajouterCommentaire($texteCommentaire, $idUser){
