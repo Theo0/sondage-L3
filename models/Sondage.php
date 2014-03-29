@@ -15,6 +15,7 @@ class Sondage extends BD{
 	private $date_fin;
 	private $secret;
 	private $id_groupe;
+	private $user_votant; // permet d'ajouter des utilisateur à un sondage
 
 
 	public function __construct() 
@@ -42,6 +43,7 @@ class Sondage extends BD{
 		$this->date_fin=null;
 		$this->secret=0;
 		$this->id_groupe=-1;
+		$this->user_votant = -1;
 	}
 
 	public function constructeurPlein($id_sondage){
@@ -61,6 +63,7 @@ class Sondage extends BD{
 			$this->date_fin=$enrBdd['date_fin'];
 			$this->secret=$enrBdd['secret'];
 			$this->id_groupe=$enrBdd['id_groupe'];
+			$this->user_votant = -1;
 		}
 		else
 		{
@@ -72,7 +75,8 @@ class Sondage extends BD{
 			$this->date_creation=null;
 			$this->date_fin=null;
 			$this->secret=0;
-			$this->id_groupe=-1;			
+			$this->id_groupe=-1;
+			$this->user_votant = -1;		
 		}
 	}
 
@@ -163,6 +167,13 @@ class Sondage extends BD{
 			{return -1;}
 	} 
 
+	public function addUser(){
+
+		$sql='INSERT INTO user_sondage_votant SET
+				id_sondage=?,
+				id_user=?';
+		$insertUserSondage = $this->insererValeur($sql, array($this->id, $this->user_votant));		
+	}
 
 	public function add() {
 

@@ -3,9 +3,10 @@
 require_once "Controller.php";
 require_once ROOT . "/models/Sondage.php";
 require_once ROOT . "/models/Option.php";
-require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/ListeSondage.php";
 require_once ROOT . "/models/ListeOption.php";
+require_once ROOT . "/models/User.php";
+require_once ROOT . "/models/ListeUser.php";
 require_once ROOT . "/models/Mail.php";
 
 class ControllerUser extends Controller{
@@ -34,7 +35,7 @@ class ControllerUser extends Controller{
 
 	/* Affichage de la page quand la creation a terminé avec succès */
 	public function afficherNouveauSondageTermine(){
-		$this->vue = new Vue("NouveauSondageTermine");
+		$this->vue = new Vue("NouveauSondage");
 
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);
@@ -133,6 +134,13 @@ public function afficherSondagesPublic(){
 
 
 public function afficherSondagesInscrit(){
+
+	if(empty($_SESSION['id'])){
+		?>
+		<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Vous devez vous connecter pour accéder à vos sondages. Cliquez ici. </a>
+		<?php
+	}
+	else{
 		$this->vue = new Vue("ListeSondage");
 
 		//Si le contrôlleur possède des erreurs de référencées
@@ -145,7 +153,7 @@ public function afficherSondagesInscrit(){
 		$ListeSondage2 = new ListeSondage($a, $b, $c);
 		
 		$this->vue->generer(array("ListeSondage" => $ListeSondage2->getArraySondage(),  "pageSelected" => "sondageInscrit"));	
-		
+		}
 
 }
 
@@ -210,7 +218,29 @@ public function afficherSondagesPrive(){
 		
 		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondagePrive"));	
 		}	
-	}		
+	}
+
+
+
+public function afficherSondagesGroupe(){
+
+	if(empty($_SESSION['id'])){
+		?>
+		<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Vous devez vous connecter pour accéder à vos sondages. Cliquez ici. </a>
+		<?php
+	}
+	else{	
+		$this->vue = new Vue("ListeSondageGroupe");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+		$ListeSondage = new ListeSondage($_SESSION['id'], $_GET['params']);
+		
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages"));	
+		}	
+	}			
 
 
 public function afficherFicheSondage(){
@@ -228,14 +258,13 @@ public function afficherFicheSondage(){
 }
 
 	public function afficheAjoutUserSondage(){
-		$this->vue = new Vue("ajoutUserSondage");
+		$this->vue = new Vue("AjoutUserSondage");
 		//Si le contrôlleur possède des erreurs de référencées
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
 		//$sondage = new Sondage($_GET['params']);
-		$ListeUser = new User();
-		$ListeUser->remplirArrayUser();
+		$ListeUser = new ListeUser();
 		
 		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser()));
 	
@@ -244,20 +273,78 @@ public function afficherFicheSondage(){
 	}
 
 	public function afficheAjoutUserSondageTermine(){
-		//this->vue = new Vue();
-	}
-
-
-	/*public function ajoutUserSondage(){
-		$this->vue = new Vue("ajoutUserSondage");
-
+		$this->vue = new Vue("AjoutUserSondage");
 		//Si le contrôlleur possède des erreurs de référencées
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
-		
-		$sondage = new Sondage($_GET['params']);
 
-		$id = $this->sondage->addUser($);
+		//$sondage = new Sondage($_GET['params']);
+		$ListeUser = new ListeUser();
+		
+		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser(), "membreTermine" => "1"));
+	}
+
+
+	public function ajoutUserSondage(){
+
+		//Récupération des champs du formulaire et insertion dans le modèle
+		$this->sondage->POSTToVar($_POST);
+
+
+		//Si au moins un des champs n'est pas valide
+		if( !empty($this->erreurs) ){
+			if(isset($_POST["redirect"])){//Si le formulaire de creation provient d'une autre page que la page de creation
+				//Redirection vers la page contenant le formulaire avec envoi des erreurs
+				header("Location:" . $_POST["redirect"] . "&erreurs=" . serialize($this->erreurs));
+			} else{
+				$this->afficheAjoutUserSondage(); // On réaffiche le formulaire de creation avec les erreurs
+			}
+
+		// Ajout de l'utilisateur en base
+		} else{
+			
+
+			// Ajout du membre en base et récupération de l'identifiant (ou du message d'erreur)
+			$id_ajout = $this->sondage->addUser();
+
+			// Si la base de données a bien voulu ajouter l'utliisateur (pas de doublons)
+			if (ctype_digit($id_ajout)) {
+
+				// On transforme la chaine en entier
+				$id_ajout = (int) $id_ajout;
+				
+				$this->afficheAjoutUserSondageTermine();
+	
+	
+			// Gestion des doublons
+			} else {
+
+				// Changement de nom de variable (plus lisible)
+				$erreur =& $id_ajout;
+	
+				// On vérifie que l'erreur concerne bien un doublon
+				if (23000 == $erreur[0]) { // Le code d'erreur 23000 siginife "doublon" dans le standard ANSI SQL
+
+		
+
+					$this->addErreur("Erreur ajout SQL");
+					
+	
+				} else {
+					//Ajout du message d'erreur SQL
+					$this->addErreur(sprintf("Erreur ajout SQL (SQLSTATE = %d).", $erreur[0]));
+				}
+	
+				if(isset($_POST["redirect"])){//Si le formulaire d'inscription provient d'une autre page que la page d'inscription
+					//Redirection vers la page contenant le formulaire avec envoi des erreurs
+					header("Location:" . $_POST["redirect"] . "&erreurs=" . serialize($this->erreurs));
+				} else{
+					// On reaffiche le formulaire d'inscription avec l'erreur de doublon
+					$this->afficheAjoutUserSondage();
+				}
+			}			
+		}
+			
 
 	}
 

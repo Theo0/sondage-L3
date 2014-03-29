@@ -1,3 +1,5 @@
+
+<?php $this->titre = $FicheSondage->getTitre(); ?>
 <div id="ficheSondage">
 <?php if(empty($FicheSondage)): ?>
 <?php $this->titre = "Sondage non trouvé"; ?>

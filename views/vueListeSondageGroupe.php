@@ -1,13 +1,10 @@
-<?php $this->titre = "Sondages" ?>
-<div id="navigationListeGroupes">
+<?php $this->titre = "Sondages du groupe"; ?>
+
+<div id="navigationGroupe">
         <ul>
-                <li <?php if($pageSelected=="public") echo 'class="selected"'; ?>><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherSondagesPublic' ?>">Sondages publics</a></li>
-                <?php if(!empty($_SESSION["id"])): ?>
-                <li <?php if($pageSelected=="sondageInscrit") echo 'class="selected"'; ?>><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherSondagesInscrit' ?>">Sondages des inscrits</a></li>
-                <li <?php if($pageSelected=="sondagePrive") echo 'class="selected"'; ?>><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherSondagesPrive' ?>">Sondages privés</a></li>
-                <li <?php if($pageSelected=="sondageAdministre") echo 'class="selected"'; ?>><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherSondagesAdmin' ?>">Vos Sondages</a></li>
-                <li <?php if($pageSelected=="sondageComplet") echo 'class="selected"'; ?>><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherSondagesComplet' ?>">Complétés</a></li>
-                <?php endif; ?>
+            <li <?php if($pageSelected=="mur") echo 'class="selected"'; ?>><a href="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=afficherGroupe&params=' . $_GET['params'] ?>">Accueil</a></li>
+            <li <?php if($pageSelected=="membres") echo 'class="selected"'; ?>><a href="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=afficherMembresGroupe&params=' . $_GET['params'] ?>">Membres</a></li>
+            <li <?php if($pageSelected=="sondages") echo 'class="selected"'; ?>><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherSondagesGroupe&params=' .  $_GET['params'] ?>">Sondages</a></li>
         </ul>
 </div>
 
@@ -37,3 +34,4 @@
 	</tbody>
 </table>
 <?php endif; ?>
+
