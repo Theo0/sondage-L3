@@ -32,6 +32,9 @@ echo($FicheSondage->getDesc());
 
 <div id="containerCommentaires">
 	<ul id="listeCommentaires">
+		<?php foreach($listeCommentaires as $key=>$commentaire): ?>
+		<li id="commentaire<?= $commentaire->getId() ?>"><?= $commentaire->getTexte() ?></li>
+		<?php endforeach; ?>
 		<li id="creerCommentaire">
 			<textarea id="textareaCommentaire" name="ajouterCommentaire" placeholder="Ecrire un commentaire..."></textarea>
 		</li>

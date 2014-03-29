@@ -7,6 +7,7 @@ require_once ROOT . "/models/ListeSondage.php";
 require_once ROOT . "/models/ListeOption.php";
 require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/ListeUser.php";
+require_once ROOT . "/models/ListeCommentaire.php";
 require_once ROOT . "/models/Mail.php";
 
 class ControllerSondage extends Controller{
@@ -243,19 +244,21 @@ public function afficherSondagesGroupe(){
 	}			
 
 
-public function afficherFicheSondage(){
-	$this->vue = new Vue("Sondage");
-	//Si le contrôlleur possède des erreurs de référencées
-		if( !empty($this->erreurs) )
-			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
-
-	$sondage = new Sondage($_GET['params']);
-
-	$ListeOption = new ListeOption($_GET['params']);
-
-	$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption()));
-
-}
+	public function afficherFicheSondage(){
+		$this->vue = new Vue("Sondage");
+		//Si le contrôlleur possède des erreurs de référencées
+			if( !empty($this->erreurs) )
+				$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+	
+		$sondage = new Sondage($_GET['params']);
+	
+		$ListeOption = new ListeOption($_GET['params']);
+	
+		$listeCommentaire = new ListeCommentaire($_GET['params']);
+		
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires()));
+	
+	}
 
 	public function afficheAjoutUserSondage(){
 		$this->vue = new Vue("AjoutUserSondage");
