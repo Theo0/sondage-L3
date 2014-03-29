@@ -1,3 +1,5 @@
+
+<?php $this->titre = $FicheSondage->getTitre(); ?>
 <div id="ficheSondage">
 <?php if(empty($FicheSondage)): ?>
 <p>Erreur : Aucun sondage séléctionné !</p>
