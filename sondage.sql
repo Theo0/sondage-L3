@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Jeu 27 Mars 2014 à 15:22
+-- Généré le: Sam 29 Mars 2014 à 18:00
 -- Version du serveur: 5.6.14
 -- Version de PHP: 5.5.6
 
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `commentaire` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_sondage` int(11) DEFAULT NULL,
   `id_user` int(11) DEFAULT NULL,
   `texte` varchar(250) DEFAULT NULL,
@@ -36,7 +36,17 @@ CREATE TABLE IF NOT EXISTS `commentaire` (
   KEY `idx_commentaire` (`id_sondage`),
   KEY `idx_commentaire2` (`id_user`),
   KEY `idx_commentaire_0` (`id_commentaire`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Contenu de la table `commentaire`
+--
+
+INSERT INTO `commentaire` (`id`, `id_sondage`, `id_user`, `texte`, `id_commentaire`) VALUES
+(4, 1, 3, 'qsdq', NULL),
+(5, 1, 3, 'qsdq', NULL),
+(6, 1, 3, 'qsdq', NULL),
+(7, 1, 3, 'qsdqd', NULL);
 
 -- --------------------------------------------------------
 
@@ -53,6 +63,18 @@ CREATE TABLE IF NOT EXISTS `groupe` (
   KEY `idx_groupe` (`administrateur_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
 
+--
+-- Contenu de la table `groupe`
+--
+
+INSERT INTO `groupe` (`id`, `nom`, `administrateur_id`, `visibilite`) VALUES
+(17, 'groupe secret', 3, 'privé_caché'),
+(18, 'groupe de test public', 7, 'public'),
+(19, 'groupe de test public 2', 7, 'public'),
+(20, 'groupe de test public 3', 7, 'public'),
+(21, 'groupe', 3, 'public'),
+(22, 'groupe2', 3, 'privé_visible');
+
 -- --------------------------------------------------------
 
 --
@@ -64,8 +86,15 @@ CREATE TABLE IF NOT EXISTS `option` (
   `texte` varchar(250) DEFAULT NULL,
   `id_sondage` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_options_sondage` (`id_sondage`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+  KEY `id_sondage` (`id_sondage`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `option`
+--
+
+INSERT INTO `option` (`id`, `texte`, `id_sondage`) VALUES
+(1, 'test', 1);
 
 -- --------------------------------------------------------
 
@@ -86,7 +115,14 @@ CREATE TABLE IF NOT EXISTS `sondage` (
   PRIMARY KEY (`id`),
   KEY `idx_sondage` (`administrateur_id`),
   KEY `idx_sondage_0` (`id_groupe`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `sondage`
+--
+
+INSERT INTO `sondage` (`id`, `titre`, `description`, `visibilite`, `administrateur_id`, `date_creation`, `date_fin`, `secret`, `id_groupe`) VALUES
+(1, 'test', 'azerty', '', 3, '2014-03-28 18:18:21', '2014-03-12 00:00:00', 'secret', NULL);
 
 -- --------------------------------------------------------
 
@@ -101,6 +137,14 @@ CREATE TABLE IF NOT EXISTS `sous_groupe` (
   PRIMARY KEY (`id`),
   KEY `idx_sous_groupe` (`id_groupe`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Contenu de la table `sous_groupe`
+--
+
+INSERT INTO `sous_groupe` (`id`, `id_groupe`, `nom`) VALUES
+(3, 17, 'ssqd'),
+(4, 17, 'qsdqsd');
 
 -- --------------------------------------------------------
 
@@ -120,7 +164,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   `compte_valide` tinyint(1) DEFAULT '0',
   `pseudo` varchar(15) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Contenu de la table `user`
+--
+
+INSERT INTO `user` (`id`, `prenom`, `nom`, `email`, `password`, `hash_validation`, `administrateur_site`, `date_inscription`, `compte_valide`, `pseudo`) VALUES
+(3, 'Lucas', 'Lafon', 'chidori_on@hotmail.fr', '8d250c166dd27f45595f74f3d3adbcb6e6e49211', 'aaf9c0f91cf486c6d7a2ef7e3176ef09', 0, '2014-03-05 17:16:49', 1, ''),
+(7, 'Claude', 'Lupert', 'l.lafon34@gmail.com', 'a26913fb4c9c88acfc3fa4b546ff7709a3912688', '67ff83a421021811946958674401dda8', 0, '2014-03-07 20:56:08', 1, ''),
+(8, 'Jean', 'Durand', 'lucas.lafon@laposte.net', '4cdfbf178f3cdd5efb2b4a06dd611bcebb16c96b', '00fbddc9af856fd7699d4886220b670d', 0, '2014-03-15 11:28:44', 1, '');
 
 -- --------------------------------------------------------
 
@@ -151,6 +204,14 @@ CREATE TABLE IF NOT EXISTS `user_groupe_membre` (
   KEY `idx_user_groupe_membre2` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `user_groupe_membre`
+--
+
+INSERT INTO `user_groupe_membre` (`id_user`, `id_groupe`, `accepte`) VALUES
+(3, 18, 1),
+(8, 17, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -164,6 +225,14 @@ CREATE TABLE IF NOT EXISTS `user_groupe_moderateur` (
   KEY `idx_user_groupe_moderateur_0` (`id_groupe`),
   KEY `idx_user_groupe_moderateur_1` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `user_groupe_moderateur`
+--
+
+INSERT INTO `user_groupe_moderateur` (`id_user`, `id_groupe`) VALUES
+(7, 17),
+(7, 21);
 
 -- --------------------------------------------------------
 
@@ -248,7 +317,7 @@ ALTER TABLE `groupe`
 -- Contraintes pour la table `option`
 --
 ALTER TABLE `option`
-  ADD CONSTRAINT `fk_options_sondage` FOREIGN KEY (`id_sondage`) REFERENCES `sondage` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_sondage_option` FOREIGN KEY (`id_sondage`) REFERENCES `sondage` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `sondage`
@@ -267,7 +336,7 @@ ALTER TABLE `sous_groupe`
 -- Contraintes pour la table `user_commentaire_like`
 --
 ALTER TABLE `user_commentaire_like`
-  ADD CONSTRAINT `fk_user_commentaire_like` FOREIGN KEY (`id_commentaire`) REFERENCES `commentaire` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_commentaire_like_ibfk_1` FOREIGN KEY (`id_commentaire`) REFERENCES `commentaire` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_user_commentaire_like_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
