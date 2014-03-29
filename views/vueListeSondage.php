@@ -30,7 +30,7 @@
 			if($sondage->getVisibilite() == 'privé' )
 			{
 			?>
-			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=ajoutUserSondage&params=' . $sondage->getId() ?>">Ajouter des utilisateurs</a></td>
+			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficheAjoutUserSondage&params=' . $sondage->getId() ?>">Ajouter des utilisateurs</a></td>
 			<?php } ?>
 		</tr>
 		<?php } ?>

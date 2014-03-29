@@ -78,7 +78,7 @@ class ListeSondage extends BD {
             $lectBdd = $this->executerRequete($sql, array($idGroupe));
             while (($enrBdd = $lectBdd->fetch()) != false)
             { 
-                $this->array_groupes[] = new Sondage($enrBdd["id"]);
+                $this->array_sondage[] = new Sondage($enrBdd["id"]);
             }
 	}
 
@@ -91,7 +91,7 @@ class ListeSondage extends BD {
 		 $lectBdd = $this->executerRequete($sql, array());
             while (($enrBdd = $lectBdd->fetch()) != false)
             { 
-                $this->array_groupes[] = new Sondage($enrBdd["id"]);
+                $this->array_sondage[] = new Sondage($enrBdd["id"]);
             }   
 	}
 
@@ -103,20 +103,18 @@ class ListeSondage extends BD {
 		$lectBdd = $this->executerRequete($sql, array($idUser));
             while (($enrBdd = $lectBdd->fetch()) != false)
             { 
-                $this->array_groupes[] = new Sondage($enrBdd["id"]);
+                $this->array_sondage[] = new Sondage($enrBdd["id_sondage"]);
             }   		
 	}
 
 	public function constructeurListePrive($idUser, $a, $b, $c , $d){
 		$sql='SELECT id_sondage
 				FROM user_sondage_votant
-				WHERE id_user=?
-				ORDER BY id DESC';
-				echo $idUser;
+				WHERE id_user=?';
 		$lectBdd = $this->executerRequete($sql, array($idUser));
             while (($enrBdd = $lectBdd->fetch()) != false)
             { 
-                $this->array_groupes[] = new Sondage($enrBdd["id"]);
+                $this->array_sondage[] = new Sondage($enrBdd["id_sondage"]);
             }   		
 	}
 	
