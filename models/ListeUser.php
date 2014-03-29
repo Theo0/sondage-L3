@@ -18,6 +18,8 @@ class ListeUser extends BD{
 			$this->constructeurPublic();
 				break;
 		  	 case 1:
+		  	 $this->constructeurUserNonPresent(func_get_arg(0));
+		  	 	break;
 		}
 	}
 
@@ -28,6 +30,20 @@ public function constructeurPublic(){
 		    ORDER BY id DESC';
                                
             $lectBdd = $this->executerRequete($sql, array());
+            while (($enrBdd = $lectBdd->fetch()) != false)
+            { 
+
+                $this->array_user[] = new User($enrBdd["id"]);
+            }
+	}
+
+public function constructeurUserNonPresent($idSond){
+
+	     $sql='SELECT id FROM user WHERE id NOT IN (
+    			SELECT id_user FROM user_sondage_votant WHERE id_sondage=? )';
+		echo $idSond;
+                               
+            $lectBdd = $this->executerRequete($sql, array($idSond));
             while (($enrBdd = $lectBdd->fetch()) != false)
             { 
 
