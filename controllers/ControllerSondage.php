@@ -3,6 +3,7 @@
 require_once "Controller.php";
 require_once ROOT . "/models/Sondage.php";
 require_once ROOT . "/models/Option.php";
+require_once ROOT . "/models/Vote.php";
 require_once ROOT . "/models/ListeSondage.php";
 require_once ROOT . "/models/ListeOption.php";
 require_once ROOT . "/models/User.php";
@@ -259,6 +260,37 @@ public function afficherSondagesGroupe(){
 		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires()));
 	
 	}
+
+public function afficherVoteTermine(){
+
+	$this->vue = new Vue("VoteTermine");
+	//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+	$this->vue->generer(array());	
+
+}
+
+public function ajoutVote(){
+
+	foreach ($_POST as $key => $value) {
+		$vote = new Vote($_GET['params'], $_SESSION['id'], $key, $value);
+		
+		$id_vote = $vote->add();
+
+	}
+
+	if (ctype_digit($id_vote)) {
+			$this->afficherVoteTermine();
+		}
+		else{
+			$erreur =& $id_sondage;
+			$this->addErreur(sprintf("Erreur ajout SQL (SQLSTATE = %d).", $erreur[0]));
+			$this->afficherFicheSondage();
+			
+		}
+	
+}
 
 	public function afficheAjoutUserSondage(){
 		$this->vue = new Vue("AjoutUserSondage");

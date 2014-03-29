@@ -16,19 +16,24 @@ echo($FicheSondage->getTitre());
 echo($FicheSondage->getDesc());
  ?></h3>
  <br />
-<p>Ordonnez vos réponses parmis les choix ci-dessous : </p>
-<table id="tableListeSondages">
-	<thead>
-		<th>Option</th>
-	</thead>
-	<tbody>
-		<?php foreach($ListeOptions as $key=>$option){ ?>
-		<tr class="<?php if($key%2) echo 'ligneImpaire'; else echo 'lignePaire'; ?>">
-			<td><?php echo($option->getTexte()); ?></td>
-		</tr>
-		<?php } ?>
-	</tbody>
-</table>
+<p>Ordonnez vos réponses parmis les choix ci-dessous (1 étant votre choix préféré).<br />
+Vous pouvez classer plusieurs options ex-aequo.</p>
+<form method="POST" action=" <?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=ajoutVote&params=' .$_GET['params']; ?>" id="formulaire_vote" >
+<?php foreach($ListeOptions as $key=>$option){ ?>
+<?php echo($option->getTexte()); 
+echo '<select name="' .$option->getId(). '">';
+ ?>
+<?php
+for ($i=0 ; $i < sizeof($ListeOptions) ; $i++ ) { 
+	$num = $i+1;
+ 	echo "<option value='" .$num. "'>" . $num . "</option>";
+ } 
+?>
+</select>
+<br />
+<?php } ?>
+<input type="submit" value="Voter">
+</form>
 
 <div id="containerCommentaires">
 	<ul id="listeCommentaires">

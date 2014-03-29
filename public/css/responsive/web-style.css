@@ -3383,6 +3383,14 @@ ul#listeGroupes li ul.menuEditGroup li a:hover{
 	margin-top:-1px;
 }
 
+#tableListeOption{
+	width: 100%;
+}
+
+#tableListeOption tr.lignePaire{
+	background: #f5f5f5;
+}
+
 #tableListeGroupes{
 	width: 100%;
 	text-align: center;
