@@ -357,6 +357,34 @@ public function afficherFicheSondage(){
 		}
 			
 	}
+	
+	/* Ajoute un commentaire à un sondage avec les infos récupérées en $_POST: texteCommentaire et sondageId */
+	public function ajaxAjouterCommentaire(){
+		if(empty($_POST["texteCommentaire"])){
+			echo "Le commentaire ne peut pas être vide";
+			die();
+		}
+		
+		if(empty($_POST["sondageId"])){
+			echo "Le sondage n'existe pas";
+			die();
+		}
+		
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour ajouter un commentaire à un sondage");
+			$controllerUser->afficherConnexion();
+		}else{
+			$this->sondage = new Sondage($_POST["sondageId"]);
+			$userConnecte = new User($_SESSION["id"]);
+			
+			if(false !== $this->sondage->ajouterCommentaire($_POST["texteCommentaire"]))
+				echo '1';
+			else{
+				echo "Impossible d'ajouter le commentaire";
+			}
+		}
+	}
 
 }
 

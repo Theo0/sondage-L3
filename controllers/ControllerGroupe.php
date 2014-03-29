@@ -132,7 +132,7 @@ class ControllerGroupe extends Controller{
 	public function afficherListeGroupesAdministres(){
 		if(empty($_SESSION["id"])){
 		    $controllerUser = new ControllerUser();
-		    $controllerUser->addErreur("Vous devez vous connecter pour voir les groupe que vous administrez");
+		    $controllerUser->addErreur("Vous devez vous connecter pour voir les groupes que vous administrez");
 		    $controllerUser->afficherConnexion();
 		}else{
 			$this->vue = new Vue("ListeGroupes");

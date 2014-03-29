@@ -94,61 +94,7 @@ class ListeGroupes extends BD {
 	public function setArrayGroupes($a){
 		$this->array_groupes = $a;
 	}
-        
 
-	/* Ajoute un nouveau groupe
-	   @return: l'identifiant du groupe ajouté
-	*/
-	public function add() {
-		$sql = 'INSERT INTO groupe SET
-			nom = ?,
-			administrateur_id = ?,
-			visibilite = ?';
-
-		$insertGroupe = $this->insererValeur($sql, array($this->nom, $this->administrateurId , $this->visibilite));
-
-		return $insertGroupe;
-	}
-
-	/* Modifie un groupe en base 
-	   @return: vrai si le groupe a été modifié, faux sinon
-	*/
-	public function update() {
-		$sql = 'UPDATE groupe SET
-			nom = ?,
-			administrateur_id = ?,
-			visibilite = ?';
-
-		$updateGroupe = $this->executerRequete($sql, array($this->nom, $this->administrateurId , $this->visibilite));
-
-		return ($updateGroupe->rowCount() == 1);
-	}
-
-
-	/* Supprimer un groupe en base
-	   @return: vrai si le groupe a été supprimé, faux sinon
-	*/
-	public function remove() {
-		$sql = 'DELETE FROM groupe
-			WHERE id = ?';
-
-		$updateGroupe = $this->executerRequete($sql, array($this->id));
-
-		return ($updateGroupe->rowCount() == 1);
-	}
-	
-	/* 
-	   @return: l'identifiant du groupe ajouté
-	*/
-	public function isUniqueNom() {
-		$sql = 'SELECT id
-			FROM groupe
-			WHERE nom=?';
-
-		$selectGroupe = $this->executerRequete($sql, array($this->nom));
-
-		return ($selectGroupe->rowCount() == 0);
-	}
 }
 
 ?>

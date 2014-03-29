@@ -1,7 +1,9 @@
 <div id="ficheSondage">
 <?php if(empty($FicheSondage)): ?>
+<?php $this->titre = "Sondage non trouvé"; ?>
 <p>Erreur : Aucun sondage séléctionné !</p>
 <?php else: ?>
+<?php $this->titre = $FicheSondage->getTitre(); ?>
 <h1><?php
 echo($FicheSondage->getTitre());
  ?></h1>
@@ -23,5 +25,13 @@ echo($FicheSondage->getDesc());
 		<?php } ?>
 	</tbody>
 </table>
+
+<div id="containerCommentaires">
+	<ul id="listeCommentaires">
+		<li id="creerCommentaire">
+			<textarea id="textareaCommentaire" name="ajouterCommentaire" placeholder="Ecrire un commentaire..."></textarea>
+		</li>
+	</ul>
+</div>
 <?php endif; ?>
 </div>

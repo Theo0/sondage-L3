@@ -10,6 +10,7 @@
 	<script src="<?= ABSOLUTE_ROOT . '/public/js/CryptoJS.js'; ?>"> </script>
 	<script src="<?= ABSOLUTE_ROOT . '/public/js/user.js'; ?>"> </script>
 	<script src="<?= ABSOLUTE_ROOT . '/public/js/groupe.js'; ?>"> </script>
+	<script src="<?= ABSOLUTE_ROOT . '/public/js/sondage.js'; ?>"> </script>
 	<title><?= NOM_SITE . ' - ' .$titre ?></title>
 </head>
 <body>
