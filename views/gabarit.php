@@ -108,6 +108,24 @@
                     </div>
                 
               </div>
+              <div class="blogwidgetstart">
+            	<!-- Start Categories Widget -->
+            	<div class="widgettitle"><h4>Mes Sondages</h4></div>
+                
+                <div class="widgetbody" id="divListeGroupes">
+                
+                	<div class="blogcategories">
+                    
+                    	<ul id="listeGroupes">
+				<?php if(!empty($_SESSION['id'])): ?>
+				<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherSondagesAdmin' ?>"><img src="<?= ABSOLUTE_ROOT . '/public/css/images/settings-icon.png' ?>"> Mes sondage </a></li>
+				<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherNouveauSondage' ?>"><img src="<?= ABSOLUTE_ROOT . '/public/css/images/cross.png' ?>"> Créer un sondage sondage </a></li>
+				<?php endif; ?>
+                        </ul>
+                    
+                    </div>
+                
+              </div>
               <!-- End Categories Widget -->
               <span class="box-arrow"></span>           
             </div>
