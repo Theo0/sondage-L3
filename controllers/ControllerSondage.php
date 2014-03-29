@@ -3,9 +3,10 @@
 require_once "Controller.php";
 require_once ROOT . "/models/Sondage.php";
 require_once ROOT . "/models/Option.php";
-require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/ListeSondage.php";
 require_once ROOT . "/models/ListeOption.php";
+require_once ROOT . "/models/User.php";
+require_once ROOT . "/models/ListeUser.php";
 require_once ROOT . "/models/Mail.php";
 
 class ControllerUser extends Controller{
@@ -228,14 +229,13 @@ public function afficherFicheSondage(){
 }
 
 	public function afficheAjoutUserSondage(){
-		$this->vue = new Vue("ajoutUserSondage");
+		$this->vue = new Vue("AjoutUserSondage");
 		//Si le contrôlleur possède des erreurs de référencées
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
 		//$sondage = new Sondage($_GET['params']);
-		$ListeUser = new User();
-		$ListeUser->remplirArrayUser();
+		$ListeUser = new ListeUser();
 		
 		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser()));
 	
