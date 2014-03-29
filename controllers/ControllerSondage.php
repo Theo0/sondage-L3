@@ -257,7 +257,7 @@ public function afficherSondagesGroupe(){
 	
 		$listeCommentaire = new ListeCommentaire($_GET['params']);
 		
-		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires()));
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id'])));
 	
 	}
 

@@ -247,8 +247,8 @@ class Sondage extends BD{
 		WHERE id_user =?
 		AND id_sondage =?';
 
-		$verifVote = $this->executerRequete($sql, array($idUser, $this->id));
-		return $verifVote;
+		$lectBdd = $this->executerRequete($sql, array($idUser, $this->id));
+		return $verifVote = $lectBdd->fetch();
 
 	}
 

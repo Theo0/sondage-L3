@@ -1,12 +1,12 @@
-<?php $this->titre = $FicheSondage->getTitre(); ?>
-
+<?php $this->titre = $FicheSondage->getTitre(); 
+?>
 <input id="idSondage" type="hidden" value="<?= $FicheSondage->getId() ?>" />
 
 <div id="ficheSondage">
-<?php if(empty($FicheSondage)): ?>
+<?php if(empty($FicheSondage)){ ?>
 <?php $this->titre = "Sondage non trouvé"; ?>
 <p>Erreur : Aucun sondage séléctionné !</p>
-<?php else: ?>
+<?php } else{ ?>
 <?php $this->titre = $FicheSondage->getTitre(); ?>
 <h1><?php
 echo($FicheSondage->getTitre());
@@ -16,6 +16,7 @@ echo($FicheSondage->getTitre());
 echo($FicheSondage->getDesc());
  ?></h3>
  <br />
+<?php if($DejaVote[0]==0){ ?> 
 <p>Ordonnez vos réponses parmis les choix ci-dessous (1 étant votre choix préféré).<br />
 Vous pouvez classer plusieurs options ex-aequo.</p>
 <form method="POST" action=" <?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=ajoutVote&params=' .$_GET['params']; ?>" id="formulaire_vote" >
@@ -45,5 +46,10 @@ for ($i=0 ; $i < sizeof($ListeOptions) ; $i++ ) {
 		</li>
 	</ul>
 </div>
-<?php endif; ?>
+<?php }
+else{
+	echo "Vous avez déjà répondu à ce sondage !";
+} 
+}
+?>
 </div>
