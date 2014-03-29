@@ -33,16 +33,16 @@ class Option extends BD{
 	public function constructeurPlein($idOption)
 	{
 		$sql='SELECT * FROM
-						options
+						`option`
 						WHERE
 						id=?';
-					
+				
 		$lectBdd = $this->executerRequete($sql, array($idOption));
 		if (($enrBdd = $lectBdd->fetch()) != false)
 		{
-			$this->id=$idSondage;
+			$this->id=$idOption;
 			$this->texte=$enrBdd['texte'];
-			$this->$id_sondage=$enrBdd['id_sondage'];
+			$this->id_sondage=$enrBdd['id_sondage'];
 		}
 		else
 		{
