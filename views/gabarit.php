@@ -119,7 +119,7 @@
                     	<ul id="listeGroupes">
 				<?php if(!empty($_SESSION['id'])): ?>
 				<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherSondagesAdmin' ?>"><img src="<?= ABSOLUTE_ROOT . '/public/css/images/settings-icon.png' ?>"> Mes sondage </a></li>
-				<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherNouveauSondage' ?>"><img src="<?= ABSOLUTE_ROOT . '/public/css/images/cross.png' ?>"> Créer un sondage sondage </a></li>
+				<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherNouveauSondage' ?>"><img src="<?= ABSOLUTE_ROOT . '/public/css/images/cross.png' ?>"> Créer un nouveau sondage </a></li>
 				<?php endif; ?>
                         </ul>
                     
