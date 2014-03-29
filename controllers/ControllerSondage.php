@@ -35,7 +35,7 @@ class ControllerUser extends Controller{
 
 	/* Affichage de la page quand la creation a terminé avec succès */
 	public function afficherNouveauSondageTermine(){
-		$this->vue = new Vue("NouveauSondageTermine");
+		$this->vue = new Vue("NouveauSondage");
 
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);
