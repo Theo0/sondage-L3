@@ -218,7 +218,29 @@ public function afficherSondagesPrive(){
 		
 		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondagePrive"));	
 		}	
-	}		
+	}
+
+
+
+public function afficherSondagesGroupe(){
+
+	if(empty($_SESSION['id'])){
+		?>
+		<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Vous devez vous connecter pour accéder à vos sondages. Cliquez ici. </a>
+		<?php
+	}
+	else{	
+		$this->vue = new Vue("ListeSondageGroupe");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+		$ListeSondage = new ListeSondage($_SESSION['id'], $_GET['params']);
+		
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages"));	
+		}	
+	}			
 
 
 public function afficherFicheSondage(){

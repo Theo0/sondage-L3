@@ -120,7 +120,6 @@ class ListeSondage extends BD {
 	
 
 
-
 	public function getArraySondage(){
 		return $this->array_sondage;
 	}
