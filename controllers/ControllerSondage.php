@@ -244,7 +244,15 @@ public function afficherFicheSondage(){
 	}
 
 	public function afficheAjoutUserSondageTermine(){
-		//this->vue = new Vue();
+		$this->vue = new Vue("AjoutUserSondage");
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+		//$sondage = new Sondage($_GET['params']);
+		$ListeUser = new ListeUser();
+		
+		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser(), "membreTermine" => "1"));
 	}
 
 

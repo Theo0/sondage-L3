@@ -2,7 +2,7 @@
 
 $this->titre = "Ajout d'un membre au sondage";
 
-if(isset($optionTermine)){
+if(isset($membreTermine)){
 	echo "<h3>Le membre a bien été ajoutée ! Vous pouvez maintenant en ajouter un nouveau.</h3>";
 }
 ?> 
