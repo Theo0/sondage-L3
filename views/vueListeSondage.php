@@ -25,7 +25,20 @@
 		<tr class="<?php if($key%2) echo 'ligneImpaire'; else echo 'lignePaire'; ?>">
 			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>"><?php echo($sondage->getTitre()); ?></a></td>
 			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>"><?php echo($sondage->getDesc()); ?></a></td>
-			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>"><?php echo($sondage->getDateFin()); ?></a></td>
+			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>"><?php 
+			$datefin = $sondage->getDateFin(); 
+			$now = date('Y-m-d H:i:s');
+			$now = new DateTime( $now );
+			$now = $now->format('Y-m-d H:i:s');
+			$datefin = new DateTime($datefin);
+			$datefin = $datefin->format('Y-m-d H:i:s');
+			if($now<$datefin){
+				echo $datefin;
+			}
+			else{
+				echo "Terminé";
+			}
+			?></a></td>
 			<?php
 			if($sondage->getVisibilite() == 'privé' && $sondage->getAdministrateur() == $_SESSION['id'])
 			{
