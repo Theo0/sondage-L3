@@ -41,7 +41,6 @@ public function constructeurUserNonPresent($idSond){
 
 	     $sql='SELECT id FROM user WHERE id NOT IN (
     			SELECT id_user FROM user_sondage_votant WHERE id_sondage=? )';
-		echo $idSond;
                                
             $lectBdd = $this->executerRequete($sql, array($idSond));
             while (($enrBdd = $lectBdd->fetch()) != false)

@@ -9,6 +9,7 @@ require_once ROOT . "/models/ListeOption.php";
 require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/ListeUser.php";
 require_once ROOT . "/models/ListeCommentaire.php";
+require_once ROOT . "/models/Score.php";
 require_once ROOT . "/models/Mail.php";
 
 class ControllerSondage extends Controller{
@@ -490,6 +491,31 @@ public function ajoutVote(){
 			
 	}
 	
+	public function resultat(){
+	$this->vue = new Vue("Resultat");
+		//Si le contrôlleur possède des erreurs de référencées
+			if( !empty($this->erreurs) )
+				$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+	
+		$sondage = new Sondage($_GET['params']);
+	
+		$ListeOption = new ListeOption($_GET['params']);
+	
+		$listeCommentaire = new ListeCommentaire($_GET['params']);
+		
+		$resultat =  array();
+
+		foreach($ListeOption->getArrayOption() as $key=>$option){
+		${'score'.$option->getId()}= new Score($option->getId() ,$_GET['params']);
+		$a = $option->getId();
+		$resultat[$a] = ${'score'.$option->getId()};
+		}
+
+		
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id']), "tabResult" => $resultat));
+	
+	}
+
 	/* Ajoute un commentaire à un sondage avec les infos récupérées en $_POST: texteCommentaire et sondageId */
 	public function ajaxAjouterCommentaire(){
 		if(empty($_POST["texteCommentaire"])){
