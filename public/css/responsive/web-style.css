@@ -3526,7 +3526,78 @@ ul#listeGroupes li ul.menuEditGroup li a:hover{
 	color: #D25809;
 }
 
+/* FORMULAIRE CREATION SONDAGE */
 
+#CreationSondage{
+	font-family: 'HelveticaLTStdRoman',Arial, Helvetica, sans-serif;
+}
+
+#CreationSondage h4{
+	color : black;
+}
+
+#CreationSondage table{
+	width : 80%;
+}
+
+#CreationSondage form{
+	width: 100%;
+}
+
+#CreationSondage label{
+	width: inherit;
+	display: inline;
+}
+
+#CreationSondage input{
+	display: inline;
+}
+
+#CreationSondage th{
+	
+	width: 130px;
+	text-align: center;
+	color: #d25809;
+}
+
+#CreationSondage ul{
+	padding-left: 15px;
+}
+
+#CreationSondage li{
+	list-style: none;
+}
+
+#CreationSondage li.bottomSeparator{
+	border-bottom: solid 1px grey;
+}
+
+#CreationSondage .visibiliteRadioInput label{
+	color : black;
+	font-weight: bold;
+	width: 5%;
+}
+
+#CreationSondage .visibiliteRadioInput p{
+	font-size: 11px;
+	color: #7e7e7e;
+}
+
+#CreationSondage .dialogButtons, .dialog .dialogButtons{
+	text-align: right;
+}
+
+#CreationSondage .dialogButtons input, .dialog .dialogButtons input{
+	width: 110px;
+}
+
+#CreationSondage .dialogButtons input:hover.dialog .dialogButtons input:hover{
+	font-size: 14pt;
+}
+
+#CreationSondage #dialogErreur, .diablog #dialogErreur{
+	height: 20px;
+}
 
 /* Messages d'erreurs */
 .erreurs{
