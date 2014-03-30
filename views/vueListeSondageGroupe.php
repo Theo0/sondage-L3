@@ -34,5 +34,5 @@
 	</tbody>
 </table>
 <?php endif; ?>
-<a href=""><img src="<?= ABSOLUTE_ROOT . '/public/css/images/cross.png' ?>"> Ajouter un sondage à ce groupe</a>
+<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherNouveauSondage&params=' . $_GET['params'] ?>" ><img src="<?= ABSOLUTE_ROOT . '/public/css/images/cross.png' ?>"> Ajouter un sondage à ce groupe</a>
 

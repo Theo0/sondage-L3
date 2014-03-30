@@ -29,7 +29,7 @@ $this->titre = "Nouveau Sondage";
 					<li class="bottomSeparator">
 						<div class="visibiliteRadioInput">
 							<label for="visibilitePublic">Public</label>
-							<input id="visibilitePublic" name="visibilite" type="radio" required="required" value="public" />
+							<input id="visibilitePublic" name="visibilite" type="radio" required="required" value="public" checked />
 							<p>N'importe qui peut voir et voter dans ce sondage, même sans inscription.</p>
 						</div>
 					</li>
@@ -47,6 +47,17 @@ $this->titre = "Nouveau Sondage";
 							<p>Par défaut, personne ne voit ce sondage. Vous pouvez ensuite ajouter les membres que vous souhaitez à ce sondage.</p>
 						</div>
 					</li>
+					<?php
+					if(isset($_GET['params'])):
+					 ?>
+					<li class="bottomSeparator">
+						<div class="visibiliteRadioInput">
+							<label for="visibiliteGroupe">Groupe</label>
+							<input id="visibiliteGroupe" name="visibilite" type="radio" required="required" value="groupe" />
+							<p>Seul les membres du groupe pourront acceder à ce sondage.</p>
+						</div>
+					</li>
+				<?php endif; ?>
 				</ul>
 			</td>
 		</tr>
@@ -72,7 +83,7 @@ $this->titre = "Nouveau Sondage";
 					<li class="bottomSeparator">
 						<div class="visibiliteRadioInput">
 							<label for="SecretPublic">Public</label>
-							<input id="id_secret_3" name="secret" type="radio" value="public" />
+							<input id="id_secret_3" name="secret" type="radio" value="public" checked />
 							<p>Les choix des membres sont visualisables pour tout les autres membres.</p>
 						</div>
 					</li>
