@@ -11,6 +11,9 @@ foreach($ListeOptions as $key=>$option){
 $idOpt = $option->getId();
 $total = $total + $tabResult[$idOpt]->getScore();
 }
+if($total==0){ // Pour eviter une eventuelle division par 0
+	$total = 1;
+}
 ?>
 <div id="ficheSondage">
 <?php if(empty($FicheSondage)){ ?>
@@ -30,9 +33,8 @@ echo($FicheSondage->getDesc());
 
 	echo($option->getTexte());
 	$idOpt = $option->getId();
-	echo "   Score : " . $tabResult[$idOpt]->getScore();
 	$pourcent = round(($tabResult[$idOpt]->getScore() * 100) / $total);
-	echo "  , soit : " . $pourcent . "%";
+	echo "  : " . $pourcent . "%";
 	?>
 	<script>
   	$(function() {
