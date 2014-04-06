@@ -316,7 +316,7 @@ public function ajoutVote(){
 		$ListeUser = new ListeUser();	
 		}
 		
-		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser(), "NomSondage" => $sondage->getTitre()));
+		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser(), "idSondage" => $sondage->getId(), "NomSondage" => $sondage->getTitre()));
 	
 
 
@@ -336,7 +336,7 @@ public function ajoutVote(){
 		$ListeUser = new ListeUser();	
 		}
 		
-		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser(), "membreTermine" => "1", "NomSondage" => $sondage->getTitre()));
+		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser(), "membreTermine" => "1", "idSondage" => $sondage->getId(), "NomSondage" => $sondage->getTitre()));
 	}
 
 

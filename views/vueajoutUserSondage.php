@@ -9,12 +9,13 @@ if(isset($membreTermine)){
 
 <div id="CreationSondage">
 <h4>Ajouter un membre au sondage <?php echo $NomSondage; ?>.</h4><br /><br />
-<form id="formCreationSondage" method="POST" action="http://localhost/sondage-L3/controllers/ControllerSondage.php?action=ajoutUserSondage" id="formulaire_nouv_opt" >
+<form id="formCreationSondage" method="POST" action="http://localhost/sondage-L3/controllers/ControllerSondage.php?action=ajoutUserSondage&params=<?php echo $idSondage; ?>"; id="formulaire_nouv_opt" >
 <table>
 	<tbody>
 		<tr>
 		<th><label>Utilisateur</label></th><td><select name="user_votant">
-		<?php foreach($ListeUser as $key=>$user){ ?>
+		<?php
+		 foreach($ListeUser as $key=>$user){ ?>
 		<option value="<?php echo($user->getId());?>"><?php echo($user->getNom()); echo "  "; echo($user->getPrenom()); ?></option>
 		<?php } ?>
 		</select></td>
