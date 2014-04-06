@@ -3599,6 +3599,16 @@ ul#listeGroupes li ul.menuEditGroup li a:hover{
 	height: 20px;
 }
 
+#optionsdyn {
+padding-left: 20px;
+color: #d25809;
+font-weight: bold;
+}
+
+#optionsdyn label{
+	width : 130px;
+}
+
 /* Messages d'erreurs */
 .erreurs{
 	color: red;

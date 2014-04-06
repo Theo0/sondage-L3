@@ -121,7 +121,6 @@
 				<?php if(!empty($_SESSION['id'])): ?>
 				<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherSondagesAdmin' ?>"><img src="<?= ABSOLUTE_ROOT . '/public/css/images/settings-icon.png' ?>"> Mes sondage </a></li>
 				<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherNouveauSondage' ?>"><img src="<?= ABSOLUTE_ROOT . '/public/css/images/cross.png' ?>"> Créer un nouveau sondage </a></li>
-				<li><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherNouvelleOption' ?>"><img src="<?= ABSOLUTE_ROOT . '/public/css/images/cross.png' ?>"> Ajouter des options </a></li>
 				<?php endif; ?>
                         </ul>
                     

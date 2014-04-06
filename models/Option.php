@@ -87,13 +87,9 @@ class Option extends BD{
 	}
 
 	/* Formate les variables récupérées d'un formulaire et les stocke dans $this */
-	public function POSTToVar($array){
-		foreach ($array as $key => $value) {
-		    //Suppression des espaces en début et en fin de chaîne
-		    $trimedValue = trim($value);
-		    //Conversion des tags HTML par leur entité HTML
-		    $this->$key = htmlspecialchars($trimedValue);
-		}
+	public function POSTToVar($textOpt, $idSond){
+		$this->texte = $textOpt;
+		$this->id_sondage= $idSond;
 	}
 
 	public function validateIDSondage(){

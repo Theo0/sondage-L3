@@ -265,12 +265,16 @@ class Sondage extends BD{
 
 	/* Formate les variables récupérées d'un formulaire et les stocke dans $this */
 	public function POSTToVar($array){
-		foreach ($array as $key => $value) {
-		    //Suppression des espaces en début et en fin de chaîne
-		    $trimedValue = trim($value);
-		    //Conversion des tags HTML par leur entité HTML
-		    $this->$key = htmlspecialchars($trimedValue);
-		}
+			$this->titre=$array["titre"];
+			$this->description=$array["description"];
+			$this->visibilite=$array["visibilite"];
+			$this->administrateur_id=$array["administrateur_id"];
+			$this->date_creation=null;
+			$this->date_fin=$array["date_fin"];
+			$this->secret=$array["secret"];
+			if(isset($array["id_groupe"])){
+			$this->id_groupe=$array["id_groupe"];
+			}
 	}
 
 

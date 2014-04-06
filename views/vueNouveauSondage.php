@@ -4,9 +4,33 @@ $this->titre = "Nouveau Sondage";
 
 ?> 
 
+<script type="text/javascript">
+            var intTextBox=0;
+            //Ajouter une textbox
+            function addElement()
+          {
+            intTextBox = intTextBox + 1;
+            var contentID = document.getElementById('optionsdyn');
+            var newTBDiv = document.createElement('div');
+                newTBDiv.setAttribute('id','strText'+intTextBox);
+            newTBDiv.innerHTML = "<label>Option "+intTextBox+" 	  : </label><input type='text' id='" + intTextBox + "'    name='" + intTextBox + "' required/>";
+            contentID.appendChild(newTBDiv);
+          }
+            //Supprimer la derniere textbox
+            function removeElement()
+            {
+              if(intTextBox != 0)
+              {
+                    var contentID = document.getElementById('content');
+                    contentID.removeChild(document.getElementById('strText'+intTextBox));
+                    intTextBox = intTextBox-1;
+                }
+            }
+</script>
+
 <div id="CreationSondage">
 
-<form id="formCreationSondage" method="POST" action="http://localhost/sondage-L3/controllers/ControllerSondage.php?action=nouveauSondage" >
+<form id="form1" method="POST" action="http://localhost/sondage-L3/controllers/ControllerSondage.php?action=nouveauSondage" >
 <table>
 	<tbody><tr>
 		<th><label for="TitreSondage">Titre du sondage</label></th><td><input id="id_titre" name="titre" type="text" required="required" /></td>
@@ -93,11 +117,9 @@ $this->titre = "Nouveau Sondage";
 			</td>
 		</tr>
 	</tbody>
+	
 
 </table>					
-
-
-		
 <input name="administrateur_id" type="hidden" value="<?php 
 echo $_SESSION['id']; 
 ?>"/>
@@ -106,8 +128,12 @@ if (isset($_GET['params'])){
   echo '<input name="id_groupe" type="hidden" value="'.$_GET['params'].'"/>';
 }
 ?>
-</table>
+<a href="javascript:addElement();" ><center><h3>Ajouter une option</h3></a><br /> <a href="javascript:removeElement();" ><h3>Supprimer</h3></a></center><br />
+<div id="optionsdyn">
+ </div>	
 <p><input name="submit" type="submit" value="Créer" /></p>
-</form>  
+</form>
 </div>
+
+
 <br /><br /><br /><br />

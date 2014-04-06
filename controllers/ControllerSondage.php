@@ -87,8 +87,9 @@ class ControllerSondage extends Controller{
 
 			// Si la base de données a bien voulu ajouter l'utliisateur (pas de doublons)
 			if (ctype_digit($id_sondage)) {
-				
-			$this->afficherNouveauSondageTermine();
+
+
+			$this->NouvelleOption($_POST, $id_sondage);
 			// Gestion des doublons
 			} else {
 
@@ -431,10 +432,13 @@ public function ajoutVote(){
 	
 
 
-	/* Création d'un sondage avec les informations reçues de $_POST: titre, description, visibilite, id de l'admin, date de fin, secret, et id du groupe */
-	public function NouvelleOption(){
+	public function NouvelleOption($array, $idSond){
 		//Récupération des champs du formulaire et insertion dans le modèle
-		$this->option->POSTToVar($_POST);
+		
+		foreach ($array as $key => $value) {
+			if(is_numeric($key)){
+
+		$this->option->POSTToVar($value, $idSond);
 
 		
 		$validateIDSondage = $this->option->validateIDSondage();
@@ -446,11 +450,11 @@ public function ajoutVote(){
 
 		//Si au moins un des champs n'est pas valide
 		if( !empty($this->erreurs) ){
-			if(isset($_POST["redirect"])){//Si le formulaire de creation provient d'une autre page que la page de creation
+			if(isset($array["redirect"])){//Si le formulaire de creation provient d'une autre page que la page de creation
 				//Redirection vers la page contenant le formulaire avec envoi des erreurs
-				header("Location:" . $_POST["redirect"] . "&erreurs=" . serialize($this->erreurs));
+				header("Location:" . $array["redirect"] . "&erreurs=" . serialize($this->erreurs));
 			} else{
-				$this->afficherNouvelleOption(); // On réaffiche le formulaire de creation avec les erreurs
+				$this->afficherNouveauSondage(); // On réaffiche le formulaire de creation avec les erreurs
 			}
 
 		// Ajout de l'utilisateur en base
@@ -466,7 +470,6 @@ public function ajoutVote(){
 				// On transforme la chaine en entier
 				$id_option = (int) $id_option;
 				
-				$this->afficherNouvelleOptionTermine();
 	
 	
 			// Gestion des doublons
@@ -488,14 +491,21 @@ public function ajoutVote(){
 					$this->addErreur(sprintf("Erreur ajout SQL (SQLSTATE = %d).", $erreur[0]));
 				}
 	
-				if(isset($_POST["redirect"])){//Si le formulaire d'inscription provient d'une autre page que la page d'inscription
+				if(isset($array["redirect"])){//Si le formulaire d'inscription provient d'une autre page que la page d'inscription
 					//Redirection vers la page contenant le formulaire avec envoi des erreurs
 					header("Location:" . $_POST["redirect"] . "&erreurs=" . serialize($this->erreurs));
 				} else{
 					// On reaffiche le formulaire d'inscription avec l'erreur de doublon
-					$this->afficherNouvelleOption();
+					$this->afficherNouveauSondage();
 				}
 			}			
+			}
+
+			}
+		}
+
+		if (ctype_digit($id_option)) {
+			$this->afficherNouveauSondageTermine();
 		}
 			
 	}
