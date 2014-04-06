@@ -21,22 +21,31 @@
 		<th>Date de fin</th>
 	</thead>
 	<tbody>
-		<?php foreach($ListeSondage as $key=>$sondage){ ?>
-		<tr class="<?php if($key%2) echo 'ligneImpaire'; else echo 'lignePaire'; ?>">
-			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>"><?php echo($sondage->getTitre()); ?></a></td>
-			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>"><?php echo($sondage->getDesc()); ?></a></td>
-			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>"><?php 
+		<?php foreach($ListeSondage as $key=>$sondage){ 
 			$datefin = $sondage->getDateFin(); 
 			$now = date('Y-m-d H:i:s');
 			$now = new DateTime( $now );
 			$now = $now->format('Y-m-d H:i:s');
 			$datefin = new DateTime($datefin);
 			$datefin = $datefin->format('Y-m-d H:i:s');
+			?>
+		<tr class="<?php if($key%2) echo 'ligneImpaire'; else echo 'lignePaire'; ?>">
+			<?php 
 			if($now<$datefin){
-				echo $datefin;
+				?>
+				<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>"><?php echo($sondage->getTitre()); ?></a></td>
+				<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>"><?php echo($sondage->getDesc()); ?></a></td>
+				<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherFicheSondage&params=' . $sondage->getId() ?>">
+				<?php
+				echo $datefin . "</a></td>";
 			}
 			else{
-				echo "Terminé";
+				?>
+				<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=resultat&params=' . $sondage->getId() ?>"><?php echo($sondage->getTitre()); ?></a></td>
+				<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=resultat&params=' . $sondage->getId() ?>"><?php echo($sondage->getDesc()); ?></a></td>
+				<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=resultat&params=' . $sondage->getId() ?>">
+				<?php
+				echo "Terminé". "</a></td>";
 			}
 			?></a></td>
 			<?php

@@ -16,7 +16,6 @@ echo($FicheSondage->getTitre());
 echo($FicheSondage->getDesc());
  ?></h3>
  <br />
-
 <?php foreach($ListeOptions as $key=>$option){
 	echo($option->getTexte());
 	$idOpt = $option->getId();

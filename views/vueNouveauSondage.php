@@ -26,6 +26,7 @@ $this->titre = "Nouveau Sondage";
 			<th>Visibilité</th>
 			<td>
 				<ul>
+					<?php if(!isset($_GET['params'])): ?>
 					<li class="bottomSeparator">
 						<div class="visibiliteRadioInput">
 							<label for="visibilitePublic">Public</label>
@@ -48,12 +49,13 @@ $this->titre = "Nouveau Sondage";
 						</div>
 					</li>
 					<?php
+					endif;
 					if(isset($_GET['params'])):
 					 ?>
 					<li class="bottomSeparator">
 						<div class="visibiliteRadioInput">
 							<label for="visibiliteGroupe">Groupe</label>
-							<input id="visibiliteGroupe" name="visibilite" type="radio" required="required" value="groupe" />
+							<input id="visibiliteGroupe" name="visibilite" type="radio" required="required" value="groupe" checked/>
 							<p>Seul les membres du groupe pourront acceder à ce sondage.</p>
 						</div>
 					</li>
