@@ -96,10 +96,9 @@ class ListeSondage extends BD {
 	}
 
 	public function constructeurListeComplet($idUser, $b, $c , $d){
-		$sql='SELECT id_sondage
+		$sql='SELECT DISTINCT id_sondage
 				FROM user_sondage_reponse
-				WHERE id_user=?
-				ORDER BY id DESC';
+				WHERE id_user=?';
 		$lectBdd = $this->executerRequete($sql, array($idUser));
             while (($enrBdd = $lectBdd->fetch()) != false)
             { 
