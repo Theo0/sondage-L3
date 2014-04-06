@@ -1,7 +1,17 @@
+<style>.ui-progressbar {
+    width: 70%;
+  	}</style>
 <?php $this->titre = "Résultat de " . $FicheSondage->getTitre(); 
 ?>
-<input id="idSondage" type="hidden" value="<?= $FicheSondage->getId() ?>" />
 
+<input id="idSondage" type="hidden" value="<?= $FicheSondage->getId() ?>" />
+<?php 
+$total = 0;
+foreach($ListeOptions as $key=>$option){
+$idOpt = $option->getId();
+$total = $total + $tabResult[$idOpt]->getScore();
+}
+?>
 <div id="ficheSondage">
 <?php if(empty($FicheSondage)){ ?>
 <?php $this->titre = "Sondage non trouvé"; ?>
@@ -17,10 +27,24 @@ echo($FicheSondage->getDesc());
  ?></h3>
  <br />
 <?php foreach($ListeOptions as $key=>$option){
+
 	echo($option->getTexte());
 	$idOpt = $option->getId();
 	echo "   Score : " . $tabResult[$idOpt]->getScore();
+	$pourcent = round(($tabResult[$idOpt]->getScore() * 100) / $total);
+	echo "  , soit : " . $pourcent . "%";
+	?>
+	<script>
+  	$(function() {
+    $( '<?php echo "#". $option->getId(); ?>' ).progressbar({
+      value: <?= $pourcent; ?>
+    	});
+ 	 });
+  	</script>
+   <div id='<?php echo($option->getId());?>'></div>
+   <?php
 	echo "<br />";
+
 }
 ?>
 

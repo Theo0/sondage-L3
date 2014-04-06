@@ -230,6 +230,16 @@ class Sondage extends BD{
 		return $removeSondage;
 	}
 	
+	public function nombreOptions(){
+		$sql = 'SELECT COUNT( id ) 
+		FROM  `option` 
+		WHERE  `id_sondage` =?';
+
+		$lectBdd = $this->executerRequete($sql, array($this->id));
+
+		return $nb = $lectBdd->fetch();
+	}
+
 	public function ajouterCommentaire($texteCommentaire, $idUser){
 		$sql = 'INSERT INTO commentaire SET
 		id_sondage = ?,

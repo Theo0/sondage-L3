@@ -4,6 +4,7 @@
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="<?= ABSOLUTE_ROOT . '/public/css/responsive/main.css'; ?>" />
 	<link rel="stylesheet" href="<?= ABSOLUTE_ROOT . '/public/css/jquery-ui.css'; ?>" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 	<script src="<?= ABSOLUTE_ROOT . '/public/js/jquery-1.9.0rc1.js' ?>"></script>
 	<script src="<?= ABSOLUTE_ROOT . '/public/js/jquery-migrate-1.0.0rc1.js' ?>"></script>
 	<script src="<?= ABSOLUTE_ROOT . '/public/js/jquery-ui.js' ?>"></script>

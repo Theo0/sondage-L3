@@ -253,7 +253,7 @@ public function afficherSondagesGroupe(){
 				$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 	
 		$sondage = new Sondage($_GET['params']);
-	
+
 		$ListeOption = new ListeOption($_GET['params']);
 	
 		$listeCommentaire = new ListeCommentaire($_GET['params']);
@@ -274,8 +274,17 @@ public function afficherVoteTermine(){
 
 public function ajoutVote(){
 
+	$sondage = new Sondage($_GET['params']);
+
+	$nbopt = $sondage->nombreOptions();
+
 	foreach ($_POST as $key => $value) {
-		$vote = new Vote($_GET['params'], $_SESSION['id'], $key, $value);
+
+		$n = $value-1;
+
+		$poid = $nbopt[0] - $n;
+
+		$vote = new Vote($_GET['params'], $_SESSION['id'], $key, $poid);
 		
 		$id_vote = $vote->add();
 
