@@ -29,9 +29,13 @@ class ListeCommentaire extends BD {
 
 	public function constructeurPlein($idSondage)
 	{
-            $sql='SELECT id, texte, id_commentaire, id_user
-                  FROM commentaire
-                  WHERE id_sondage = ?';
+            $sql='Select id, texte, c.id_commentaire, c.id_user, count(u.id_commentaire) as soutiens
+		FROM commentaire c
+		LEFT JOIN user_commentaire_like u
+		  ON c.id = u.id_commentaire
+		WHERE id_sondage = ?
+		Group by id
+		order by soutiens Desc, id Desc';
                                
             $lectBdd = $this->executerRequete($sql, array($idSondage));
             $i=0;
@@ -43,16 +47,7 @@ class ListeCommentaire extends BD {
                 $this->array_commentaires[$i]->setTexte($enrBdd["texte"]);
                 $this->array_commentaires[$i]->setIdCommentaire($enrBdd["id_commentaire"]);
                 $this->array_commentaires[$i]->setIdUser($enrBdd["id_user"]);
-		
-		
-		$sql = 'SELECT COUNT(*) as soutiens FROM user_commentaire_like WHERE id_commentaire = ?';
-		
-		$lectBdd2 = $this->executerRequete($sql, array($enrBdd["id"]));
-		if (($enrBdd2 = $lectBdd2->fetch()) != false){
-			$this->array_commentaires[$i]->setSoutiens($enrBdd2["soutiens"]);
-		} else{
-			$this->array_commentaires[$i]->setSoutiens(0);
-		}
+		$this->array_commentaires[$i]->setSoutiens($enrBdd["soutiens"]);
 		
                 $i++;
             }
