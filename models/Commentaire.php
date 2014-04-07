@@ -11,6 +11,7 @@ class Commentaire extends BD {
 	private $id_user;
 	private $texte;
 	private $id_commentaire;
+	private $soutiens;
 
 	public function __construct() 
 	{
@@ -32,12 +33,14 @@ class Commentaire extends BD {
 		$this->id_user = -1;
 		$this->texte = '';
 		$this->id_commentaire = null;
+		$this->soutiens = 0;
+		
 	}
 
-	public function constructeurPlein($idSondage){
-		$sql='SELECT * FROM commentaire where id_sondage = ?';
-					
-		$lectBdd = $this->executerRequete($sql, array($idSondage));
+	public function constructeurPlein($idCom){
+		$sql='SELECT * FROM commentaire where id = ?';
+				
+		$lectBdd = $this->executerRequete($sql, array($idCom));
 		if (($enrBdd = $lectBdd->fetch()) != false)
 		{
                     $this->id = $enrBdd['id'];
@@ -45,12 +48,21 @@ class Commentaire extends BD {
                     $this->id_user = $enrBdd['id_user'];
                     $this->texte = $enrBdd['texte'];
                     $this->id_commentaire = $enrBdd['id_commentaire'];
+		    
+		    $sql = 'SELECT COUNT(*) as soutiens FROM user_commentaire_like WHERE id_commentaire = ?';
+		    $lectBdd = $this->executerRequete($sql, array($idCom));
+		    if (($enrBdd = $lectBdd->fetch()) != false){
+			$this->soutiens = $enrBdd['soutiens'];
+		    }
+		    
+		    
 		} else{
                     $this->id = -1;
                     $this->id_sondage = null;
                     $this->id_user = -1;
                     $this->texte = '';
                     $this->id_commentaire = null;
+		    $this->soutiens = 0;
 		}
 	}
 
@@ -73,6 +85,10 @@ class Commentaire extends BD {
 	public function getIdCommentaire(){
 		return $this->id_commentaire;
 	}
+	
+	public function getSoutiens(){
+		return $this->soutiens;
+	}
 
 	public function setId($i){
 		$this->id = $i;
@@ -88,6 +104,10 @@ class Commentaire extends BD {
         
         public function setTexte($v){
             $this->texte = $v;
+        }
+	
+	public function setSoutiens($v){
+            $this->soutiens = $v;
         }
 	
 	public function setIdCommentaire($a){
@@ -147,6 +167,19 @@ class Commentaire extends BD {
 
 		return ($rm->rowCount() == 1);
 	}
+	
+
+	public function ajouterSoutien($idUser) {
+		$sql = 'INSERT INTO user_commentaire_like SET
+			id_user = ?,
+			id_commentaire = ?';
+		
+		$ins = $this->insererValeur($sql, array($idUser, $this->id));
+
+		return $ins;
+	}
+	
+	
 }
 
 ?>

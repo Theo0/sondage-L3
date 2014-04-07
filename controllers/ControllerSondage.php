@@ -548,6 +548,29 @@ public function ajoutVote(){
 			}
 		}
 	}
+	
+	/* Ajoute un soutien à un commentaire avec les infos récupérées en $_POST */
+	public function ajaxAjouterSoutienCommentaire(){		
+		if(empty($_POST["idCom"])){
+			echo "Le commentaire n'existe pas";
+			die();
+		}
+		
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour ajouter un soutien");
+			$controllerUser->afficherConnexion();
+		}else{
+			$commentaire = new Commentaire($_POST["idCom"]);
+			$userConnecte = new User($_SESSION["id"]);
+
+			if(ctype_digit($commentaire->ajouterSoutien($userConnecte->getId())))
+				echo '1';
+			else{
+				echo "Impossible d'ajouter le soutien";
+			}
+		}
+	}
 
 }
 

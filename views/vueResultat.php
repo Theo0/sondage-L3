@@ -54,7 +54,7 @@ echo($FicheSondage->getDesc());
 <div id="containerCommentaires">
 	<ul id="listeCommentaires">
 		<?php foreach($listeCommentaires as $key=>$commentaire): ?>
-		<li id="commentaire<?= $commentaire->getId() ?>"><?= $commentaire->getTexte() ?></li>
+		<li class="commentaire" id="commentaire<?= $commentaire->getId() ?>"><?= $commentaire->getTexte() ?> <span> <img src="<?= ABSOLUTE_ROOT . '/public/img/facebook-like-icon.png' ?>" onclick="ajouterSoutien( <?=$commentaire->getId() ?>)" /> <span id="soutien<?=$commentaire->getId() ?>" ><?= $commentaire->getSoutiens() ?> </span> </span> </li>
 		<?php endforeach; ?>
 		<li id="creerCommentaire">
 			<textarea id="textareaCommentaire" name="ajouterCommentaire" placeholder="Ecrire un commentaire..."></textarea>

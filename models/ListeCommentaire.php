@@ -6,7 +6,6 @@ require_once ROOT . '/models/Commentaire.php';
 
 class ListeCommentaire extends BD {
 
-
 	private $array_commentaires;
 
 	public function __construct() 
@@ -44,6 +43,15 @@ class ListeCommentaire extends BD {
                 $this->array_commentaires[$i]->setTexte($enrBdd["texte"]);
                 $this->array_commentaires[$i]->setIdCommentaire($enrBdd["id_commentaire"]);
                 $this->array_commentaires[$i]->setIdUser($enrBdd["id_user"]);
+		
+		
+		$sql = 'SELECT COUNT(*) as soutiens FROM user_commentaire_like WHERE id_commentaire = ?';
+		
+		$lectBdd = $this->executerRequete($sql, array($enrBdd["id"]));
+		if (($enrBdd = $lectBdd->fetch()) != false){
+			$this->array_commentaires[$i]->setSoutiens($enrBdd["soutiens"]);
+		}
+		
                 $i++;
             }
 	}
