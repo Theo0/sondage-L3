@@ -344,7 +344,7 @@ public function ajoutVote(){
 	public function ajoutUserSondage(){
 
 		//Récupération des champs du formulaire et insertion dans le modèle
-		$this->sondage->POSTToVar($_POST);
+		$this->sondage->POSTToVarAll($_POST);
 
 
 		//Si au moins un des champs n'est pas valide
