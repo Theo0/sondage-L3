@@ -45,6 +45,14 @@ echo($FicheSondage->getDesc());
   	</script>
    <div id='<?php echo($option->getId());?>'></div>
    <?php
+   $listUser = $tabUser[$option->getId()]->getArrayUser();
+   foreach ($listUser as $key => $value) {
+    	echo($value->getNom());
+    } 
+   ?>
+
+
+   <?php
 	echo "<br />";
 
 }

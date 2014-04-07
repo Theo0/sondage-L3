@@ -20,6 +20,9 @@ class ListeUser extends BD{
 		  	 case 1:
 		  	 $this->constructeurUserNonPresent(func_get_arg(0));
 		  	 	break;
+		  	 case 2:
+		  	 $this->constructeurUserNonPresent(func_get_arg(0), func_get_arg(1));
+		  	 	break;	
 		}
 	}
 
@@ -49,6 +52,20 @@ public function constructeurUserNonPresent($idSond){
                 $this->array_user[] = new User($enrBdd["id"]);
             }
 	}
+
+public function constructeurUserVote($idSond, $idOpt){
+
+	$sql='SELECT id_user FROM user_sondage_reponse
+			WHERE id_sondage=?';
+
+	$lectBdd = $this->executerRequete($sql, array($idSond, $idOpt));
+            while (($enrBdd = $lectBdd->fetch()) != false)
+            { 
+
+                $this->array_user[] = new User($enrBdd["id_user"]);
+            }		
+
+}	
 
 
 

@@ -351,7 +351,8 @@ public function ajoutVote(){
 		$sondage = new Sondage($_GET['params']);
 		}
 		else{
-		$ListeUser = new ListeUser();	
+		$ListeUser = new ListeUser();
+		$sondage = new Sondage();
 		}
 		
 		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser(), "membreTermine" => "1", "idSondage" => $sondage->getId(), "NomSondage" => $sondage->getTitre()));
@@ -491,7 +492,7 @@ public function ajoutVote(){
 
 			}
 		}
-
+ 
 			$this->afficherNouveauSondageTermine();
 			
 	}
@@ -509,15 +510,18 @@ public function ajoutVote(){
 		$listeCommentaire = new ListeCommentaire($_GET['params']);
 		
 		$resultat =  array();
+		$listeUser = array();
 
 		foreach($ListeOption->getArrayOption() as $key=>$option){
 		${'score'.$option->getId()}= new Score($option->getId() ,$_GET['params']);
 		$a = $option->getId();
 		$resultat[$a] = ${'score'.$option->getId()};
+		${'listeUser'.$option->getId()} = new ListeUser($_GET['params'], $option->getId());
+		$listeUser[$a] = ${'listeUser'.$option->getId()};
 		}
 
 		
-		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id']), "tabResult" => $resultat));
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id']), "tabResult" => $resultat, "tabUser" => $listeUser));
 	
 	}
 
