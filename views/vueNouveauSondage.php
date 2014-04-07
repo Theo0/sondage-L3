@@ -103,7 +103,7 @@ $this->titre = "Nouveau Sondage";
 						<div class="visibiliteRadioInput">
 							<label for="SecretScrutin">Secret Scrutin</label>
 							<input id="id_secret_2" name="secret" type="radio" value="secret_scrutin" />
-							<p>Personne ne sait pour qui les autres membres ont voté.</p>
+							<p>Personne ne sait pour qui les autres membres ont voté avant la fin du scrutin, puis les votes deviennent publics lors des résultats.</p>
 						</div>
 					</li>	
 					<li class="bottomSeparator">
