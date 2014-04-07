@@ -544,9 +544,9 @@ public function ajoutVote(){
 		}else{
 			$this->sondage = new Sondage($_POST["sondageId"]);
 			$userConnecte = new User($_SESSION["id"]);
-			
-			if(false !== $this->sondage->ajouterCommentaire($_POST["texteCommentaire"], $userConnecte->getId()))
-				echo '1';
+			$ajoutCom = $this->sondage->ajouterCommentaire($_POST["texteCommentaire"], $userConnecte->getId());
+			if(ctype_digit($ajoutCom))
+				echo $ajoutCom;
 			else{
 				echo "Impossible d'ajouter le commentaire";
 			}

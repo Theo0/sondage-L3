@@ -47,9 +47,11 @@ class ListeCommentaire extends BD {
 		
 		$sql = 'SELECT COUNT(*) as soutiens FROM user_commentaire_like WHERE id_commentaire = ?';
 		
-		$lectBdd = $this->executerRequete($sql, array($enrBdd["id"]));
-		if (($enrBdd = $lectBdd->fetch()) != false){
-			$this->array_commentaires[$i]->setSoutiens($enrBdd["soutiens"]);
+		$lectBdd2 = $this->executerRequete($sql, array($enrBdd["id"]));
+		if (($enrBdd2 = $lectBdd2->fetch()) != false){
+			$this->array_commentaires[$i]->setSoutiens($enrBdd2["soutiens"]);
+		} else{
+			$this->array_commentaires[$i]->setSoutiens(0);
 		}
 		
                 $i++;
