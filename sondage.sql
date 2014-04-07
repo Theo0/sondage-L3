@@ -284,6 +284,21 @@ CREATE TABLE IF NOT EXISTS `user_sondage_reponse` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `invite_sondage_reponse`
+--
+
+CREATE TABLE IF NOT EXISTS `invite_sondage_reponse` (
+  `id_sondage` int(11) NOT NULL,
+  `ip_user` varchar(40) NOT NULL,
+  `id_option` int(11) NOT NULL,
+  `classement` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_sondage`,`id_user`,`id_option`),
+  KEY `ipx_user_sondage_reponse` (`id_sondage`),
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `user_sondage_votant`
 --
 
@@ -375,6 +390,14 @@ ALTER TABLE `user_sondage_reponse`
   ADD CONSTRAINT `fk_user_sondage_reponse` FOREIGN KEY (`id_sondage`) REFERENCES `sondage` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_user_sondage_reponse_options` FOREIGN KEY (`id_option`) REFERENCES `option` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_user_sondage_reponse_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `invite_sondage_reponse`
+--
+ALTER TABLE `user_sondage_reponse`
+  ADD CONSTRAINT `fk_invite_sondage_reponse` FOREIGN KEY (`id_sondage`) REFERENCES `sondage` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_invite_sondage_reponse_options` FOREIGN KEY (`id_option`) REFERENCES `option` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 
 --
 -- Contraintes pour la table `user_sondage_votant`
