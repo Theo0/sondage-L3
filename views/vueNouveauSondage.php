@@ -21,7 +21,7 @@ $this->titre = "Nouveau Sondage";
             {
               if(intTextBox != 0)
               {
-                    var contentID = document.getElementById('content');
+                    var contentID = document.getElementById('optionsdyn');
                     contentID.removeChild(document.getElementById('strText'+intTextBox));
                     intTextBox = intTextBox-1;
                 }
