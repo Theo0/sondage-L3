@@ -45,11 +45,17 @@ public function getScore(){
 public function calculeScore(){
 	
 	$sql='SELECT SUM( classement ) 
-	FROM user_sondage_reponse
-	WHERE id_option =?
-	AND id_sondage=?';
+			FROM (
+    			SELECT classement
+        		FROM user_sondage_reponse
+        		WHERE id_option=? AND id_sondage=?
+       				 UNION 
+        		SELECT classement 
+       			FROM invite_sondage_reponse
+        		WHERE id_option=? AND id_sondage=?
+    			) as unionuser';
 
-	$lectBdd = $this->executerRequete($sql, array($this->id_option, $this->id_sondage));
+	$lectBdd = $this->executerRequete($sql, array($this->id_option, $this->id_sondage, $this->id_option, $this->id_sondage));
             $enrBdd = $lectBdd->fetch();
             $this->score = $enrBdd[0];
            

@@ -40,8 +40,16 @@ class Vote extends BD{
 
 	}
 
+
 	public function add(){
 		$sql = "INSERT INTO `user_sondage_reponse`(`id_sondage`, `id_user`, `id_option`, `classement`) 
+		VALUES (?,?,?,?)";
+		$insertVote = $this->insererValeur($sql, array($this->id_sondage, $this->id_user, $this->id_option,$this->classement));
+		return $insertVote;
+	}
+
+	public function addInvite(){
+		$sql = "INSERT INTO `invite_sondage_reponse`(`id_sondage`, `ip_user`, `id_option`, `classement`) 
 		VALUES (?,?,?,?)";
 		$insertVote = $this->insererValeur($sql, array($this->id_sondage, $this->id_user, $this->id_option,$this->classement));
 		return $insertVote;

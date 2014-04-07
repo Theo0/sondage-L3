@@ -258,9 +258,14 @@ public function afficherSondagesGroupe(){
 		$ListeOption = new ListeOption($_GET['params']);
 	
 		$listeCommentaire = new ListeCommentaire($_GET['params']);
+
 		
+		if(isset($_SESSION['id'])){
 		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id'])));
-	
+		}
+		else{
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVoteInvite($_SERVER["REMOTE_ADDR"])));	
+		}
 	}
 
 public function afficherVoteTermine(){
@@ -281,13 +286,25 @@ public function ajoutVote(){
 
 	foreach ($_POST as $key => $value) {
 
+
 		$n = $value-1;
 
 		$poid = $nbopt[0] - $n;
 
+		if(isset($_SESSION['id'])){
+
 		$vote = new Vote($_GET['params'], $_SESSION['id'], $key, $poid);
 		
 		$id_vote = $vote->add();
+
+		}
+		else{
+
+		$vote = new Vote($_GET['params'], $_SERVER["REMOTE_ADDR"], $key, $poid);
+		
+		$id_vote = $vote->addInvite();
+
+		}
 
 	}
 
@@ -402,32 +419,6 @@ public function ajoutVote(){
 		}
 			
 
-	}
-
-
-
-	/* Affichage de la page de creation d'une nouvelle option */
-	public function afficherNouvelleOption() {
-		$this->vue = new Vue("NouvelleOption");
-
-		//Si le contrôlleur possède des erreurs de référencées
-		if( !empty($this->erreurs) )
-			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
-
-		$ListeSondage = new ListeSondage($_SESSION['id']);
-		
-		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage()));	
-	}
-
-	/* Affichage de la page quand la creation a terminé avec succès */
-	public function afficherNouvelleOptionTermine(){
-		$this->vue = new Vue("NouvelleOption");
-
-		if( !empty($this->erreurs) )
-			$this->vue->setErreurs($this->erreurs);
-		$ListeSondage = new ListeSondage($_SESSION['id']);
-
-		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(), "optionTermine" => "1"));
 	}
 	
 

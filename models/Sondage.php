@@ -262,6 +262,18 @@ class Sondage extends BD{
 
 	}
 
+	public function dejaVoteInvite($ipUser){
+
+		$sql='SELECT COUNT( * ) 
+		FROM invite_sondage_reponse
+		WHERE ip_user =?
+		AND id_sondage =?';
+
+		$lectBdd = $this->executerRequete($sql, array($ipUser, $this->id));
+		return $verifVote = $lectBdd->fetch();
+
+	}
+
 	public function POSTToVarAll($array){
 		foreach ($array as $key => $value) {
 		    //Suppression des espaces en début et en fin de chaîne
