@@ -457,9 +457,6 @@ public function ajoutVote(){
 
 			// Si la base de données a bien voulu ajouter l'utliisateur (pas de doublons)
 			if (ctype_digit($id_option)) {
-
-				// On transforme la chaine en entier
-				$id_option = (int) $id_option;
 				
 	
 	
@@ -495,9 +492,7 @@ public function ajoutVote(){
 			}
 		}
 
-		if (ctype_digit($id_option)) {
 			$this->afficherNouveauSondageTermine();
-		}
 			
 	}
 	
