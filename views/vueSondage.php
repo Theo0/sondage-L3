@@ -7,7 +7,12 @@
 <?php $this->titre = "Sondage non trouvé"; ?>
 <p>Erreur : Aucun sondage séléctionné !</p>
 <?php } else{ ?>
-<?php $this->titre = $FicheSondage->getTitre(); ?>
+<?php 
+require_once ROOT . "/models/Score.php";
+$this->titre = $FicheSondage->getTitre();
+$id = 1;
+$op = 10000;
+ ?>
 <h1><?php
 echo($FicheSondage->getTitre());
  ?></h1>
@@ -20,7 +25,10 @@ echo($FicheSondage->getDesc());
 <p>Ordonnez vos réponses parmis les choix ci-dessous (1 étant votre choix préféré).<br />
 Vous pouvez classer plusieurs options ex-aequo.</p>
 <form method="POST" action=" <?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=ajoutVote&params=' .$_GET['params']; ?>" id="formulaire_vote" >
-<?php foreach($ListeOptions as $key=>$option){ ?>
+<?php foreach($ListeOptions as $key=>$option){ 
+	$id = $id+1;
+	$op = $op+1;
+	?>
 <?php echo($option->getTexte()); 
 echo '<select name="' .$option->getId(). '">';
  ?>
@@ -31,8 +39,47 @@ for ($i=0 ; $i < sizeof($ListeOptions) ; $i++ ) {
  } 
 ?>
 </select>
-<br />
-<?php } ?>
+<?php
+ if($FicheSondage->getSecret() == "public"): ?>
+<script>
+  $(function() {
+    $( "<?='#'.$id;?>" ).dialog({
+      autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 100
+      },
+      hide: {
+        effect: "explode",
+        duration: 100
+      }
+    });
+ 
+    $( "<?='#'.$op;?>" ).click(function() {
+      $( "<?='#'.$id;?>").dialog( "open" );
+    });
+  });
+  </script>
+  <div id='<?=$id;?>' title="Score attribué">
+  	<?php
+  	if(empty($tabUser)){echo "Aucun vote !";}
+   foreach ($tabUser as $key => $value) {
+    	echo $value->getNom() . "   " . $value->getPrenom();
+    	$scoreUser = new Score($option->getId(), $FicheSondage->getId(), $value->getId());
+    	echo " : " . $scoreUser->getScore() . "<br />";
+
+    } 
+   ?>
+   </div>
+   <button type='button' id='<?=$op;?>'>Afficher les votants</button>
+
+
+
+<?php
+endif;
+echo "<br />";
+ } ?>
+
 <input type="submit" value="Voter">
 </form>
 
@@ -48,7 +95,51 @@ for ($i=0 ; $i < sizeof($ListeOptions) ; $i++ ) {
 </div>
 <?php }
 else{
-	echo "Vous avez déjà répondu à ce sondage !";
+	$id = 1;
+	$op = 10000;
+	echo "<b>Vous avez déjà répondu à ce sondage !<b><br />";
+	foreach($ListeOptions as $key=>$option){ 
+
+		$id = $id+1;
+		$op = $op+1;
+		echo $option->getTexte();
+
+		if($FicheSondage->getSecret() == "public"): ?>
+		<script>
+  $(function() {
+    $( "<?='#'.$id;?>" ).dialog({
+      autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 100
+      },
+      hide: {
+        effect: "explode",
+        duration: 100
+      }
+    });
+ 
+    $( "<?='#'.$op;?>" ).click(function() {
+      $( "<?='#'.$id;?>").dialog( "open" );
+    });
+  });
+  </script>
+  <div id='<?=$id;?>' title="Score attribué">
+  	<?php
+  	if(empty($tabUser)){echo "Aucun vote !";}
+   foreach ($tabUser as $key => $value) {
+    	echo $value->getNom() . "   " . $value->getPrenom();
+    	$scoreUser = new Score($option->getId(), $FicheSondage->getId(), $value->getId());
+    	echo " : " . $scoreUser->getScore() . "<br />";
+
+    } 
+   ?>
+   </div>
+   <button type='button' id='<?=$op;?>'>Afficher les votants</button>
+<?php
+endif;
+echo "<br />";
+	}
 } 
 }
 ?>

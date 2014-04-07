@@ -21,7 +21,7 @@ class ListeUser extends BD{
 		  	 $this->constructeurUserNonPresent(func_get_arg(0));
 		  	 	break;
 		  	 case 2:
-		  	 $this->constructeurUserNonPresent(func_get_arg(0), func_get_arg(1));
+		  	 $this->constructeurUserVote(func_get_arg(0), func_get_arg(1));
 		  	 	break;	
 		}
 	}
@@ -53,12 +53,13 @@ public function constructeurUserNonPresent($idSond){
             }
 	}
 
-public function constructeurUserVote($idSond, $idOpt){
+public function constructeurUserVote($idSond, $a){
+	
 
-	$sql='SELECT id_user FROM user_sondage_reponse
+	$sql='SELECT DISTINCT id_user FROM user_sondage_reponse
 			WHERE id_sondage=?';
 
-	$lectBdd = $this->executerRequete($sql, array($idSond, $idOpt));
+	$lectBdd = $this->executerRequete($sql, array($idSond));
             while (($enrBdd = $lectBdd->fetch()) != false)
             { 
 

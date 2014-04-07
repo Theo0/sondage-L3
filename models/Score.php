@@ -21,6 +21,8 @@ public function __construct()
 		  	 case 2:
 			$this->constructeurPlein(func_get_arg(0), func_get_arg(1));
 				break;
+			 case 3:
+			 $this->constructeurUser(func_get_arg(0), func_get_arg(1), func_get_arg(2));	
 		}
 		
 	}
@@ -36,6 +38,19 @@ public function constructeurPlein($idOpt, $idSond){
 	$this->id_sondage = $idSond;
 	$this->score=0;
 	$this->calculeScore();
+}
+
+public function constructeurUser($idOpt, $idSond, $idUser){
+	$this->id_option = $idOpt;
+	$this->id_sondage = $idSond;
+	$this->score=0;
+	
+	$sql = 'SELECT classement FROM user_sondage_reponse
+			WHERE id_option=? AND id_sondage=? AND id_user=?';
+
+	$lectBdd = $this->executerRequete($sql, array($this->id_option, $this->id_sondage, $idUser));
+            $enrBdd = $lectBdd->fetch();
+            $this->score = $enrBdd[0];
 }
 
 public function getScore(){

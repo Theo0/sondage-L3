@@ -259,12 +259,15 @@ public function afficherSondagesGroupe(){
 	
 		$listeCommentaire = new ListeCommentaire($_GET['params']);
 
+		$a = -1;
+		$listeUser = new ListeUser($_GET['params'], $a);
+
 		
 		if(isset($_SESSION['id'])){
-		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id'])));
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id']), "tabUser" => $listeUser->getArrayUser()));
 		}
 		else{
-		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVoteInvite($_SERVER["REMOTE_ADDR"])));	
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVoteInvite($_SERVER["REMOTE_ADDR"]), "tabUser" => $listeUser->getArrayUser()));	
 		}
 	}
 
@@ -510,18 +513,19 @@ public function ajoutVote(){
 		$listeCommentaire = new ListeCommentaire($_GET['params']);
 		
 		$resultat =  array();
-		$listeUser = array();
+		$a = -1;
+
+		$listeUser = new ListeUser($_GET['params'], $a);
 
 		foreach($ListeOption->getArrayOption() as $key=>$option){
 		${'score'.$option->getId()}= new Score($option->getId() ,$_GET['params']);
 		$a = $option->getId();
 		$resultat[$a] = ${'score'.$option->getId()};
-		${'listeUser'.$option->getId()} = new ListeUser($_GET['params'], $option->getId());
-		$listeUser[$a] = ${'listeUser'.$option->getId()};
+		
 		}
 
 		
-		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id']), "tabResult" => $resultat, "tabUser" => $listeUser));
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id']), "tabResult" => $resultat, "tabUser" => $listeUser->getArrayUser()));
 	
 	}
 
