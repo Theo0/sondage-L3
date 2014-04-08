@@ -54,6 +54,13 @@
 			?>
 			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficheAjoutUserSondage&params=' . $sondage->getId() ?>">Ajouter des utilisateurs</a></td>
 			<?php } ?>
+			<?php
+			if($admin == 1)
+			{
+			?>
+			<td><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=supprimerSondage&params=' . $sondage->getId() ?>"><img src="<?= ABSOLUTE_ROOT . '/public/css/images/red-cross.png' ?>"></a></td>
+			<?php } ?>
+
 		</tr>
 		<?php } ?>
 	</tbody>

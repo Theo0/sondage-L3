@@ -117,8 +117,15 @@ public function afficherSondagesPublic(){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
 		$ListeSondage = new ListeSondage();
+		$user = new User($_SESSION['id']);
+		if($user->getAdministrateurSite() ==1){
+			$admin = 1;
+		}
+		else{
+			$admin = 0;
+		}
 		
-		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "public"));	
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "public", "admin" => $admin));	
 		
 
 }
@@ -142,8 +149,15 @@ public function afficherSondagesInscrit(){
 		$b = -1;
 		$c = -1;
 		$ListeSondage2 = new ListeSondage($a, $b, $c);
+
+		if($user->getAdministrateurSite() ==1){
+			$admin = 1;
+		}
+		else{
+			$admin = 0;
+		}
 		
-		$this->vue->generer(array("ListeSondage" => $ListeSondage2->getArraySondage(),  "pageSelected" => "sondageInscrit"));	
+		$this->vue->generer(array("ListeSondage" => $ListeSondage2->getArraySondage(),  "pageSelected" => "sondageInscrit", "admin" => $admin));	
 		}
 
 }
@@ -164,8 +178,15 @@ public function afficherSondagesAdmin(){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
 		$ListeSondage = new ListeSondage($_SESSION['id']);
+
+		if($user->getAdministrateurSite() ==1){
+			$admin = 1;
+		}
+		else{
+			$admin = 0;
+		}
 		
-		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondageAdministre"));	
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondageAdministre", "admin" => $admin));	
 		}	
 	}
 
@@ -186,8 +207,15 @@ public function afficherSondagesComplet(){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 		$b = -1; $c = -1; $d = -1;
 		$ListeSondage = new ListeSondage($_SESSION['id'], $b, $c, $d);
+
+		if($user->getAdministrateurSite() ==1){
+			$admin = 1;
+		}
+		else{
+			$admin = 0;
+		}
 		
-		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondageComplet"));	
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondageComplet", "admin" => $admin));	
 		}	
 	}
 
@@ -206,8 +234,15 @@ public function afficherSondagesPrive(){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 		$a = -1; $b = -1; $c = -1; $d = -1;
 		$ListeSondage = new ListeSondage($_SESSION['id'], $a, $b, $c, $d);
+
+		if($user->getAdministrateurSite() ==1){
+			$admin = 1;
+		}
+		else{
+			$admin = 0;
+		}
 		
-		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondagePrive"));	
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondagePrive", "admin" => $admin));	
 		}	
 	}
 
@@ -228,8 +263,15 @@ public function afficherSondagesGroupe(){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
 		$ListeSondage = new ListeSondage($_SESSION['id'], $_GET['params']);
+
+		if($user->getAdministrateurSite() ==1){
+			$admin = 1;
+		}
+		else{
+			$admin = 0;
+		}
 		
-		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages"));	
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages", "admin" => $admin));	
 		}	
 	}			
 
@@ -487,6 +529,29 @@ public function ajoutVote(){
 			
 	}
 	
+
+	public function supprimerSondage(){
+		$this->vue = new Vue("sondageSupprime");
+		//Si le contrôlleur possède des erreurs de référencées
+			if( !empty($this->erreurs) )
+				$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+		$sondage = new Sondage($_GET['params']);
+		$user = new User($_SESSION['id']);
+
+		if($user->getAdministrateurSite() == 1)	{
+			$bdd = $sondage->remove();
+			$retour = 1;
+
+		}
+		else{
+			$retour = 0;
+		}
+
+		$this->vue->generer(array("retour" => $retour));
+	
+	}
+
 	public function resultat(){
 	$this->vue = new Vue("Resultat");
 		//Si le contrôlleur possède des erreurs de référencées
