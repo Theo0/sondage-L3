@@ -186,13 +186,14 @@ class Sondage extends BD{
 		administrateur_id=?,
 		date_creation= NOW(),
 		date_fin=?,
-		secret=?,
+		`secret`=?,
 		id_groupe=?';
 		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_groupe));
 		return $insertSondage;
 
 	}
 	else{
+		echo $this->secret;
 		$sql = 'INSERT INTO sondage SET
 		titre=?,
 		description=?,
@@ -200,7 +201,7 @@ class Sondage extends BD{
 		administrateur_id=?,
 		date_creation= NOW(),
 		date_fin=?,
-		secret=?';
+		`secret`=?';
 		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret));
 		return $insertSondage;
 	}
@@ -215,7 +216,7 @@ class Sondage extends BD{
 		visibilite=?,
 		administrateur_id=?,
 		date_fin=?,
-		secret=?,
+		`secret`=?,
 		id_groupe=?
 		WHERE id=?';
 
@@ -299,19 +300,5 @@ class Sondage extends BD{
 			}
 	}
 
-
-	public function validateVisibilite(){
-		if($this->visiblite='public' || $this->visiblite='inscrits' || $this->visiblite='groupe' || $this->visiblite='prive')
-			{return 1;}
-		else
-			{return "La visibilite doit être public/inscrits/groupe/prive";}
-	}
-
-	public function validateSecret(){
-		if($this->secret='secret' || $this->secret='secret_scrutin' || $this->secret='public')
-			{return 1;}
-		else
-			{return "La valeur de secret doit être secret/secret_scrutin/public";}
-	}
 
 }

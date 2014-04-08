@@ -53,20 +53,6 @@ class ControllerSondage extends Controller{
 		//Récupération des champs du formulaire et insertion dans le modèle
 		$this->sondage->POSTToVar($_POST);
 
-		
-		/* Vérification de la validité nom d'utilisateur */ 
-		$validateVisibilite = $this->sondage->validateVisibilite();
-		if( $validateVisibilite !== 1 ){
-			$this->addErreur($validateVisibilite);
-		}
-	
-		/* Vérification de la validité de l'adresse email */
-		$validateSecret = $this->sondage->validateSecret();
-		if($validateSecret !==1 ){
-			$this->addErreur($validateSecret);
-		}
-
-
 
 		//Si au moins un des champs n'est pas valide
 		if( !empty($this->erreurs) ){
@@ -82,6 +68,7 @@ class ControllerSondage extends Controller{
 			
 
 			// Ajout du membre en base et récupération de l'identifiant (ou du message d'erreur)
+
 			$id_sondage = $this->sondage->add();
 			
 
