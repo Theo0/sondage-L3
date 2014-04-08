@@ -1,4 +1,6 @@
-<?php $this->titre = $FicheSondage->getTitre(); 
+<?php 
+require_once ROOT . "/models/Score.php";
+$this->titre = $FicheSondage->getTitre(); 
 ?>
 <input id="idSondage" type="hidden" value="<?= $FicheSondage->getId() ?>" />
 
