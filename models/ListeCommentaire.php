@@ -34,8 +34,9 @@ class ListeCommentaire extends BD {
 		LEFT JOIN user_commentaire_like u
 		  ON c.id = u.id_commentaire
 		WHERE id_sondage = ?
+		AND c.id_commentaire IS NULL
 		Group by id
-		order by soutiens Desc, id Desc';
+		order by soutiens Desc, id ASC';
                                
             $lectBdd = $this->executerRequete($sql, array($idSondage));
             $i=0;
@@ -49,8 +50,34 @@ class ListeCommentaire extends BD {
                 $this->array_commentaires[$i]->setIdUser($enrBdd["id_user"]);
 		$this->array_commentaires[$i]->setSoutiens($enrBdd["soutiens"]);
 		
+		$sql='Select id, texte, c.id_commentaire, c.id_user
+		FROM commentaire c
+		WHERE id_sondage = ?
+		AND c.id_commentaire = ?
+		order by id ASC';
+                               
+		$lectBdd2 = $this->executerRequete($sql, array($idSondage, $enrBdd["id"]));
+		$j=0;
+		$arraySousCom = array();
+		while (($enrBdd2 = $lectBdd2->fetch()) != false)
+		{ 
+		    $arraySousCom[$j] = new Commentaire();
+		    $arraySousCom[$j]->setId($enrBdd2["id"]);
+		    $arraySousCom[$j]->setIdSondage($idSondage);
+		    $arraySousCom[$j]->setTexte($enrBdd2["texte"]);
+		    $arraySousCom[$j]->setIdCommentaire($enrBdd2["id_commentaire"]);
+		    $arraySousCom[$j]->setIdUser($enrBdd2["id_user"]);
+		    $arraySousCom[$j]->setSoutiens(0);
+		    
+		    $j++;
+		}
+	    
+		$this->array_commentaires[$i]->setSousCommentaires($arraySousCom);
+	    
                 $i++;
             }
+	    
+	    
 	}
 
 	public function getArrayCommentaires(){

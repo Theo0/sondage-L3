@@ -280,7 +280,7 @@ class ControllerGroupe extends Controller{
 	public function rejoindreGroupe($idGroupe){
 		if(empty($_SESSION["id"])){
 			$controllerUser = new ControllerUser();
-			$controllerUser->addErreur("Vous devez vous connecter pour quitter un groupe");
+			$controllerUser->addErreur("Vous devez vous connecter pour rejoindre un groupe");
 			$controllerUser->afficherConnexion();
 		}else{
 			if(empty($idGroupe)){
@@ -305,7 +305,7 @@ class ControllerGroupe extends Controller{
 					
 					$this->afficherGroupe($idGroupe, $message);					
 				} else{
-					$this->addErreur("Impossible de quitter le groupe");
+					$this->addErreur("Impossible de rejoindre le groupe");
 					$this->afficherErreurGroupe();
 				}
 			}

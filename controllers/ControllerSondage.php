@@ -557,6 +557,34 @@ public function ajoutVote(){
 		}
 	}
 	
+	/* Ajoute un commentaire à un sondage avec les infos récupérées en $_POST: texteCommentaire et sondageId */
+	public function ajaxAjouterSousCommentaire(){
+		if(empty($_POST["texteCommentaire"])){
+			echo "Le commentaire ne peut pas être vide";
+			die();
+		}
+		
+		if(empty($_POST["commentaireId"])){
+			echo "Le commentaire n'existe pas";
+			die();
+		}
+		
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour ajouter un commentaire à un sondage");
+			$controllerUser->afficherConnexion();
+		}else{
+			$commentaire = new Commentaire($_POST["commentaireId"]);
+			$userConnecte = new User($_SESSION["id"]);
+			$ajoutCom = $commentaire->ajouterSousCommentaire($_POST["texteCommentaire"], $userConnecte->getId());
+			if(ctype_digit($ajoutCom))
+				echo $ajoutCom;
+			else{
+				echo "Impossible d'ajouter le sous commentaire";
+			}
+		}
+	}
+	
 	/* Ajoute un soutien à un commentaire avec les infos récupérées en $_POST */
 	public function ajaxAjouterSoutienCommentaire(){		
 		if(empty($_POST["idCom"])){

@@ -41,7 +41,7 @@
                 }
                 
                 $isAdminGroupe = false;
-                if($groupe->getAdministrateurId() == $_SESSION["id"])
+                if(isset($_SESSION["id"]) && $groupe->getAdministrateurId() == $_SESSION["id"])
                         $isAdminGroupe = true;
         ?>
          <tr class="<?php if($key%2) echo 'ligneImpaire'; else echo 'lignePaire'; ?>" >

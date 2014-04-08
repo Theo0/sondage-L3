@@ -3131,6 +3131,10 @@ input[type=submit]:hover, input[type=button]:hover{
 
 /* MODIFS */
 
+.blogwrapstart {
+	margin-bottom: 60px;
+}
+
 /* Formulaires */
 form {
     width: 80%;
@@ -3628,5 +3632,36 @@ font-weight: bold;
 	height: 25px;
 }
 
+
+/***** Commentaires *****/
+
+#listeCommentaires li{
+	list-style-type: none;
+	background-color: #E7E7E7;
+	width: 90%;
+}
+
+#listeCommentaires .listeSousCommentaires li{
+	background-color: #ECECEC;
+	width: 90%;
+	margin-top: 5px;
+}
+
+.blocSoutiens{
+	float:right;
+}
+
+.blocSoutiens span{
+	color: black;
+	font-size: 40px;
+}
+
+.creerSousCommentaire{
+}
+
+.pseudoCommentaire{
+	color: #d25809;
+	font-weight: bold;
+}
 
 

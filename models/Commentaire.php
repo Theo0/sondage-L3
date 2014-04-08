@@ -12,6 +12,7 @@ class Commentaire extends BD {
 	private $texte;
 	private $id_commentaire;
 	private $soutiens;
+	private $array_sousCommentaires;
 
 	public function __construct() 
 	{
@@ -34,7 +35,7 @@ class Commentaire extends BD {
 		$this->texte = '';
 		$this->id_commentaire = null;
 		$this->soutiens = 0;
-		
+		$this->array_sousCommentaires = array();
 	}
 
 	public function constructeurPlein($idCom){
@@ -54,7 +55,7 @@ class Commentaire extends BD {
 		    if (($enrBdd = $lectBdd->fetch()) != false){
 			$this->soutiens = $enrBdd['soutiens'];
 		    }
-		    
+		    $this->array_sousCommentaires = array();
 		    
 		} else{
                     $this->id = -1;
@@ -63,6 +64,7 @@ class Commentaire extends BD {
                     $this->texte = '';
                     $this->id_commentaire = null;
 		    $this->soutiens = 0;
+		    $this->array_sousCommentaires = array();
 		}
 	}
 
@@ -82,12 +84,20 @@ class Commentaire extends BD {
 		return $this->id_user;
 	}
 	
+	public function getUser(){
+		return new User($this->id_user);
+	}
+	
 	public function getIdCommentaire(){
 		return $this->id_commentaire;
 	}
 	
 	public function getSoutiens(){
 		return $this->soutiens;
+	}
+	
+	public function getSousCommentaires(){
+		return $this->array_sousCommentaires;
 	}
 
 	public function setId($i){
@@ -112,7 +122,11 @@ class Commentaire extends BD {
 	
 	public function setIdCommentaire($a){
 		$this->id_commentaire = $a;
-        }	
+        }
+	
+	public function setSousCommentaires($s){
+		$this->array_sousCommentaires = $s;
+	}
 
 	/* Formate les variables récupérées d'un formulaire et les stocke dans $this */
 	public function POSTToVar($array){
@@ -177,6 +191,17 @@ class Commentaire extends BD {
 		$ins = $this->insererValeur($sql, array($idUser, $this->id));
 
 		return $ins;
+	}
+	
+	public function ajouterSousCommentaire($texteCommentaire, $idUser){
+		$sql = 'INSERT INTO commentaire SET
+		id_sondage = ?,
+		id_user = ?,
+		texte = ?,
+		id_commentaire = ?;';
+		$insertCom = $this->insererValeur($sql, array($this->id_sondage, $idUser , $texteCommentaire, $this->id));
+		
+		return $insertCom;
 	}
 	
 	
