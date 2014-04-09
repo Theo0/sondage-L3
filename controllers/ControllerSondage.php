@@ -149,6 +149,8 @@ public function afficherSondagesInscrit(){
 		$b = -1;
 		$c = -1;
 		$ListeSondage2 = new ListeSondage($a, $b, $c);
+		$user = new User($_SESSION['id']);
+
 
 		if($user->getAdministrateurSite() ==1){
 			$admin = 1;
@@ -178,6 +180,8 @@ public function afficherSondagesAdmin(){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
 		$ListeSondage = new ListeSondage($_SESSION['id']);
+		$user = new User($_SESSION['id']);
+
 
 		if($user->getAdministrateurSite() ==1){
 			$admin = 1;
@@ -207,6 +211,8 @@ public function afficherSondagesComplet(){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 		$b = -1; $c = -1; $d = -1;
 		$ListeSondage = new ListeSondage($_SESSION['id'], $b, $c, $d);
+		$user = new User($_SESSION['id']);
+
 
 		if($user->getAdministrateurSite() ==1){
 			$admin = 1;
@@ -234,6 +240,7 @@ public function afficherSondagesPrive(){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 		$a = -1; $b = -1; $c = -1; $d = -1;
 		$ListeSondage = new ListeSondage($_SESSION['id'], $a, $b, $c, $d);
+		$user = new User($_SESSION['id']);
 
 		if($user->getAdministrateurSite() ==1){
 			$admin = 1;
@@ -263,6 +270,7 @@ public function afficherSondagesGroupe(){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
 		$ListeSondage = new ListeSondage($_SESSION['id'], $_GET['params']);
+		$user = new User($_SESSION['id']);
 
 		if($user->getAdministrateurSite() ==1){
 			$admin = 1;
