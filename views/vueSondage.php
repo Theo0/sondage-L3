@@ -85,32 +85,6 @@ echo "<br />";
 <input type="submit" value="Voter">
 </form>
 
-<div id="containerCommentaires">
-	<ul id="listeCommentaires">
-		<?php foreach($listeCommentaires as $key=>$commentaire): ?>
-		<li class="commentaire" id="commentaire<?= $commentaire->getId() ?>">
-			<p class="pseudoCommentaire"><?= $commentaire->getUser()->getPrenom() . ' ' . $commentaire->getUser()->getNom() ?></p>
-			<span class="texteCommentaire"><?= $commentaire->getTexte() ?></span>
-			
-			<span class="blocSoutiens"> 
-				<span id="soutien<?=$commentaire->getId() ?>" ><?= $commentaire->getSoutiens() ?> </span>
-				<span> <img src="<?= ABSOLUTE_ROOT . '/public/img/facebook-like-icon.png' ?>" onclick="ajouterSoutien( <?=$commentaire->getId() ?>)" /> </span>
-			</span>
-			
-			<ul class="listeSousCommentaires">
-				<?php foreach($commentaire->getSousCommentaires() as $key=>$sousCommentaire): ?>
-				<li class="sousCommentaire" id="sousCommentaire<?= $sousCommentaire->getId() ?>">
-				<span class="pseudoCommentaire"><?= $sousCommentaire->getUser()->getPrenom() . ' ' . $sousCommentaire->getUser()->getNom() ?></span> - <?= $sousCommentaire->getTexte() ?></li>
-				<?php endforeach; ?>
-			</ul>
-			<textarea class="textareaSousCommentaire" id="<?= $commentaire->getId() ?>" name="ajouterCommentaire" placeholder="Ecrire un sous commentaire..." maxlength="50"></textarea>
-		</li>
-
-		<?php endforeach; ?>
-	</ul>
-	
-	<textarea id="textareaCommentaire" name="ajouterCommentaire" placeholder="Ecrire un commentaire..." maxlength="80"></textarea>
-</div>
 <?php }
 else{
 	$id = 1;
@@ -161,4 +135,30 @@ echo "<br />";
 } 
 }
 ?>
+</div>
+<div id="containerCommentaires">
+  <ul id="listeCommentaires">
+    <?php foreach($listeCommentaires as $key=>$commentaire): ?>
+    <li class="commentaire" id="commentaire<?= $commentaire->getId() ?>">
+      <p class="pseudoCommentaire"><?= $commentaire->getUser()->getPrenom() . ' ' . $commentaire->getUser()->getNom() ?></p>
+      <span class="texteCommentaire"><?= $commentaire->getTexte() ?></span>
+      
+      <span class="blocSoutiens"> 
+        <span id="soutien<?=$commentaire->getId() ?>" ><?= $commentaire->getSoutiens() ?> </span>
+        <span> <img src="<?= ABSOLUTE_ROOT . '/public/img/facebook-like-icon.png' ?>" onclick="ajouterSoutien( <?=$commentaire->getId() ?>)" /> </span>
+      </span>
+      
+      <ul class="listeSousCommentaires">
+        <?php foreach($commentaire->getSousCommentaires() as $key=>$sousCommentaire): ?>
+        <li class="sousCommentaire" id="sousCommentaire<?= $sousCommentaire->getId() ?>">
+        <span class="pseudoCommentaire"><?= $sousCommentaire->getUser()->getPrenom() . ' ' . $sousCommentaire->getUser()->getNom() ?></span> - <?= $sousCommentaire->getTexte() ?></li>
+        <?php endforeach; ?>
+      </ul>
+      <textarea class="textareaSousCommentaire" id="<?= $commentaire->getId() ?>" name="ajouterCommentaire" placeholder="Ecrire un sous commentaire..." maxlength="50"></textarea>
+    </li>
+
+    <?php endforeach; ?>
+  </ul>
+  
+  <textarea id="textareaCommentaire" name="ajouterCommentaire" placeholder="Ecrire un commentaire..." maxlength="80"></textarea>
 </div>
