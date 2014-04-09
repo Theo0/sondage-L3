@@ -99,6 +99,7 @@ echo($FicheSondage->getDesc());
 ?>
 
 
+
 <div id="containerCommentaires">
 	<ul id="listeCommentaires">
 		<?php foreach($listeCommentaires as $key=>$commentaire): ?>
@@ -111,18 +112,19 @@ echo($FicheSondage->getDesc());
 				<span> <img src="<?= ABSOLUTE_ROOT . '/public/img/facebook-like-icon.png' ?>" onclick="ajouterSoutien( <?=$commentaire->getId() ?>)" /> </span>
 			</span>
 			
-			<ul id="listeSousCommentaires">
-			<li class="creerSousCommentaire">
-				<textarea class="textareaSousCommentaire" name="ajouterCommentaire" placeholder="Ecrire un sous commentaire..."></textarea>
-			</li>
+			<ul class="listeSousCommentaires">
+				<?php foreach($commentaire->getSousCommentaires() as $key=>$sousCommentaire): ?>
+				<li class="sousCommentaire" id="sousCommentaire<?= $sousCommentaire->getId() ?>">
+				<span class="pseudoCommentaire"><?= $sousCommentaire->getUser()->getPrenom() . ' ' . $sousCommentaire->getUser()->getNom() ?></span> - <?= $sousCommentaire->getTexte() ?></li>
+				<?php endforeach; ?>
 			</ul>
+			<textarea class="textareaSousCommentaire" id="<?= $commentaire->getId() ?>" name="ajouterCommentaire" placeholder="Ecrire un sous commentaire..." maxlength="50"></textarea>
 		</li>
 
 		<?php endforeach; ?>
-		<li id="creerCommentaire">
-			<textarea id="textareaCommentaire" name="ajouterCommentaire" placeholder="Ecrire un commentaire..."></textarea>
-		</li>
 	</ul>
+	
+	<textarea id="textareaCommentaire" name="ajouterCommentaire" placeholder="Ecrire un commentaire..." maxlength="80"></textarea>
 </div>
 
 </div>

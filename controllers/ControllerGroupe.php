@@ -9,6 +9,7 @@ require_once ROOT . "/controllers/ControllerUser.php";
 require_once ROOT . "/models/ListeGroupes.php";
 require_once ROOT . "/models/ListeSousGroupes.php";
 require_once ROOT . "/controllers/ControllerAccueil.php";
+require_once ROOT . "/controllers/ControllerSondage.php";
 
 class ControllerGroupe extends Controller{
 	
@@ -498,10 +499,12 @@ class ControllerGroupe extends Controller{
 				
 				if($userConnecte->getId() == $this->groupe->getAdministrateurId() || $userConnecte->getAdministrateurSite() == 1){
 					if(false === $sousGroupe->add()){
-						$this->addErreur("Inpossible d'ajouter les sous groupe en base, merci de réessayer ultèrieurement");
-						$this->afficherGroupe($_POST["groupeId"]);
+						$controller = new ControllerSondage();
+						$controller->addErreur("Impossible d'ajouter les sous groupe en base, merci de réessayer ultèrieurement");
+						$controller->afficherSondagesGroupe($_POST["groupeId"]);
 					} else{
-						$this->afficherGroupe($_POST["groupeId"]);
+						$controller = new ControllerSondage();
+						$controller->afficherSondagesGroupe($_POST["groupeId"]);
 					}
 				} else{
 					$this->addErreur("Vous devez être l'administrateur du groupe pour pouvoir ajouter des sous groupes");

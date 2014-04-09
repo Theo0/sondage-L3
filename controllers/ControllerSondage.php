@@ -11,6 +11,7 @@ require_once ROOT . "/models/ListeUser.php";
 require_once ROOT . "/models/ListeCommentaire.php";
 require_once ROOT . "/models/Score.php";
 require_once ROOT . "/models/Mail.php";
+require_once ROOT . "/models/ListeSousGroupes.php";
 
 class ControllerSondage extends Controller{
 	
@@ -261,7 +262,8 @@ public function afficherSondagesPrive(){
 
 
 
-public function afficherSondagesGroupe(){
+
+public function afficherSondagesGroupe($idGroupe=null){
 
 	if(empty($_SESSION['id'])){
 		?>
@@ -275,7 +277,9 @@ public function afficherSondagesGroupe(){
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
-		$ListeSondage = new ListeSondage($_SESSION['id'], $_GET['params']);
+
+		$ListeSondage = new ListeSondage($_SESSION['id'], $idGroupe);
+
 		$user = new User($_SESSION['id']);
 
 		if($user->getAdministrateurSite() ==1){
@@ -285,9 +289,12 @@ public function afficherSondagesGroupe(){
 			$admin = 0;
 		}
 		
-		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages", "admin" => $admin));	
+		$groupe = new Groupe($idGroupe);
+		$sousGroupes = new ListeSousGroupes($idGroupe);
+		
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages", "admin" => $admin, "groupe" => $groupe, "user" => $user, "sousGroupes" => $sousGroupes ));	
 		}	
-	}			
+	}				
 
 
 	public function afficherFicheSondage(){

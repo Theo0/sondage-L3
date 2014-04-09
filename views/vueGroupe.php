@@ -8,7 +8,6 @@
         </ul>
 </div>
 
-
 <!--AFFICHAGE DES SOUS GROUPES -->
 <h4>Sous groupes</h4>
 <ul id="listeSousGroupes">
