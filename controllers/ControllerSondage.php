@@ -117,9 +117,15 @@ public function afficherSondagesPublic(){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
 		$ListeSondage = new ListeSondage();
-		$user = new User($_SESSION['id']);
-		if($user->getAdministrateurSite() ==1){
-			$admin = 1;
+
+		if(isset($_SESSION['id'])){
+			$user = new User($_SESSION['id']);
+			if($user->getAdministrateurSite() ==1){
+				$admin = 1;
+			}
+			else{
+				$admin = 0;
+			}
 		}
 		else{
 			$admin = 0;
