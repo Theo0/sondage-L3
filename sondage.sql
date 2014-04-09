@@ -310,6 +310,26 @@ CREATE TABLE IF NOT EXISTS `user_sondage_votant` (
   KEY `idx_user_sondage_votant2` (`id_sondage`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user_sondage_votant`
+--
+
+CREATE TABLE IF NOT EXISTS `config` (
+  `type` varchar(25) NOT NULL,
+  `valeur` varchar(60) NOT NULL,
+  PRIMARY KEY (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `config`
+--
+
+INSERT INTO `config` (`type`, `valeur`) VALUES
+('inscriptions', 'validation');
+
+
 --
 -- Contraintes pour les tables exportées
 --

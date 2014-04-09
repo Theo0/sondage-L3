@@ -33,6 +33,12 @@
 						<? endif; ?>
 						
 						<?php if(!empty($_SESSION["id"])): ?>
+						<?php
+							$user = new User($_SESSION["id"]);
+							if($user->getAdministrateurSite()==1):
+						?>
+						<li id="admin"><a href="<?= ABSOLUTE_ROOT . '/index.php?controller=Admin&action=afficherAdministration' ?>">Administration</a></li>	
+						<?php endif; ?>
 						<li id="deconnexion"><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=deconnexion' ?>">Déconnexion</a></li>
 						<?php endif; ?>
 					</ul>

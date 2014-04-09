@@ -118,6 +118,10 @@ class User extends BD {
 		return $this->email;
 	}
 	
+	public function getCompteValide(){
+		return $this->compte_valide;
+	}
+	
 	public function getAdministrateurSite(){
 		return $this->administrateur_site;
 	}
@@ -160,6 +164,10 @@ class User extends BD {
 	
 	public function setDateInscription($d){
 		$this->date_inscription = $d;
+	}
+	
+	public function setCompteValide($s){
+		$this->compte_valide = $s;
 	}
 
 	public function generateHashValidation(){
@@ -254,6 +262,7 @@ class User extends BD {
 			administrateur_site = ?,
 			hash_validation = ?,
 			pseudo = ?,
+			compte_valide = ?
 			WHERE id = ?';
 
 		$updateUser = $this->executerRequete($sql, array($this->nom,
@@ -264,6 +273,7 @@ class User extends BD {
 							       $this->administrateur_site,
 							       $this->hash_validation,
 							       $this->pseudo,
+							       $this->compte_valide,
 							       $this->id));
 
 		return ($updateUser->rowCount() == 1);

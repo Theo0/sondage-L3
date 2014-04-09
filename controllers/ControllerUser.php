@@ -4,6 +4,7 @@ require_once "Controller.php";
 require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/Mail.php";
 require_once ROOT . "/models/ListeGroupes.php";
+require_once ROOT . "/controllers/ControllerAdmin.php";
 
 class ControllerUser extends Controller{
 	
@@ -452,6 +453,61 @@ class ControllerUser extends Controller{
 		$term = $explode[0];
 		$idGroup = $explode[1];
 		echo json_encode($this->user->getMembresLikeAndNotInGroup($term, $idGroup));
+	}
+	
+	
+	/* Désactive le compte d'un utilisateur (utilisable seulement par un admin) */
+	public function bannirMembre($userId){
+		if (empty($_SESSION["id"])) {
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour accéder à la page d'administration");
+			$controllerUser->afficherConnexion();
+		} else {
+			$user = new User($_SESSION["id"]);
+			if ($user->getAdministrateurSite() != 1) {
+				$controllerUser = new ControllerUser();
+				$controllerUser->addErreur("Vous devez vous connecter pour en tant qu'administrateur pour accéder à la page d'administration");
+				$controllerUser->afficherConnexion();
+			} else {
+				$userBanni = new User($userId);
+				$userBanni->setCompteValide(0);
+				$controllerAdmin = new ControllerAdmin();
+				if(false !== $userBanni->updateUser()){
+					$controllerAdmin->afficherAdministration();
+				} else{
+					$controllerAdmin->addErreur("Impossible de bannir l'utilisateur");
+					$controllerAdmin->afficherAdministration();
+				}
+				
+			}
+		}
+	}
+	
+	/* Active le compte d'un utilisateur (utilisable seulement par un admin) */
+	public function activerMembre($userId){
+		if (empty($_SESSION["id"])) {
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour accéder à la page d'administration");
+			$controllerUser->afficherConnexion();
+		} else {
+			$user = new User($_SESSION["id"]);
+			if ($user->getAdministrateurSite() != 1) {
+				$controllerUser = new ControllerUser();
+				$controllerUser->addErreur("Vous devez vous connecter pour en tant qu'administrateur pour accéder à la page d'administration");
+				$controllerUser->afficherConnexion();
+			} else {
+				$userBanni = new User($userId);
+				$userBanni->setCompteValide(1);
+				$controllerAdmin = new ControllerAdmin();
+				if(false !== $userBanni->updateUser()){
+					$controllerAdmin->afficherAdministration();
+				} else{
+					$controllerAdmin->addErreur("Impossible d'activer l'utilisateur");
+					$controllerAdmin->afficherAdministration();
+				}
+				
+			}
+		}
 	}
 	
 }
