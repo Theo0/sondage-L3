@@ -85,7 +85,7 @@ class ControllerAdmin extends Controller
 
 <?php
 if (!empty($_GET["action"]) && empty($_GET["controller"])) { // Appel d'une méthode de la classe sans passer par l'index.php
-    $controller = new controllerAccueil();
+    $controller = new controllerAdmin();
     if (method_exists($controller, $_GET["action"])) { // Vérification: la méthode demandée existe dans le contrôleur
         if (!empty($_GET["params"])) {
             $controller->$_GET["action"]($_GET["params"]); // Exécution de l'action demandée avec des paramètres

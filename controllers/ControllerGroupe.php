@@ -93,7 +93,13 @@ class ControllerGroupe extends Controller{
 
 		$listeGroupes = new ListeGroupes('id', 'DESC', 0, 50, "public");
 		
-		$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "public"));		
+		if(isset($_SESSION["id"])){
+			$user = new User($_SESSION['id']);
+		} else{
+			$user = new User();
+		}
+		
+		$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "public", "user" => $user));		
 	}
 	
 	/* Affichage de la page de la liste des groupes privés visibles */
@@ -106,7 +112,13 @@ class ControllerGroupe extends Controller{
 
 		$listeGroupes = new ListeGroupes('id', 'DESC', 0, 50, "privé_visible");
 		
-		$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "privé_visible"));		
+		if(isset($_SESSION["id"])){
+			$user = new User($_SESSION['id']);
+		} else{
+			$user = new User();
+		}
+		
+		$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "privé_visible", "user" => $user));		
 	}
 	
 	/* Affichage de la page de la liste des groupes dans lequel l'utilisateur connecté appartient */
@@ -124,7 +136,9 @@ class ControllerGroupe extends Controller{
 	
 			$listeGroupes = new ListeGroupes($_SESSION["id"]);
 			
-			$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "groupesUser"));
+			$user = new User($_SESSION['id']);
+			
+			$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "groupesUser", "user" => $user));
 		}
 	}
 	
@@ -143,7 +157,9 @@ class ControllerGroupe extends Controller{
 	
 			$listeGroupes = new ListeGroupes($_SESSION["id"], true);
 			
-			$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "groupesAdministre"));
+			$user = new User($_SESSION['id']);
+			
+			$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "groupesAdministre", "user" => $user));
 		}
 	}
 	
@@ -270,6 +286,51 @@ class ControllerGroupe extends Controller{
 					$controllerAccueil->afficherAccueil();					
 				} else{
 					$this->addErreur("Impossible de quitter le groupe");
+					$this->afficherErreurGroupe();
+				}
+			}
+		}
+	}
+	
+	/* Supprime le groupe */
+	public function supprimerGroupe($idGroupe){
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour supprimer un groupe");
+			$controllerUser->afficherConnexion();
+		}else{
+			if(empty($idGroupe)){
+				$this->addErreur("Le groupe n'existe pas");
+				$this->afficherErreurGroupe();
+			} else{
+				$this->groupe->setId($idGroupe);
+				
+				$user = new User($_SESSION["id"]);
+				
+				if($user->getAdministrateurSite() == 1 || $_SESSION["id"] == $this->groupe->getAdministrateurId()){
+					if(false !== $this->groupe->remove()){
+						$this->vue = new Vue("ListeGroupes");
+				
+						//Si le contrôlleur possède des erreurs de référencées
+						if( !empty($this->erreurs) )
+							$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+				
+						$listeGroupes = new ListeGroupes('id', 'DESC', 0, 50, "public");
+						
+						if(isset($_SESSION["id"])){
+							$user = new User($_SESSION['id']);
+						} else{
+							$user = new User();
+						}
+						
+						$this->vue->setMessage("Groupe supprimé avec succés");
+						$this->vue->generer(array("listeGroupes" => $listeGroupes->getArrayGroupes(), "pageSelected" => "public", "user" => $user));	
+					} else{
+						$this->addErreur("Impossible de quitter le groupe");
+						$this->afficherErreurGroupe();
+					}
+				} else{
+					$this->addErreur("Impossible de supprimer le groupe si vous n'êtes pas son créateur");
 					$this->afficherErreurGroupe();
 				}
 			}

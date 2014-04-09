@@ -53,6 +53,10 @@
             <?php elseif($pageSelected != "groupesUser" && $pageSelected != "groupesAdministre"): ?>
             <td><a href="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=rejoindreGroupe&params=' . $groupe->getId() ?>">Rejoindre</a></td>            
             <?php endif; ?>
+            
+            <?php if($user->getAdministrateurSite() == 1): ?>
+            <td><a href="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=supprimerGroupe&params=' . $groupe->getId() ?>"><img src="<?= ABSOLUTE_ROOT . '/public/css/images/red-cross.png' ?>"></a></td>
+            <?php endif; ?>
         </tr>   
         <?php endforeach; ?>
     </tbody>
