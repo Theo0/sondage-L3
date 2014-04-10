@@ -15,6 +15,7 @@ class Sondage extends BD{
 	private $date_fin;
 	private $secret;
 	private $id_groupe;
+	private $id_sousgroupe;
 	private $user_votant; // permet d'ajouter des utilisateur à un sondage
 
 
@@ -43,6 +44,7 @@ class Sondage extends BD{
 		$this->date_fin=null;
 		$this->secret=0;
 		$this->id_groupe=-1;
+		$this->id_sousgroupe=-1;
 		$this->user_votant = -1;
 	}
 
@@ -63,6 +65,7 @@ class Sondage extends BD{
 			$this->date_fin=$enrBdd['date_fin'];
 			$this->secret=$enrBdd['secret'];
 			$this->id_groupe=$enrBdd['id_groupe'];
+			$this->id_sousgroupe=$enrBdd['id_sousgroupe'];
 			$this->user_votant = -1;
 		}
 		else
@@ -76,6 +79,7 @@ class Sondage extends BD{
 			$this->date_fin=null;
 			$this->secret=0;
 			$this->id_groupe=-1;
+			$this->id_sousgroupe=-1;
 			$this->user_votant = -1;		
 		}
 	}
@@ -116,6 +120,10 @@ class Sondage extends BD{
 
 	public function getIdGr(){
 		return $this->id_groupe;
+	}
+
+	public function getIdSsGr(){
+		return $this->id_sousgroupe;
 	}
 
 	//SETTERS
@@ -193,7 +201,7 @@ class Sondage extends BD{
 
 	}
 	else{
-		echo $this->secret;
+		if($this->id_sousgroupe!=-1){
 		$sql = 'INSERT INTO sondage SET
 		titre=?,
 		description=?,
@@ -203,26 +211,26 @@ class Sondage extends BD{
 		date_fin=?,
 		`secret`=?';
 		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret));
-		return $insertSondage;
+		return $insertSondage;}
+		else{
+		$sql = 'INSERT INTO sondage SET
+		titre=?,
+		description=?,
+		visibilite=?,
+		administrateur_id=?,
+		date_creation= NOW(),
+		date_fin=?,
+		`secret`=?,
+		id_sousgroupe=?';
+		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_sousgroupe));
+		return $insertSondage;}
+		}
 	}
 		
 
 		return $insertSondage;
 	}
-	public function update(){
-		$sql = 'UPDATE sondage SET 
-		titre=?,
-		description=?,
-		visibilite=?,
-		administrateur_id=?,
-		date_fin=?,
-		`secret`=?,
-		id_groupe=?
-		WHERE id=?';
-
-		$updateSondage = $this->executerRequete($sql, array($this->titre, $this->description, $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_groupe, $this->id));
-		return $updateSondage;
-	}
+	
 
 	public function remove(){
 		$sql='DELETE FROM sondage WHERE id=?';
