@@ -294,6 +294,40 @@ public function afficherSondagesGroupe($idGroupe=null){
 		
 		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages", "admin" => $admin, "groupe" => $groupe, "user" => $user, "sousGroupes" => $sousGroupes ));	
 		}	
+	}
+
+
+	public function afficherSondagesSousGroupe($idGroupe=null){
+
+	if(empty($_SESSION['id'])){
+		?>
+		<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Vous devez vous connecter pour accéder à vos sondages. Cliquez ici. </a>
+		<?php
+	}
+	else{	
+		$this->vue = new Vue("ListeSondageGroupe");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+
+		$ListeSondage = new ListeSondage($_SESSION['id'], $idGroupe);
+
+		$user = new User($_SESSION['id']);
+
+		if($user->getAdministrateurSite() ==1){
+			$admin = 1;
+		}
+		else{
+			$admin = 0;
+		}
+		
+		$groupe = new Groupe($idGroupe);
+		$sousGroupes = new ListeSousGroupes($idGroupe);
+		
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages", "admin" => $admin, "groupe" => $groupe, "user" => $user, "sousGroupes" => $sousGroupes ));	
+		}	
 	}				
 
 

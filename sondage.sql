@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `sondage` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `titre` varchar(150) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `visibilite` enum('public','inscrits','groupe','privé') DEFAULT NULL,
+  `visibilite` enum('public','inscrits','groupe','sousgroupe','privé') DEFAULT NULL,
   `administrateur_id` int(11) DEFAULT NULL,
   `date_creation` datetime NOT NULL,
   `date_fin` datetime DEFAULT NULL,

@@ -226,9 +226,7 @@ class Sondage extends BD{
 		return $insertSondage;}
 		}
 	}
-		
 
-		return $insertSondage;
 	}
 	
 
