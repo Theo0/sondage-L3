@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS `sondage` (
   `date_fin` datetime DEFAULT NULL,
   `secret` enum('secret','secret_scrutin','public') DEFAULT NULL,
   `id_groupe` int(11) DEFAULT NULL,
+  `id_sousgroupe` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_sondage` (`administrateur_id`),
   KEY `idx_sondage_0` (`id_groupe`)
@@ -352,14 +353,15 @@ ALTER TABLE `groupe`
 -- Contraintes pour la table `option`
 --
 ALTER TABLE `option`
-  ADD CONSTRAINT `fk_sondage_option` FOREIGN KEY (`id_sondage`) REFERENCES `sondage` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_sondage_option` FOREIGN KEY (`id_sondage`) REFERENCES `sous_groupe` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `sondage`
 --
 ALTER TABLE `sondage`
   ADD CONSTRAINT `fk_sondage_groupe` FOREIGN KEY (`id_groupe`) REFERENCES `groupe` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_sondage_user` FOREIGN KEY (`administrateur_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_sondage_user` FOREIGN KEY (`administrateur_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  ADD CONSTRAINT `fk_sondage_sousgroupe` FOREIGN KEY (`id_sousgroupe`) REFERENCES `groupe` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `sous_groupe`
