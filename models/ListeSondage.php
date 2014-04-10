@@ -32,6 +32,9 @@ class ListeSondage extends BD {
 			case 5:
 			$this->constructeurListePrive(func_get_arg(0), func_get_arg(1), func_get_arg(2), func_get_arg(3), func_get_arg(4));
 				break;
+			case 6:
+			$this->constructeurListeSousGroupe(func_get_arg(0), func_get_arg(1), func_get_arg(2), func_get_arg(3), func_get_arg(4), func_get_arg(5));
+				break;	
 
 		}
 	}
@@ -115,6 +118,20 @@ class ListeSondage extends BD {
             { 
                 $this->array_sondage[] = new Sondage($enrBdd["id_sondage"]);
             }   		
+	}
+
+	public function constructeurListeSousGroupe($idSousGroupe, $a, $b, $c, $d, $e)
+	{ 
+           $sql='SELECT id
+                    FROM sondage
+                    WHERE id_sousgroupe=?
+		    ORDER BY id DESC';
+                               
+            $lectBdd = $this->executerRequete($sql, array($idSousGroupe));
+            while (($enrBdd = $lectBdd->fetch()) != false)
+            { 
+                $this->array_sondage[] = new Sondage($enrBdd["id"]);
+            }
 	}
 	
 

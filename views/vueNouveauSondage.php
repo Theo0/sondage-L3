@@ -74,13 +74,22 @@ $this->titre = "Nouveau Sondage";
 					</li>
 					<?php
 					endif;
-					if(isset($_GET['params'])):
+					if(isset($_GET['params']) && !isset($_GET['param2'])):
 					 ?>
 					<li class="bottomSeparator">
 						<div class="visibiliteRadioInput">
 							<label for="visibiliteGroupe">Groupe</label>
 							<input id="visibiliteGroupe" name="visibilite" type="radio" required="required" value="groupe" checked/>
 							<p>Seul les membres du groupe pourront acceder à ce sondage.</p>
+						</div>
+					</li>
+				<?php endif; 
+				if(isset($_GET['param2'])): ?>
+					<li class="bottomSeparator">
+						<div class="visibiliteRadioInput">
+							<label for="visibiliteSousGroupe">Sous-Groupe</label>
+							<input id="visibiliteGroupe" name="visibilite" type="radio" required="required" value="sousgroupe" checked/>
+							<p>Seul les membres du groupe pourront acceder à ce sondage, et il sera rattaché au sous-groupe.</p>
 						</div>
 					</li>
 				<?php endif; ?>
@@ -124,8 +133,11 @@ $this->titre = "Nouveau Sondage";
 echo $_SESSION['id']; 
 ?>"/>
 <?php 
-if (isset($_GET['params'])){
+if(isset($_GET['params']) && !isset($_GET['param2'])){
   echo '<input name="id_groupe" type="hidden" value="'.$_GET['params'].'"/>';
+}
+if(isset($_GET['param2'])){
+	 echo '<input name="id_sousgroupe" type="hidden" value="'.$_GET['param2'].'"/>';
 }
 ?>
 <a href="javascript:addElement();" ><center><h3>Ajouter une option</h3></a><br /> <a href="javascript:removeElement();" ><h3>Supprimer</h3></a></center><br />

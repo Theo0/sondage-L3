@@ -209,8 +209,9 @@ class Sondage extends BD{
 		administrateur_id=?,
 		date_creation= NOW(),
 		date_fin=?,
-		`secret`=?';
-		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret));
+		`secret`=?,
+		id_sousgroupe=?';
+		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_sousgroupe));
 		return $insertSondage;}
 		else{
 		$sql = 'INSERT INTO sondage SET
@@ -220,9 +221,8 @@ class Sondage extends BD{
 		administrateur_id=?,
 		date_creation= NOW(),
 		date_fin=?,
-		`secret`=?,
-		id_sousgroupe=?';
-		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_sousgroupe));
+		`secret`=?';
+		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret));
 		return $insertSondage;}
 		}
 	}
@@ -301,6 +301,9 @@ class Sondage extends BD{
 			$this->secret=$array["secret"];
 			if(isset($array["id_groupe"])){
 			$this->id_groupe=$array["id_groupe"];
+			}
+			if(isset($array["id_sousgroupe"])){
+			$this->id_sousgroupe=$array["id_sousgroupe"];
 			}
 	}
 

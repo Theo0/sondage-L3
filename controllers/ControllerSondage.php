@@ -280,6 +280,7 @@ public function afficherSondagesGroupe($idGroupe=null){
 
 		$ListeSondage = new ListeSondage($_SESSION['id'], $idGroupe);
 
+
 		$user = new User($_SESSION['id']);
 
 		if($user->getAdministrateurSite() ==1){
@@ -291,11 +292,18 @@ public function afficherSondagesGroupe($idGroupe=null){
 		
 		$groupe = new Groupe($idGroupe);
 		$sousGroupes = new ListeSousGroupes($idGroupe);
+
+		$b = -1;
+		foreach($sousGroupes->getArrayGroupes() as $key=>$sousGroupe){
+			${$sousGroupe->getId()}= new ListeSondage($sousGroupe->getId() , $b, $b, $b, $b, $b);
+			$a = $sousGroupe->getId();
+			$ListeSondageSous[$a] = ${$sousGroupe->getId()};
+		}
 		
-		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages", "admin" => $admin, "groupe" => $groupe, "user" => $user, "sousGroupes" => $sousGroupes ));	
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages", "admin" => $admin, "groupe" => $groupe, "user" => $user, "sousGroupes" => $sousGroupes, "ListeSondagesSous" => $ListeSondageSous));	
 		}	
 	}
-			
+
 
 
 	public function afficherFicheSondage(){

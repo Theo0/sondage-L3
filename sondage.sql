@@ -361,7 +361,7 @@ ALTER TABLE `option`
 ALTER TABLE `sondage`
   ADD CONSTRAINT `fk_sondage_groupe` FOREIGN KEY (`id_groupe`) REFERENCES `groupe` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sondage_user` FOREIGN KEY (`administrateur_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-  ADD CONSTRAINT `fk_sondage_sousgroupe` FOREIGN KEY (`id_sousgroupe`) REFERENCES `groupe` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_sondage_sousgroupe` FOREIGN KEY (`id_sousgroupe`) REFERENCES `sous_groupe` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `sous_groupe`
