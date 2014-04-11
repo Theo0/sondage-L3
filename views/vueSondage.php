@@ -148,7 +148,7 @@ echo "<br />";
         <span> <img src="<?= ABSOLUTE_ROOT . '/public/img/facebook-like-icon.png' ?>" onclick="ajouterSoutien( <?=$commentaire->getId() ?>)" /> </span>
       </span>
       
-      <ul class="listeSousCommentaires">
+      <ul class="listeSousCommentaires" id="listeSousCommentaires<?= $commentaire->getId() ?>">
         <?php foreach($commentaire->getSousCommentaires() as $key=>$sousCommentaire): ?>
         <li class="sousCommentaire" id="sousCommentaire<?= $sousCommentaire->getId() ?>">
         <span class="pseudoCommentaire"><?= $sousCommentaire->getUser()->getPrenom() . ' ' . $sousCommentaire->getUser()->getNom() ?></span> - <?= $sousCommentaire->getTexte() ?></li>

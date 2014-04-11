@@ -28,7 +28,7 @@ function ajouterCommentaire(commentaire, idSondage){
                                                          <span id="soutien' + $.trim(data) + '" >0</span>\
                                                          <span> <img src="' + ABSOLUTE_ROOT  + '/public/img/facebook-like-icon.png" onclick="ajouterSoutien(' + $.trim(data)  + ')" /> </span>\
                                                      </span>\
-                                                     <ul id="listeSousCommentaires"></ul>\
+                                                     <ul class="listeSousCommentaires" id="listeSousCommentaires' + $.trim(data) + '"></ul>\
                                                      <textarea class="textareaSousCommentaire" id="' + data + '" name="ajouterCommentaire" placeholder="Ecrire un sous commentaire..."></textarea> \
                                                  </li>');
                 $("#textareaCommentaire").val("");
@@ -48,7 +48,7 @@ function ajouterSousCommentaire(commentaire, idCommentaire){
     $.post( ABSOLUTE_ROOT + "/index.php?controller=Sondage&action=ajaxAjouterSousCommentaire", { texteCommentaire: commentaire, commentaireId: idCommentaire })
         .done(function( data ) {
             if ($.isNumeric(data)) {
-                $("#listeSousCommentaires").append('<li class="sousCommentaire" id="sousCommentaire' + $.trim(data) + '"> <span class="pseudoCommentaire">' + $("#pseudo").text() + '</span> - ' + commentaire + '</li>');
+                $("#commentaire" + idCommentaire + " ul").append('<li class="sousCommentaire" id="sousCommentaire' + $.trim(data) + '"> <span class="pseudoCommentaire">' + $("#pseudo").text() + '</span> - ' + commentaire + '</li>');
                 $(".textareaSousCommentaire").val("");
                 $("#erreur ul").html("");
             } else{

@@ -54,27 +54,27 @@ class Commentaire extends BD {
 			$lectBdd = $this->executerRequete($sql, array($idCom));
 			if (($enrBdd = $lectBdd->fetch()) != false){
 			    $this->soutiens = $enrBdd['soutiens'];
-			}
-		    
-			$sql='Select id, texte, c.id_commentaire, c.id_user
-			FROM commentaire c
-			WHERE c.id_commentaire = ?
-			order by id ASC';
-				       
-			$lectBdd2 = $this->executerRequete($sql, array($enrBdd["id"]));
-			$j=0;
-			$this->array_sousCommentaires = array();
-			while (($enrBdd2 = $lectBdd2->fetch()) != false)
-			{ 
-			    $this->array_sousCommentaires[$j] = new Commentaire();
-			    $this->array_sousCommentaires[$j]->setId($enrBdd2["id"]);
-			    $this->array_sousCommentaires[$j]->setIdSondage($idSondage);
-			    $this->array_sousCommentaires[$j]->setTexte($enrBdd2["texte"]);
-			    $this->array_sousCommentaires[$j]->setIdCommentaire($enrBdd2["id_commentaire"]);
-			    $this->array_sousCommentaires[$j]->setIdUser($enrBdd2["id_user"]);
-			    $this->array_sousCommentaires[$j]->setSoutiens(0);
-			    
-			    $j++;
+			    	
+				$sql='Select id, texte, c.id_commentaire, c.id_user
+				FROM commentaire c
+				WHERE c.id_commentaire = ?
+				order by id ASC';
+					       
+				$lectBdd2 = $this->executerRequete($sql, array($this->id));
+				$j=0;
+				$this->array_sousCommentaires = array();
+				while (($enrBdd2 = $lectBdd2->fetch()) != false)
+				{ 
+				    $this->array_sousCommentaires[$j] = new Commentaire();
+				    $this->array_sousCommentaires[$j]->setId($enrBdd2["id"]);
+				    $this->array_sousCommentaires[$j]->setIdSondage($this->id_sondage);
+				    $this->array_sousCommentaires[$j]->setTexte($enrBdd2["texte"]);
+				    $this->array_sousCommentaires[$j]->setIdCommentaire($enrBdd2["id_commentaire"]);
+				    $this->array_sousCommentaires[$j]->setIdUser($enrBdd2["id_user"]);
+				    $this->array_sousCommentaires[$j]->setSoutiens(0);
+				    
+				    $j++;
+				}
 			}
 		    
 		    

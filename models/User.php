@@ -178,7 +178,7 @@ class User extends BD {
 	/* Vérification de la validité du pseudo */ 
 	public function validatePseudo(){
 		$regexp = "/[a-zA-Z0-9_]{2,15}/";
-		if(empty($this->nom) || (!empty($this->nom) && !preg_match($regexp, $this->nom)) ){
+		if(empty($this->pseudo) || (!empty($this->pseudo) && !preg_match($regexp, $this->pseudo)) ){
 			return "Votre pseudo doit comporter entre 2 et 15 caractères";
 		} else{
 			return 1;
@@ -237,6 +237,7 @@ class User extends BD {
 	*/
 	public function addUser() {
 		$sql = 'INSERT INTO user SET
+			pseudo = ?,
 			nom = ?,
 			prenom = ?,
 			email = ?,
@@ -244,7 +245,7 @@ class User extends BD {
 			hash_validation = ?,
 			date_inscription = NOW()';
 
-		$insertUser = $this->insererValeur($sql, array($this->nom, $this->prenom , $this->email, $this->mdp, $this->generateHashValidation()));
+		$insertUser = $this->insererValeur($sql, array($this->pseudo, $this->nom, $this->prenom , $this->email, $this->mdp, $this->generateHashValidation()));
 
 		return $insertUser;
 	}

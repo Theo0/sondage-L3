@@ -5,6 +5,7 @@ require_once ROOT . "/models/User.php";
 require_once ROOT . "/models/Mail.php";
 require_once ROOT . "/models/ListeGroupes.php";
 require_once ROOT . "/controllers/ControllerAdmin.php";
+require_once ROOT . "/models/ConfigAdmin.php";
 
 class ControllerUser extends Controller{
 	
@@ -207,31 +208,43 @@ class ControllerUser extends Controller{
 				// On transforme la chaine en entier
 				$id_utilisateur = (int) $id_utilisateur;
 	
-				// Preparation du mail
-				$mail = new Mail('activationInscription', array($this->user->getHashValidation()));
+				$config = new ConfigAdmin();
 				
-				//Envoi du mail
-				$retourMail = $mail->send($this->user->getEmail());
-
-				//Si l'email a bien été envoyé
-				if( $retourMail === 1 ){
+				// Preparation du mail
+				if($config->getInscriptions()=="publics"){
+					$mail = new Mail('activationInscription', array($this->user->getHashValidation()));
+				
+					//Envoi du mail
+					$retourMail = $mail->send($this->user->getEmail());
+									//Si l'email a bien été envoyé
+					if( $retourMail === 1 ){
+						//Confirmation de la création de l'utilisateur en base
+						$this->user->commit(); 
+					
+						// Affichage de la confirmation de l'inscription
+						$this->afficherInscriptionTerminee();					
+	
+					//Si l'email n'a pas pu être envoyé				
+					} else{
+						//Ajout de l'erreur d'envoi du mail
+						$this->addErreur($retourMail); 
+				
+						//Suppression de l'utilisateur en base
+						$this->user->callback(); 
+	
+						// On reaffiche le formulaire d'inscription avec l'erreur d'envoi du mail
+						$this->afficherInscription();
+					}
+				//L'administrateur doit valider le compte
+				}else{
 					//Confirmation de la création de l'utilisateur en base
 					$this->user->commit(); 
 				
 					// Affichage de la confirmation de l'inscription
-					$this->afficherInscriptionTerminee();					
-
-				//Si l'email n'a pas pu être envoyé				
-				} else{
-					//Ajout de l'erreur d'envoi du mail
-					$this->addErreur($retourMail); 
-			
-					//Suppression de l'utilisateur en base
-					$this->user->callback(); 
-
-					// On reaffiche le formulaire d'inscription avec l'erreur d'envoi du mail
-					$this->afficherInscription();
+					$this->afficherInscriptionTerminee();				
 				}
+
+
 	
 			// Gestion des doublons
 			} else {
