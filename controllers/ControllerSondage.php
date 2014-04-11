@@ -300,8 +300,13 @@ public function afficherSondagesGroupe($idGroupe=null){
 			$ListeSondageSous[$a] = ${$sousGroupe->getId()};
 		}
 		
+		if(isset($ListeSondageSous)){
 		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages", "admin" => $admin, "groupe" => $groupe, "user" => $user, "sousGroupes" => $sousGroupes, "ListeSondagesSous" => $ListeSondageSous));	
-		}	
+		}
+		else{
+		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages", "admin" => $admin, "groupe" => $groupe, "user" => $user, "sousGroupes" => $sousGroupes));	
+		}
+	}	
 	}
 
 
