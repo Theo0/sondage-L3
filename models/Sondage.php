@@ -17,6 +17,7 @@ class Sondage extends BD{
 	private $id_groupe;
 	private $id_sousgroupe;
 	private $user_votant; // permet d'ajouter des utilisateur à un sondage
+	private $array_moderateurs;
 
 
 	public function __construct() 
@@ -46,6 +47,7 @@ class Sondage extends BD{
 		$this->id_groupe=-1;
 		$this->id_sousgroupe=-1;
 		$this->user_votant = -1;
+		$this->array_moderateurs = array();
 	}
 
 	public function constructeurPlein($id_sondage){
@@ -67,6 +69,27 @@ class Sondage extends BD{
 			$this->id_groupe=$enrBdd['id_groupe'];
 			$this->id_sousgroupe=$enrBdd['id_sousgroupe'];
 			$this->user_votant = -1;
+			
+			/* Ajout des modérateurs au sondage */
+			$sql = 'SELECT id, nom, prenom, administrateur_site, date_inscription
+				FROM user_sondage_moderateur, user
+				WHERE id_sondage=?
+				AND user_sondage_moderateur.id_user = user.id';
+			
+			$lectBdd = $this->executerRequete($sql, array($id_sondage));
+			
+			$this->array_moderateurs = array();
+			$i = 0;
+			while (($enrBdd = $lectBdd->fetch()) != false)
+			{    
+			    $this->array_moderateurs[$i] = new User();
+			    $this->array_moderateurs[$i]->setId($enrBdd["id"]);
+			    $this->array_moderateurs[$i]->setNom($enrBdd["nom"]);
+			    $this->array_moderateurs[$i]->setPrenom($enrBdd["prenom"]);
+			    $this->array_moderateurs[$i]->setAdministrateurSite($enrBdd["administrateur_site"]);
+			    $this->array_moderateurs[$i]->setDateInscription($enrBdd["date_inscription"]);
+			    $i++;
+			}
 		}
 		else
 		{
@@ -80,7 +103,8 @@ class Sondage extends BD{
 			$this->secret=0;
 			$this->id_groupe=-1;
 			$this->id_sousgroupe=-1;
-			$this->user_votant = -1;		
+			$this->user_votant = -1;
+			$this->array_moderateurs = array();
 		}
 	}
 
@@ -124,6 +148,10 @@ class Sondage extends BD{
 
 	public function getIdSsGr(){
 		return $this->id_sousgroupe;
+	}
+	
+	public function getArrayModerateurs(){
+		return $this->array_moderateurs;
 	}
 
 	//SETTERS

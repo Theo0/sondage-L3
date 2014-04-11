@@ -328,10 +328,10 @@ public function afficherSondagesGroupe($idGroupe=null){
 
 		
 		if(isset($_SESSION['id'])){
-		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id']), "tabUser" => $listeUser->getArrayUser()));
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id']), "tabUser" => $listeUser->getArrayUser(), "user" => new User($_SESSION["id"])));
 		}
 		else{
-		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVoteInvite($_SERVER["REMOTE_ADDR"]), "tabUser" => $listeUser->getArrayUser()));	
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVoteInvite($_SERVER["REMOTE_ADDR"]), "tabUser" => $listeUser->getArrayUser(), "user" => new User()));	
 		}
 	}
 
