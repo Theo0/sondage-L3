@@ -37,6 +37,15 @@ function ajouterCommentaire(commentaire, idSondage){
                                                  </li>');
                 $("#textareaCommentaire").val("");
                 $("#erreur ul").html("");
+                
+                $(".textareaSousCommentaire").keydown(function(e){
+                    if (e.keyCode == 13) { 
+                        ajouterSousCommentaire($(this).val(), $(this).attr("id"));
+                        
+                        return false;
+                    }
+                    return true;
+                }); 
             } else{
                 $("#erreur ul").html("");
                 $("#erreur ul").append("<li class=\"errorEntry\">" + data + "</li>");
