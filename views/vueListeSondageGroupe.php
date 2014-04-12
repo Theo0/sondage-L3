@@ -95,7 +95,7 @@ $ListeSondages = $ListeSondagesSous[$sousGroupe->getId()] -> getArraySondage();
 <form id="formCreationSousGroupe" action="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=ajouterSousGroupe&params=' . $groupe->getId() ?>" method="post">
     <input type="text" placeholder="Nom du sous groupe" name="nom" id="nomSousGroupe" />
     <input type="hidden" name="groupeId" value="<?= $groupe->getId() ?>" />
-    <span class="lienAjoutSousGroupe"><input type="button" id="boutonAjoutGroupe" name="ajoutGroupe" value="Ajouter un sous groupe" /></span>
+    <span class="lienAjoutSousGroupe"><input type="button" id="boutonAjoutGroupe" name="ajoutGroupe" value="Créer" /></span>
 </form>
 <?php endif; ?>   
 <!--FIN AFFICHAGE DES SOUS GROUPES -->

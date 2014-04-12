@@ -3395,7 +3395,7 @@ ul#listeGroupes li ul.menuEditGroup li a:hover{
 	background: #f5f5f5;
 }
 
-#tableListeGroupes{
+#tableListeGroupes, #tableListeUsers{
 	width: 100%;
 	text-align: center;
 }
@@ -3407,6 +3407,19 @@ ul#listeGroupes li ul.menuEditGroup li a:hover{
 #tableListeGroupes tr.lignePaire{
 	background: #f5f5f5;
 }
+
+#tableListeUsers tr.lignePaire{
+	background: #f5f5f5;
+}
+
+#listeSousGroupes li{
+	list-style-type: none;
+	font-size: 22px;
+	font-weight: bold;
+	color: #d46116;
+}
+
+
 
 /* Messages d'erreurs */
 .erreurs{
@@ -3654,6 +3667,10 @@ font-weight: bold;
 .blocSoutiens span{
 	color: black;
 	font-size: 40px;
+}
+
+.blocSoutiens span img{
+	cursor: pointer;
 }
 
 .creerSousCommentaire{

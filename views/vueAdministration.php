@@ -5,16 +5,20 @@
 <h2>Gestion des inscriptions</h2>
 <form action="<?= ABSOLUTE_ROOT . '/index.php?controller=Admin&action=modifierInscription' ?>" method="POST">
     <p>
-        <input type="radio" name="inscription" value="ouvertes" <?php if($inscriptions=="ouvertes") echo 'checked="checked"'; ?> > Ouvertes
+        <label for="ouvertes">Ouvertes</label>
+        <input type="radio" name="inscription" id="ouvertes" value="ouvertes" <?php if($inscriptions=="ouvertes") echo 'checked="checked"'; ?> > 
     </p>
     <p>
-        <input type="radio" name="inscription" value="validation" <?php if($inscriptions=="validation") echo 'checked="checked"'; ?> > Avec validation
+        <label for="validation">Avec validation</label>
+        <input type="radio" name="inscription" id="validation" value="validation" <?php if($inscriptions=="validation") echo 'checked="checked"'; ?> > 
     </p>
+    <p>
     <input type="submit" name="modifierInscription" value="Modifier" />
+    </p>
 </form>
 
 <h2>Gestion des utilisateurs</h2>
-<table>
+<table id="tableListeUsers">
     <thead> <!-- En-tête du tableau -->
         <tr>
             <th>#</th>
@@ -25,7 +29,7 @@
     </thead>
     <tbody>
         <?php foreach($listeUsers->getArrayUser() as $key=>$user): ?>
-        <tr>
+        <tr class="<?php if($key%2) echo 'ligneImpaire'; else echo 'lignePaire'; ?>">
             <td><?= $user->getId() ?></td>
             <td><?= $user->getNom() . ' ' . $user->getPrenom() ?></td>
             <td><?= $user->getpseudo() ?></td>
