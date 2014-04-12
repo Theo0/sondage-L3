@@ -587,6 +587,16 @@ public function ajoutVote(){
 	
 	}
 
+		public function afficherErreur() {
+		$this->vue = new Vue("ErreurSondage");
+
+		//Si le contrôlleur possède des erreurs de référencées
+		if( !empty($this->erreurs) )
+			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
+
+		$this->vue->generer(array("erreur" => $this->erreurs[0]));
+	}
+
 	public function resultat(){
 	$this->vue = new Vue("Resultat");
 		//Si le contrôlleur possède des erreurs de référencées
@@ -594,6 +604,14 @@ public function ajoutVote(){
 				$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 	
 		$sondage = new Sondage($_GET['params']);
+
+		if($sondage->getId() == -1){
+			$this->addErreur("Erreur : Sondage introuvable !");
+			$this->afficherErreur();
+			die();
+		}
+
+
 	
 		$ListeOption = new ListeOption($_GET['params']);
 	

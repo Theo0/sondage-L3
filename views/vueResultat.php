@@ -24,10 +24,7 @@ $id = 1;
 $op = 10000;
 ?>
 <div id="ficheSondage">
-    <?php if($FicheSondage->getId() == -1){ ?>
-      <?php $this->titre = "Sondage non trouvé"; ?>
-      <p>Erreur : Aucun sondage séléctionné !</p>
-    <?php }
+    <?php 
     if($FicheSondage->getId() != -1): ?>
             <h1><?php
             echo "Résultat de ";

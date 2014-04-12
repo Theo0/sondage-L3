@@ -56,7 +56,7 @@ class ListeSondage extends BD {
 	
 	public function cconstructeurListeAdministre($idUser)
 	{
-            $sql='SELECT id
+            $sql='SELECT id, 
                     FROM sondage
                     WHERE administrateur_id=?
 		    ORDER BY id DESC';
