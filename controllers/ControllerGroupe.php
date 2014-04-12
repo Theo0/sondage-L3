@@ -24,6 +24,7 @@ class ControllerGroupe extends Controller{
 
 	/* Affichage de la page d'un groupe */
 	public function afficherGroupe($idGroupe = null, $message = null) {
+		/*
 		$this->vue = new Vue("Groupe");
 
 		//Si le contrôlleur possède des erreurs de référencées
@@ -48,7 +49,9 @@ class ControllerGroupe extends Controller{
 		}
 		
                 
-		$this->vue->generer(array("groupe" => $this->groupe, "pageSelected" => "mur", "user" => $user, "sousGroupes" => $sousGroupes));
+		$this->vue->generer(array("groupe" => $this->groupe, "pageSelected" => "mur", "user" => $user, "sousGroupes" => $sousGroupes));*/
+		$controller = new ControllerSondage();
+		$controller->afficherSondagesGroupe($idGroupe);
 	}
 	
 	/* Affichage la liste des membres d'un groupe */

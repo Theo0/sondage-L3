@@ -2,7 +2,6 @@
 
 <div id="navigationGroupe">
         <ul>
-            <li <?php if($pageSelected=="mur") echo 'class="selected"'; ?>><a href="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=afficherGroupe&params=' . $_GET['params'] ?>">Accueil</a></li>
             <li <?php if($pageSelected=="membres") echo 'class="selected"'; ?>><a href="<?= ABSOLUTE_ROOT . '/index.php?controller=Groupe&action=afficherMembresGroupe&params=' . $_GET['params'] ?>">Membres</a></li>
             <li <?php if($pageSelected=="sondages") echo 'class="selected"'; ?>><a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerSondage.php?action=afficherSondagesGroupe&params=' .  $_GET['params'] ?>">Sondages</a></li>
         </ul>
