@@ -389,6 +389,29 @@ class User extends BD {
 		}
 		return $result;		
 	}
+	
+	public function getMembresLikeAndNotInSondage($term, $idSondage){
+		
+		$sql = 'SELECT id, nom, prenom
+			FROM user
+			WHERE (nom LIKE \'%'. $term . '%\'
+			OR prenom LIKE \'%'. $term . '%\')
+			AND user.id NOT IN (SELECT id_user FROM user_sondage_moderateur WHERE id_sondage=?)
+			AND user.id NOT IN (SELECT administrateur_id FROM sondage WHERE id=?)';
+
+		$selectGroupe = $this->executerRequete($sql, array($idSondage, $idSondage));
+
+		$result = array();
+		$i = 0;
+		while (($enrBdd = $selectGroupe->fetch()) != false)
+		{    
+		    $result[$i]["id"] = $enrBdd["id"];
+		    $result[$i]["label"] = $enrBdd["nom"] . ' ' . $enrBdd["prenom"];
+		    $result[$i]["value"] = $enrBdd["nom"] . ' ' . $enrBdd["prenom"];
+		    $i++;
+		}
+		return $result;		
+	}
 }
 
 ?>

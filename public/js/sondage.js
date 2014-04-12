@@ -121,7 +121,7 @@ function afficherDialogueAjoutModerateurSondage() {
           $.getJSON( ABSOLUTE_ROOT + '/index.php', {
             params: extractLast( request.term ) + ',' + $("#idSondage").val(),
             controller: "User",
-            action: "ajaxGetMembresLike"
+            action: "ajaxGetMembresLikeSondage"
           }, response );
         },
         search: function() {

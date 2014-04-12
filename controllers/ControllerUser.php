@@ -468,6 +468,14 @@ class ControllerUser extends Controller{
 		echo json_encode($this->user->getMembresLikeAndNotInGroup($term, $idGroup));
 	}
 	
+	/* Affiche la liste des membres contenant le terme $term */
+	public function ajaxGetMembresLikeSondage($term_group){
+		$explode = explode(',' , $term_group);
+		$term = $explode[0];
+		$idGroup = $explode[1];
+		echo json_encode($this->user->getMembresLikeAndNotInGroup($term, $idGroup));
+	}
+	
 	
 	/* Désactive le compte d'un utilisateur (utilisable seulement par un admin) */
 	public function bannirMembre($userId){
