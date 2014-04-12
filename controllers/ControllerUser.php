@@ -262,7 +262,9 @@ class ControllerUser extends Controller{
 					//Si le champ dupliqué est l'adresse email
 					if ($this->user->getEmail() == $valeur_probleme) {
 						$this->addErreur($erreurs_inscription[] = "Cette adresse e-mail est déjà utilisée.");
-		
+					//Si le champ dupliqué est le pseudo
+					} elseif ($this->user->getPseudo() == $valeur_probleme) {
+						$this->addErreur($erreurs_inscription[] = "Ce pseudo est déjà utilisé.");		
 					//Si le champ dupliqué n'a pas pu être identifié
 					} else {
 						$this->addErreur("Erreur ajout SQL : doublon non identifié présent dans la base de données.");

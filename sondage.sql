@@ -164,7 +164,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `date_inscription` datetime DEFAULT NULL,
   `compte_valide` tinyint(1) DEFAULT '0',
   `pseudo` varchar(15) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `pseudo_2` (`pseudo`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --

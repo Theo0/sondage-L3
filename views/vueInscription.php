@@ -56,6 +56,7 @@ $( "#formulaire_inscription input[name=submitInscription]" ).click(function() {
 		$("#formulaire_inscription input[name=mdp]").val(hash);
 		$("#formulaire_inscription input[name=mdp_verif]").val(hash);
 		$( "#formulaire_inscription" ).submit();
+		$("#formulaire_inscription input[name=mdp]").val(password);
 		$("#formulaire_inscription input[name=mdp_verif]").val(password);
 	}
 });
