@@ -140,7 +140,7 @@ function afficherDialogueAjoutModerateurSondage() {
           
           //Listener clic pour bouton ajouter un membre au groupe
             $('#lienAjoutModerateur').click(function(){
-                    ajouterModerateurSondage(ui.item.id, $("#idGroupe").val(), ui.item.value);
+                    ajouterModerateurSondage(ui.item.id, $("#idSondage").val(), ui.item.value);
             });
             
           return false;
@@ -148,5 +148,41 @@ function afficherDialogueAjoutModerateurSondage() {
       });
       });    
      
+}
+
+
+function ajouterModerateurSondage(idUser, idSondage, nomUser){
+    //Retourne vrai si le membre a été ajouté au groupe
+    $.get( ABSOLUTE_ROOT + "/index.php?controller=Sondage&action=ajaxAjouterModerateurSondage&params=" + idUser + "," + idSondage, function( addUserToSondage ) {
+        if (addUserToSondage==1) { 
+            $(".listeModerateurs").append('<li class="user' + idUser + '">' + nomUser + '</li>');
+            if ($("#canDelete").length != 0) {
+                $(".user" + idUser).append('<span class="lienSupprimerModerateur"><a href="#" id="supprimerModerateur' + idUser + '" onclick="supprimerModerateurSondage(' + idUser + ', ' + idSondage + ')"> supprimer </a></span>')
+            }
+            $(".aucunModerateur").hide();
+        }
+        else{
+            $("#dialogErreur").text("Impossible d'ajouter le moderateur au groupe");
+        }
+    });    
+}
+
+function supprimerModerateurSondage(idUser, idSondage){
+    //Retourne vrai si le modérateur a été ajouté au groupe
+    $.get( ABSOLUTE_ROOT + "/index.php?controller=Sondage&action=ajaxSupprimerModerateurSondage&params=" + idUser + "," + idSondage, function( rmUserToSondage ) {
+        if (rmUserToSondage==1) {
+            //Suppression du modérateur de la liste des modérateurs
+            $(".user" + idUser).remove(); 
+
+            //Si la liste des modérateurs est vide on affiche qu'il n'y a plus de modérateurs sinon on cache le message
+            if ($('.listeModerateurs li').length == 2)
+                $(".aucunModerateur").show();
+            else
+                $(".aucunModerateur").hide();
+        }
+        else{
+            $("#dialogErreur").text("Impossible de supprimer le modérateur du sondage");
+        }
+    });    
 }
 

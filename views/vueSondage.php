@@ -4,6 +4,10 @@ $this->titre = $FicheSondage->getTitre();
 ?>
 <input id="idSondage" type="hidden" value="<?= $FicheSondage->getId() ?>" />
 
+<?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1 || $FicheSondage->isModerateur($user->getId())): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
+<input id="canDelete" type="hidden" value="1" />
+<?php endif; ?>
+
 <div id="ficheSondage">
 <?php if(empty($FicheSondage)){ ?>
 <?php $this->titre = "Sondage non trouvé"; ?>
@@ -136,12 +140,35 @@ echo "<br />";
 }
 ?>
 </div>
-		
-<?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
+
+<!-- AFFICHAGE DE LA LISTE DES MODERATEURS DU SONDAGE -->
+<div id="divModerateursSondage">
+        <h4>Modérateurs</h4>
+        <ul id="listeModerateursSondage" class="listeModerateurs">
+        <?php if(!empty($FicheSondage->getArrayModerateurs())): ?>
+                <?php foreach($FicheSondage->getArrayModerateurs() as $moderateur): ?>
+                <li class="user<?= $moderateur->getId() ?>">
+                        <?= $moderateur->getPrenom() . ' ' . $moderateur->getNom() ?>
+                
+                        <?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
+                        <span class="lienSupprimerMembre"><a href="#" id="supprimerModerateur<?= $moderateur->getId() ?>" onclick="supprimerModerateurSondage(<?= $moderateur->getId() ?>, <?= $FicheSondage->getId() ?>)"> supprimer </a></span>
+                        <?php endif; ?>
+                </li>
+                <li class="aucunModerateur" style="display: none;">Il n'y a aucun modérateur dans ce sondage</li>
+                <?php endforeach; ?>
+                <?php else: ?>
+                <li class="aucunModerateur">Il n'y a aucun modérateur dans ce sondage</li>
+                <?php endif; ?>
+         </ul>
+        <?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
         <p class="lienAjoutGroupe"><a href="#" onclick="afficherDialogueAjoutModerateurSondage()"> Ajouter un moderateur </a></p>
 
         <?php endif; ?>
-	
+</div>
+<!-- FIN LISTE DES MODERATEURS -->
+
+
+<!-- AFFICHAGE DE LA LISTE DES COMMENTAIRES DU SONDAGE -->
 <div id="containerCommentaires">
   <ul id="listeCommentaires">
     <?php foreach($listeCommentaires as $key=>$commentaire): ?>
@@ -168,7 +195,7 @@ echo "<br />";
   
   <textarea id="textareaCommentaire" name="ajouterCommentaire" placeholder="Ecrire un commentaire..." maxlength="80"></textarea>
 </div>
-  
+<!-- FIN LISTE DES COMMENTAIRES -->
 
 <!-- DIALOGUE AFFICHE POUR AJOUTER UN MODERATEUR -->
 <div class="dialog" id="dialogAjoutModerateurSondage" title="Ajouter un modérateur">

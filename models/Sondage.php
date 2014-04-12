@@ -203,6 +203,16 @@ class Sondage extends BD{
 			{return -1;}
 	} 
 
+	/* Retourne vrai si l'utilisateur identifié par $userId est un modérateur du sondage */
+	public function isModerateur($userId){
+		foreach($this->array_moderateurs as $key=>$moderateur){
+			if($moderateur->getId() == $userId){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public function addUser(){
 
 		$sql='INSERT INTO user_sondage_votant SET
@@ -305,6 +315,28 @@ class Sondage extends BD{
 		$lectBdd = $this->executerRequete($sql, array($ipUser, $this->id));
 		return $verifVote = $lectBdd->fetch();
 
+	}
+	
+	/* Ajoute un modérateur dans un groupe */
+	public function ajouterModerateur($idUser){
+		$sql = 'INSERT INTO user_sondage_moderateur SET
+			id_sondage = ?,
+			id_user = ?';
+
+		$insert = $this->insererValeur($sql, array($this->id, $idUser));
+
+		return $insert;		
+	}
+	
+	/* Supprimer un modérateur dans un sondage */
+	public function supprimerModerateur($idUser){
+		$sql = 'DELETE FROM user_sondage_moderateur WHERE
+			id_sondage = ? AND
+			id_user = ?';
+
+		$rm = $this->executerRequete($sql, array($this->id, $idUser));
+		
+		return ($rm->rowCount() == 1);		
 	}
 
 	public function POSTToVarAll($array){

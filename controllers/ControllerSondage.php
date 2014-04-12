@@ -694,7 +694,54 @@ public function ajoutVote(){
 			}
 		}
 	}
-
+	
+	/* Ajoute un modérateur au sondage */
+	public function ajaxAjouterModerateurSondage($user_sondage){
+		$explode = explode(',' , $user_sondage);
+		$idUser = $explode[0];
+		$idSondage = $explode[1];
+		
+		
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour ajouter des modérateurs au sondage");
+			$controllerUser->afficherConnexion();
+		}else{
+			$this->sondage = new Sondage($idSondage);
+			$userConnecte = new User($_SESSION["id"]);
+			
+			if($userConnecte->getId() == $this->sondage->getAdministrateur() || $userConnecte->getAdministrateurSite() == 1){
+				echo (ctype_digit($this->sondage->ajouterModerateur($idUser)));
+			} else{
+				$this->addErreur("Vous devez être l'administrateur du sondage pour pouvoir modifier les modérateurs");
+				$this->afficherFicheSondage($idSondage);
+			}
+		}
+	}
+	
+	/* Supprime un modérateur au sondage */
+	public function ajaxSupprimerModerateurSondage($user_sondage){
+		$explode = explode(',' , $user_sondage);
+		$idUser = $explode[0];
+		$idSondage = $explode[1];
+		
+		
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour supprimer des modérateurs du groupe");
+			$controllerUser->afficherConnexion();
+		}else{
+			$this->sondage = new Sondage($idSondage);
+			$userConnecte = new User($_SESSION["id"]);
+			
+			if($userConnecte->getId() == $this->sondage->getAdministrateur() || $userConnecte->getAdministrateurSite() == 1){
+				echo $this->sondage->supprimerModerateur($idUser);
+			} else{
+				$this->addErreur("Vous devez être l'administrateur du sondage pour pouvoir supprimer les moderateurs");
+				$this->afficherFicheSondage($idSondage);
+			}
+		}		
+	}
 }
 
 ?>
