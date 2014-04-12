@@ -1,6 +1,8 @@
 <?php
 
 require_once "Controller.php";
+require_once ROOT . "/models/Sondage.php";
+require_once ROOT . "/models/ListeSondage.php";
 
 class ControllerAccueil extends Controller{
 
@@ -21,8 +23,11 @@ class ControllerAccueil extends Controller{
 
     if( !empty($this->erreurs) )
     	$this->vue->setErreurs($this->erreurs);
+
+    $ListeSondage = new ListeSondage();
+
 	
-    $this->vue->generer(array());
+    $this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage()));
   }
 }
 

@@ -40,7 +40,7 @@ class ListeSondage extends BD {
 	}
 
 	public function constructeurPublic(){
-	     $sql='SELECT id
+	     $sql='SELECT id, date_creation
                     FROM sondage
                  	WHERE visibilite="public"
 		    ORDER BY id DESC';
