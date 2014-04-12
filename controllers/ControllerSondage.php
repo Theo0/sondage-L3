@@ -615,9 +615,14 @@ public function ajoutVote(){
 			$user = new User($_SESSION["id"]);
 		else
 			$user = new User();
-			
+
+
+		if(isset($_SESSION["id"])){
 		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id']), "tabResult" => $resultat, "tabUser" => $listeUser->getArrayUser(), "user" => $user));
-	
+		}
+		else{
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVoteInvite($_SERVER["REMOTE_ADDR"]), "tabResult" => $resultat, "tabUser" => $listeUser->getArrayUser(), "user" => $user));		
+		}
 	}
 
 	/* Ajoute un commentaire à un sondage avec les infos récupérées en $_POST: texteCommentaire et sondageId */
