@@ -173,19 +173,25 @@ echo "<br />";
   <ul id="listeCommentaires">
     <?php foreach($listeCommentaires as $key=>$commentaire): ?>
     <li class="commentaire" id="commentaire<?= $commentaire->getId() ?>">
-      <p class="pseudoCommentaire"><?= $commentaire->getUser()->getPrenom() . ' ' . $commentaire->getUser()->getNom() ?></p>
+      <p class="pseudoCommentaire"><?= $commentaire->getUser()->getPrenom() . ' ' . $commentaire->getUser()->getNom() ?></p> 
       <span class="texteCommentaire"><?= $commentaire->getTexte() ?></span>
+      
+      <?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
+        <span><a href="#" onclick="supprimerCommentaire(<?= $commentaire->getId() ?>)"><img src="http://localhost/sondage-L3/public/css/images/red-cross.png"> </a></span>
+        <?php endif; ?>
+      
       
       <span class="blocSoutiens"> 
         <span id="soutien<?=$commentaire->getId() ?>" ><?= $commentaire->getSoutiens() ?> </span>
-        <span> <img src="<?= ABSOLUTE_ROOT . '/public/img/facebook-like-icon.png' ?>" onclick="ajouterSoutien( <?=$commentaire->getId() ?>)" /> </span>
+        <span> <img src="<?= ABSOLUTE_ROOT . '/public/img/facebook-like-icon.png' ?>" onclick="ajouterSoutien( <?=$commentaire->getId() ?>)" /></span>
       </span>
       
       <ul class="listeSousCommentaires" id="listeSousCommentaires<?= $commentaire->getId() ?>">
         <?php foreach($commentaire->getSousCommentaires() as $key=>$sousCommentaire): ?>
         <li class="sousCommentaire" id="sousCommentaire<?= $sousCommentaire->getId() ?>">
-        <span class="pseudoCommentaire"><?= $sousCommentaire->getUser()->getPrenom() . ' ' . $sousCommentaire->getUser()->getNom() ?></span> - <?= $sousCommentaire->getTexte() ?></li>
-        <?php endforeach; ?>
+        <span class="pseudoCommentaire"><?= $sousCommentaire->getUser()->getPrenom() . ' ' . $sousCommentaire->getUser()->getNom() ?></span> - <?= $sousCommentaire->getTexte() ?>
+        <span><a href="#" onclick="supprimerCommentaire(<?= $sousCommentaire->getId() ?>)"><img src="http://localhost/sondage-L3/public/css/images/red-cross.png"> </a></span></li>
+	<?php endforeach; ?>
       </ul>
       <textarea class="textareaSousCommentaire" id="<?= $commentaire->getId() ?>" name="ajouterCommentaire" placeholder="Ecrire un sous commentaire..." maxlength="50"></textarea>
     </li>

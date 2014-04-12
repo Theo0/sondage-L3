@@ -21,13 +21,17 @@ function ajouterCommentaire(commentaire, idSondage){
     $.post( ABSOLUTE_ROOT + "/index.php?controller=Sondage&action=ajaxAjouterCommentaire", { texteCommentaire: commentaire, sondageId: idSondage })
         .done(function( data ) {
             if ($.isNumeric(data)) {
+                var lienSuppressionCom = '';
+                if ($("#canDelete").length != 0) {
+                    lienSuppressionCom = '<span><a href="#" onclick="supprimerCommentaire(' + $.trim(data) + ')"><img src="http://localhost/sondage-L3/public/css/images/red-cross.png"> </a></span>';
+                }
                 $("#listeCommentaires").append('<li class="commentaire" id="commentaire' + $.trim(data) + '"> \
                                                     <p class="pseudoCommentaire">' + $("#pseudo").text() + '</p>\
                                                      <span class="texteCommentaire">'  + commentaire + '</span>\
                                                      <span class="blocSoutiens">\
                                                          <span id="soutien' + $.trim(data) + '" >0</span>\
                                                          <span> <img src="' + ABSOLUTE_ROOT  + '/public/img/facebook-like-icon.png" onclick="ajouterSoutien(' + $.trim(data)  + ')" /> </span>\
-                                                     </span>\
+                                                     </span>' + lienSuppressionCom + '\
                                                      <ul class="listeSousCommentaires" id="listeSousCommentaires' + $.trim(data) + '"></ul>\
                                                      <textarea class="textareaSousCommentaire" id="' + data + '" name="ajouterCommentaire" placeholder="Ecrire un sous commentaire..."></textarea> \
                                                  </li>');
@@ -48,7 +52,11 @@ function ajouterSousCommentaire(commentaire, idCommentaire){
     $.post( ABSOLUTE_ROOT + "/index.php?controller=Sondage&action=ajaxAjouterSousCommentaire", { texteCommentaire: commentaire, commentaireId: idCommentaire })
         .done(function( data ) {
             if ($.isNumeric(data)) {
-                $("#commentaire" + idCommentaire + " ul").append('<li class="sousCommentaire" id="sousCommentaire' + $.trim(data) + '"> <span class="pseudoCommentaire">' + $("#pseudo").text() + '</span> - ' + commentaire + '</li>');
+                var lienSuppressionCom = '';
+                if ($("#canDelete").length != 0) {
+                    lienSuppressionCom = '<span><a href="#" onclick="supprimerCommentaire(' + idCommentaire + ')"><img src="http://localhost/sondage-L3/public/css/images/red-cross.png"> </a></span>';
+                }
+                $("#commentaire" + idCommentaire + " ul").append('<li class="sousCommentaire" id="sousCommentaire' + $.trim(data) + '"> <span class="pseudoCommentaire">' + $("#pseudo").text() + '</span> - ' + commentaire + lienSuppressionCom +'</li>');
                 $(".textareaSousCommentaire").val("");
                 $("#erreur ul").html("");
             } else{
@@ -62,6 +70,9 @@ function ajouterSousCommentaire(commentaire, idCommentaire){
         });
 }
 
+
+
+
 function ajouterSoutien(idCommentaire) {
     $.post( ABSOLUTE_ROOT + "/index.php?controller=Sondage&action=ajaxAjouterSoutienCommentaire", { idCom: idCommentaire})
         .done(function( data ) {
@@ -74,6 +85,24 @@ function ajouterSoutien(idCommentaire) {
         });
 }
 
+
+function supprimerCommentaire(idCommentaire){
+    $.post( ABSOLUTE_ROOT + "/index.php?controller=Sondage&action=ajaxSupprimerCommentaire", { commentaireId: idCommentaire })
+        .done(function( rm ) {
+            if (rm == 1) {
+                $("#commentaire" + idCommentaire).remove();
+                $("#sousCommentaire" + idCommentaire).remove();
+                $("#erreur ul").html("");
+            } else{
+                $("#erreur ul").html("");
+                $("#erreur ul").append("<li class=\"errorEntry\">" + rm + "</li>");
+            }
+            
+        })
+        .fail(function() {
+            alert( "error" );
+        });
+}
 
 
 

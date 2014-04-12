@@ -742,6 +742,30 @@ public function ajoutVote(){
 			}
 		}		
 	}
+	
+	/* Supprime un modérateur au sondage */
+	public function ajaxSupprimerCommentaire($idCom = null){
+		if(empty($_POST['commentaireId']))
+			echo 'Aucun commentaire à supprimer';
+		
+		
+		if(empty($_SESSION["id"])){
+			$controllerUser = new ControllerUser();
+			$controllerUser->addErreur("Vous devez vous connecter pour supprimer des commentaires");
+			$controllerUser->afficherConnexion();
+		}else{
+			$userConnecte = new User($_SESSION["id"]);
+			$commentaire = new Commentaire($_POST['commentaireId']);
+			$this->sondage = new Sondage($commentaire->getIdSondage());
+			
+			if($userConnecte->getId() == $this->sondage->getAdministrateur() || $userConnecte->getAdministrateurSite() == 1){
+				echo $commentaire->remove();
+			} else{
+				$this->addErreur("Vous devez être l'administrateur du sondage pour pouvoir supprimer les moderateurs");
+				$this->afficherFicheSondage($idSondage);
+			}
+		}		
+	}
 }
 
 ?>
