@@ -169,6 +169,7 @@ echo "<br />";
 
 
 <!-- AFFICHAGE DE LA LISTE DES COMMENTAIRES DU SONDAGE -->
+<?php if($user->getId() != -1): ?>
 <div id="containerCommentaires">
   <ul id="listeCommentaires">
     <?php foreach($listeCommentaires as $key=>$commentaire): ?>
@@ -201,6 +202,7 @@ echo "<br />";
   
   <textarea id="textareaCommentaire" name="ajouterCommentaire" placeholder="Ecrire un commentaire..." maxlength="80"></textarea>
 </div>
+<?php endif; ?>
 <!-- FIN LISTE DES COMMENTAIRES -->
 
 <!-- DIALOGUE AFFICHE POUR AJOUTER UN MODERATEUR -->
