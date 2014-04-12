@@ -33,7 +33,7 @@ function ajouterCommentaire(commentaire, idSondage){
                                                          <span> <img src="' + ABSOLUTE_ROOT  + '/public/img/facebook-like-icon.png" onclick="ajouterSoutien(' + $.trim(data)  + ')" /> </span>\
                                                      </span>' + lienSuppressionCom + '\
                                                      <ul class="listeSousCommentaires" id="listeSousCommentaires' + $.trim(data) + '"></ul>\
-                                                     <textarea class="textareaSousCommentaire" id="' + data + '" name="ajouterCommentaire" placeholder="Ecrire un sous commentaire..."></textarea> \
+                                                     <textarea class="textareaSousCommentaire" id="' + $.trim(data) + '" name="ajouterCommentaire" placeholder="Ecrire un sous commentaire..."></textarea> \
                                                  </li>');
                 $("#textareaCommentaire").val("");
                 $("#erreur ul").html("");
@@ -54,7 +54,7 @@ function ajouterSousCommentaire(commentaire, idCommentaire){
             if ($.isNumeric(data)) {
                 var lienSuppressionCom = '';
                 if ($("#canDelete").length != 0) {
-                    lienSuppressionCom = '<span><a href="#" onclick="supprimerCommentaire(' + idCommentaire + ')"><img src="http://localhost/sondage-L3/public/css/images/red-cross.png"> </a></span>';
+                    lienSuppressionCom = '<span><a href="#" onclick="supprimerCommentaire(' + $.trim(data) + ')"><img src="http://localhost/sondage-L3/public/css/images/red-cross.png"> </a></span>';
                 }
                 $("#commentaire" + idCommentaire + " ul").append('<li class="sousCommentaire" id="sousCommentaire' + $.trim(data) + '"> <span class="pseudoCommentaire">' + $("#pseudo").text() + '</span> - ' + commentaire + lienSuppressionCom +'</li>');
                 $(".textareaSousCommentaire").val("");

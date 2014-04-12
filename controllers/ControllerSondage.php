@@ -611,8 +611,12 @@ public function ajoutVote(){
 		
 		}
 
-		
-		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id']), "tabResult" => $resultat, "tabUser" => $listeUser->getArrayUser()));
+		if(!empty($_SESSION["id"]))
+			$user = new User($_SESSION["id"]);
+		else
+			$user = new User();
+			
+		$this->vue->generer(array("FicheSondage" => $sondage, "ListeOptions" => $ListeOption->getArrayOption(), "listeCommentaires" => $listeCommentaire->getArrayCommentaires(), "DejaVote" => $sondage->dejaVote($_SESSION['id']), "tabResult" => $resultat, "tabUser" => $listeUser->getArrayUser(), "user" => $user));
 	
 	}
 

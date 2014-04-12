@@ -248,4 +248,5 @@ echo "<br />";
                 
         </form>	
 </div>
+<!-- Fin dialogue -->
 
