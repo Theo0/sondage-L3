@@ -13,6 +13,8 @@ $this->titre = "Résultat de " . $FicheSondage->getTitre();
 <input id="idSondage" type="hidden" value="<?= $FicheSondage->getId() ?>" />
 <?php 
 $total = 0;
+
+
   foreach($ListeOptions as $key=>$option){
     $idOpt = $option->getId();
     $total = $total + $tabResult[$idOpt]->getScore();
@@ -97,8 +99,9 @@ $op = 10000;
             	echo "<br /><br /><br />";
 
             }
-
+             if(empty($ListeOptions)){echo "Aucun vote pour ce sondage." . "<br /><br />" ;}
             ?>
+
 
         </div>
         <!-- AFFICHAGE DE LA LISTE DES MODERATEURS DU SONDAGE -->

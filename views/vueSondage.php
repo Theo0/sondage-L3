@@ -93,12 +93,12 @@ echo "<br />";
 else{
 	$id = 1;
 	$op = 10000;
-	echo "<b>Vous avez déjà répondu à ce sondage !<b><br />";
+	echo "<b>Vous avez déjà répondu à ce sondage !<b><br /><br />";
 	foreach($ListeOptions as $key=>$option){ 
 
 		$id = $id+1;
 		$op = $op+1;
-		echo $option->getTexte();
+		echo  "<li>".$option->getTexte()."</li>";
 
 		if($FicheSondage->getSecret() == "public"): ?>
 		<script>
@@ -138,6 +138,7 @@ echo "<br />";
 	}
 } 
 }
+ if(empty($ListeOptions)){echo "Aucun vote pour ce sondage." . "<br /><br />" ;}
 ?>
 </div>
 
