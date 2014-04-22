@@ -4,6 +4,10 @@
 
 //REQUIRE
 require_once ROOT. '/models/BD.php';
+require_once ROOT. '/models/Groupe.php';
+require_once ROOT. '/models/SousGroupe.php';
+
+
 
 class Sondage extends BD{
 	private $id;
@@ -235,6 +239,18 @@ class Sondage extends BD{
 		`secret`=?,
 		id_groupe=?';
 		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_groupe));
+
+		$mod = new Groupe($this->id_groupe);
+		$mod = $mod->getArrayModerateurs();
+
+		foreach ($mod as $key => $value) {
+
+			$sql = "INSERT INTO user_sondage_moderateur SET
+				id_user=?,
+				id_sondage=?";
+			$insertMod = $this->insererValeur($sql, array($value->getId(), $insertSondage));
+		}
+
 		return $insertSondage;
 
 	}
@@ -250,6 +266,19 @@ class Sondage extends BD{
 		`secret`=?,
 		id_sousgroupe=?';
 		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_sousgroupe));
+		
+		$ssGr = new SousGroupe($this->id_sousgroupe);
+		$mod = new Groupe($ssGr->getIdGroupe);
+		$mod = $mod->getArrayModerateurs();
+
+		foreach ($mod as $key => $value) {
+
+			$sql = "INSERT INTO user_sondage_moderateur SET
+				id_user=?,
+				id_sondage=?";
+			$insertMod = $this->insererValeur($sql, array($value->getId(), $insertSondage));
+		}
+
 		return $insertSondage;}
 		else{
 		$sql = 'INSERT INTO sondage SET
