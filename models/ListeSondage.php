@@ -56,18 +56,18 @@ class ListeSondage extends BD {
 	
 	public function cconstructeurListeAdministre($idUser)
 	{
-            $sql='SELECT id, 
+            $sql='SELECT id 
                     FROM sondage
                     WHERE administrateur_id=?
 		    ORDER BY id DESC';
-
-                               
+                
             $lectBdd = $this->executerRequete($sql, array($idUser));
             while (($enrBdd = $lectBdd->fetch()) != false)
             { 
 
                 $this->array_sondage[] = new Sondage($enrBdd["id"]);
             }
+
 	}
 	
 
@@ -112,8 +112,13 @@ class ListeSondage extends BD {
 	public function constructeurListePrive($idUser, $a, $b, $c , $d){
 		$sql='SELECT id_sondage
 				FROM user_sondage_votant
-				WHERE id_user=?';
-		$lectBdd = $this->executerRequete($sql, array($idUser));
+				WHERE id_user=?
+				UNION 
+				SELECT id 
+                FROM sondage
+                WHERE administrateur_id=? AND visibilite = "prive"';
+
+		$lectBdd = $this->executerRequete($sql, array($idUser, $idUser));
             while (($enrBdd = $lectBdd->fetch()) != false)
             { 
                 $this->array_sondage[] = new Sondage($enrBdd["id_sondage"]);

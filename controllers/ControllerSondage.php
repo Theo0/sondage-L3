@@ -186,6 +186,8 @@ public function afficherSondagesAdmin(){
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
+
+
 		$ListeSondage = new ListeSondage($_SESSION['id']);
 		$user = new User($_SESSION['id']);
 

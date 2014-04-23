@@ -268,7 +268,7 @@ class Sondage extends BD{
 		$insertSondage = $this->insererValeur($sql, array($this->titre, $this->description , $this->visibilite, $this->administrateur_id, $this->date_fin, $this->secret, $this->id_sousgroupe));
 		
 		$ssGr = new SousGroupe($this->id_sousgroupe);
-		$mod = new Groupe($ssGr->getIdGroupe);
+		$mod = new Groupe($ssGr->getIdGroupe());
 		$mod = $mod->getArrayModerateurs();
 
 		foreach ($mod as $key => $value) {
