@@ -62,7 +62,7 @@ class ControllerAdmin extends Controller
 		  } else{
 		    $configAdmin->setInscriptions($_POST["inscription"]);
 		    
-		    if(false !== $configAdmin->update()){
+		    if(false == $configAdmin->update()){
 		      $this->addErreur("Impossible de modifier la configuration en base"); 
 		    } else{
 		      $this->vue->setMessage("Configuration modifiée avec succée");

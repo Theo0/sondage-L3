@@ -140,7 +140,7 @@ $op = 10000;
               <p class="pseudoCommentaire"><?= $commentaire->getUser()->getPrenom() . ' ' . $commentaire->getUser()->getNom() ?></p> 
               <span class="texteCommentaire"><?= $commentaire->getTexte() ?></span>
               
-              <?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
+              <?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1 || $FicheSondage->isModerateur($user->getId())): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
                 <span><a href="#" onclick="supprimerCommentaire(<?= $commentaire->getId() ?>)"><img src="http://localhost/sondage-L3/public/css/images/red-cross.png"> </a></span>
                 <?php endif; ?>
               
@@ -156,7 +156,7 @@ $op = 10000;
                 
         	<span class="pseudoCommentaire"><?= $sousCommentaire->getUser()->getPrenom() . ' ' . $sousCommentaire->getUser()->getNom() ?></span> - <?= $sousCommentaire->getTexte() ?>
                 
-        	<?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
+        	<?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1 || $FicheSondage->isModerateur($user->getId())): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
         	<span><a href="#" onclick="supprimerCommentaire(<?= $sousCommentaire->getId() ?>)"><img src="http://localhost/sondage-L3/public/css/images/red-cross.png"> </a></span>
         	<?php endif; ?>
         	</li>

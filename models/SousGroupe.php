@@ -44,7 +44,7 @@ class SousGroupe extends BD {
 			$this->id = $idSousGroupe;
                         $this->id_groupe = $enrBdd['id_groupe'];
                         $this->groupe = new Groupe($this->id_groupe);
-			$this->nom = $enrBdd['groupe_nom'];
+						$this->nom = $enrBdd['nom'];
 		} else{
 		    $this->id = -1;
                     $this->id_groupe = -1;

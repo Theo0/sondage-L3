@@ -318,7 +318,6 @@ class Sondage extends BD{
 		id_user = ?,
 		texte = ?;';
 		$insertCom = $this->insererValeur($sql, array($this->id, $idUser , $texteCommentaire));
-		
 		return $insertCom;
 	}
 

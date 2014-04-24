@@ -170,7 +170,10 @@ echo "<br />";
 
 
 <!-- AFFICHAGE DE LA LISTE DES COMMENTAIRES DU SONDAGE -->
-<?php if($user->getId() != -1): ?>
+
+<?php if($user->getId() != -1): 
+?>
+
 <div id="containerCommentaires">
   <ul id="listeCommentaires">
     <?php foreach($listeCommentaires as $key=>$commentaire): ?>
@@ -178,7 +181,7 @@ echo "<br />";
       <p class="pseudoCommentaire"><?= $commentaire->getUser()->getPrenom() . ' ' . $commentaire->getUser()->getNom() ?></p> 
       <span class="texteCommentaire"><?= $commentaire->getTexte() ?></span>
       
-      <?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
+      <?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1 || $FicheSondage->isModerateur($user->getId())): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
         <span><a href="#" onclick="supprimerCommentaire(<?= $commentaire->getId() ?>)"><img src="http://localhost/sondage-L3/public/css/images/red-cross.png"> </a></span>
         <?php endif; ?>
       
@@ -193,7 +196,7 @@ echo "<br />";
         <li class="sousCommentaire" id="sousCommentaire<?= $sousCommentaire->getId() ?>">
         <span class="pseudoCommentaire"><?= $sousCommentaire->getUser()->getPrenom() . ' ' . $sousCommentaire->getUser()->getNom() ?></span> - <?= $sousCommentaire->getTexte() ?>
         
-	<?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
+	<?php if($user->getId() == $FicheSondage->getAdministrateur() || $user->getAdministrateurSite() == 1 || $FicheSondage->isModerateur($user->getId())): //Si l'utilisateur connecté est l'administrateur du groupe ou l'administrateur du site ?>
 	<span><a href="#" onclick="supprimerCommentaire(<?= $sousCommentaire->getId() ?>)"><img src="http://localhost/sondage-L3/public/css/images/red-cross.png"> </a></span>
 	<?php endif; ?>
 	</li>

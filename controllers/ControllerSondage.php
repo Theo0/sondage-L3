@@ -787,7 +787,7 @@ public function ajoutVote(){
 			$commentaire = new Commentaire($_POST['commentaireId']);
 			$this->sondage = new Sondage($commentaire->getIdSondage());
 			
-			if($userConnecte->getId() == $this->sondage->getAdministrateur() || $userConnecte->getAdministrateurSite() == 1){
+			if($userConnecte->getId() == $this->sondage->getAdministrateur() || $userConnecte->getAdministrateurSite() == 1 || $this->sondage->isModerateur($userConnecte->getId())){
 				echo $commentaire->remove();
 			} else{
 				$this->addErreur("Vous devez être l'administrateur du sondage pour pouvoir supprimer les moderateurs");
