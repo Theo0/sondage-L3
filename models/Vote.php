@@ -41,6 +41,7 @@ class Vote extends BD{
 	}
 
 
+	//Ajout d'un vote en base
 	public function add(){
 		$sql = "INSERT INTO `user_sondage_reponse`(`id_sondage`, `id_user`, `id_option`, `classement`) 
 		VALUES (?,?,?,?)";
@@ -48,6 +49,7 @@ class Vote extends BD{
 		return $insertVote;
 	}
 
+	//Ajout d'un vote d'un invité en base
 	public function addInvite(){
 		$sql = "INSERT INTO `invite_sondage_reponse`(`id_sondage`, `ip_user`, `id_option`, `classement`) 
 		VALUES (?,?,?,?)";

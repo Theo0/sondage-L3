@@ -40,6 +40,7 @@ public function constructeurPlein($idOpt, $idSond){
 	$this->calculeScore();
 }
 
+//On récupère le score attribué par un tulisateur à chaque option et on le stocke dans un tableau
 public function constructeurUser($idOpt, $idSond, $idUser){
 	$this->id_option = $idOpt;
 	$this->id_sondage = $idSond;
@@ -57,6 +58,7 @@ public function getScore(){
 	return $this->score;
 }
 
+//Calcul du score total d'un des options
 public function calculeScore(){
 	
 	$sql='SELECT SUM( classement ) 

@@ -217,6 +217,7 @@ class Sondage extends BD{
 		return false;
 	}
 	
+	//Ajout d'un utilisateur à un sondage privé
 	public function addUser(){
 
 		$sql='INSERT INTO user_sondage_votant SET
@@ -226,6 +227,8 @@ class Sondage extends BD{
 		return $insertUserSondage;
 	}
 
+
+	//Ajout d'un sondage en base, puis ajout des modérateurs du groupe à ce sondage si le sondage appartient à un groupe
 	public function add() {
 
 		if($this->id_groupe!=-1){
@@ -295,6 +298,7 @@ class Sondage extends BD{
 	}
 	
 
+	//Suppresion d'un sondage
 	public function remove(){
 		$sql='DELETE FROM sondage WHERE id=?';
 
@@ -302,6 +306,8 @@ class Sondage extends BD{
 		return $removeSondage;
 	}
 	
+
+	//Calculte du nombre d'options de ce sondages
 	public function nombreOptions(){
 		$sql = 'SELECT COUNT( id ) 
 		FROM  `option` 
@@ -312,6 +318,7 @@ class Sondage extends BD{
 		return $nb = $lectBdd->fetch();
 	}
 
+	//Ajout d'un commentaire en base
 	public function ajouterCommentaire($texteCommentaire, $idUser){
 		$sql = 'INSERT INTO commentaire SET
 		id_sondage = ?,
@@ -321,6 +328,8 @@ class Sondage extends BD{
 		return $insertCom;
 	}
 
+
+	//vérification si un utilisateur à déjà voté
 	public function dejaVote($idUser){
 
 		$sql='SELECT COUNT( * ) 
@@ -333,6 +342,7 @@ class Sondage extends BD{
 
 	}
 
+	//Vérification si un invité à déjà voté
 	public function dejaVoteInvite($ipUser){
 
 		$sql='SELECT COUNT( * ) 
@@ -367,6 +377,8 @@ class Sondage extends BD{
 		return ($rm->rowCount() == 1);		
 	}
 
+
+	//Ajout des attributs de $_POST dans le modèle
 	public function POSTToVarAll($array){
 		foreach ($array as $key => $value) {
 		    //Suppression des espaces en début et en fin de chaîne

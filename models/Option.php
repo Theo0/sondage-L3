@@ -99,14 +99,14 @@ class Option extends BD{
 			{return "Le sondage doit être représenté par un ID numérique";}
 	}
 
-
+	//ajout d'un option en base
 	public function add(){
 		$sql = "INSERT INTO `option`(`texte`, `id_sondage`) VALUES (?,?)";
 		$insertOption = $this->insererValeur($sql, array($this->texte, $this->id_sondage));
 		return $insertOption;
 	}
 
-
+	//Mise à jour d'une option en base (pas utilisé pour le moment)
 	public function update(){
 		$sql= 'UPDATE option SET
 		texte=?,
@@ -117,6 +117,7 @@ class Option extends BD{
 		return $updateOption;
 	}
 
+	//Suppression d'une option
 	public function remove(){
 		$sql='DELETE FROM option WHERE id=?';
 

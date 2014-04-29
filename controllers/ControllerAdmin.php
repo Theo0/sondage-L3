@@ -40,8 +40,11 @@ class ControllerAdmin extends Controller
         }
     }
     
+
+    //Méthode permettant de passer les inscriptions en ouvert ou avec validation
     public function modifierInscription()
     {	
+     //On vérifie que l'utilisateur est connecté   
 	if (empty($_SESSION["id"])) {
             $controllerUser = new ControllerUser();
             $controllerUser->addErreur("Vous devez vous connecter pour accéder à la page d'administration");
@@ -56,6 +59,8 @@ class ControllerAdmin extends Controller
 		$configAdmin = new ConfigAdmin();
 		$this->vue = new Vue("Administration");
 		
+
+        //Si une valeur est demandé, on modifie l'inscription en base
 		if(!empty($_POST["inscription"])){ 
 		  if($_POST["inscription"]!='ouvertes' && $_POST["inscription"]!="validation"){
 		    $this->addErreur("Le type d'inscription spécifié n'existe pas");

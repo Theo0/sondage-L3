@@ -29,6 +29,7 @@ class ListeOption extends BD {
 	}
 
 	
+	//Création de la liste des options du sondage passé en paramètre et stockage dans un tableau indexé par leur ID
 	public function cconstructeurPlein($idSond)
 	{
             $sql="SELECT id

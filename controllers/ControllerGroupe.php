@@ -24,35 +24,11 @@ class ControllerGroupe extends Controller{
 
 	/* Affichage de la page d'un groupe */
 	public function afficherGroupe($idGroupe = null, $message = null) {
-		/*
-		$this->vue = new Vue("Groupe");
-
-		//Si le contrôlleur possède des erreurs de référencées
-		if( !empty($this->erreurs) )
-			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
-			
-		//Si on doit afficher un message
-		if( !empty($message) ){
-			$this->vue->setMessage($message);//Envoi du message à la vue
-		}
-
-                if(!empty($idGroupe)){
-                    $this->groupe = new Groupe($idGroupe);
-		    $sousGroupes = new ListeSousGroupes($idGroupe);
-                }
 		
-		if(!empty($_SESSION['id'])){
-			$user = new User($_SESSION["id"]);
-		}
-		else{
-			$user = new User();
-		}
-		
-                
-		$this->vue->generer(array("groupe" => $this->groupe, "pageSelected" => "mur", "user" => $user, "sousGroupes" => $sousGroupes));*/
 		$controller = new ControllerSondage();
 		$controller->afficherSondagesGroupe($idGroupe);
 	}
+	
 	
 	/* Affichage la liste des membres d'un groupe */
 	public function afficherMembresGroupe($idGroupe = null) {

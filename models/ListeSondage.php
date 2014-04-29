@@ -39,6 +39,7 @@ class ListeSondage extends BD {
 		}
 	}
 
+	//Création de la liste des sondages publics
 	public function constructeurPublic(){
 	     $sql='SELECT id, date_creation
                     FROM sondage
@@ -53,7 +54,7 @@ class ListeSondage extends BD {
             }
 	}
 
-	
+	//Création de la liste des sondages créés par l'utlisateur passé en paramètre
 	public function cconstructeurListeAdministre($idUser)
 	{
             $sql='SELECT id 
@@ -70,7 +71,7 @@ class ListeSondage extends BD {
 
 	}
 	
-
+	//Création de la liste des sondages appartenant au groupe passé en param
 	public function constructeurListeGroupe($idUser, $idGroupe)
 	{ 
            $sql='SELECT id
@@ -85,6 +86,7 @@ class ListeSondage extends BD {
             }
 	}
 
+	//Création de la liste des sondages reservés aux membres
 	public function constructeurListeInscrit($a, $b, $c){ //parametres factice pour choix du constructeur
 		 $sql='SELECT id
                     FROM sondage
@@ -98,6 +100,8 @@ class ListeSondage extends BD {
             }   
 	}
 
+
+	//Création de la liste des sondages auquel l'utilisateur passé en param à répondu
 	public function constructeurListeComplet($idUser, $b, $c , $d){
 		$sql='SELECT DISTINCT id_sondage
 				FROM user_sondage_reponse
@@ -109,6 +113,8 @@ class ListeSondage extends BD {
             }   		
 	}
 
+
+	//Création de la liste des sondages privés de l'utilisateur
 	public function constructeurListePrive($idUser, $a, $b, $c , $d){
 		$sql='SELECT id_sondage
 				FROM user_sondage_votant
@@ -125,6 +131,7 @@ class ListeSondage extends BD {
             }   		
 	}
 
+	//Création de la liste des sondages d'un sous groupe
 	public function constructeurListeSousGroupe($idSousGroupe, $a, $b, $c, $d, $e)
 	{ 
            $sql='SELECT id

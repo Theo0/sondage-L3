@@ -109,7 +109,7 @@ class ControllerSondage extends Controller{
 }
 
 
-/* Affichage des sondages administrés par l'user connecté */
+/* Affichage des sondages publics */
 public function afficherSondagesPublic(){
 		$this->vue = new Vue("ListeSondage");
 
@@ -117,8 +117,10 @@ public function afficherSondagesPublic(){
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
+		//On crée la liste des sondages avec le constructeur par défaut qui prend les sondages publics
 		$ListeSondage = new ListeSondage();
 
+		//On vérifie si l'utilisateur connecté est administrateur ou non, pour le transmettre à la vue
 		if(isset($_SESSION['id'])){
 			$user = new User($_SESSION['id']);
 			if($user->getAdministrateurSite() ==1){
@@ -132,14 +134,17 @@ public function afficherSondagesPublic(){
 			$admin = 0;
 		}
 		
+		//Envoie des infos à la vue
 		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "public", "admin" => $admin));	
 		
 
 }
 
 
+//Affichage des sondages reservés aux membres
 public function afficherSondagesInscrit(){
 
+	//Vérification de la connexion
 	if(empty($_SESSION['id'])){
 		?>
 		<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Vous devez vous connecter pour accéder à vos sondages. Cliquez ici. </a>
@@ -152,9 +157,12 @@ public function afficherSondagesInscrit(){
 		if( !empty($this->erreurs) )
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
+		//Paramètres factices car le constructeur dépend du nombre de paramètres
 		$a = -1;
 		$b = -1;
 		$c = -1;
+
+		//On crée une liste de sondage avec le constructeur qui prend 3 paramètres => celui qui crée la liste des sondages réservés aux membres
 		$ListeSondage2 = new ListeSondage($a, $b, $c);
 		$user = new User($_SESSION['id']);
 
@@ -171,9 +179,10 @@ public function afficherSondagesInscrit(){
 
 }
 
-/* Affichage des sondages administrés par l'user connecté */
+/* Affichage des sondages administrés par l'utilisateur connecté */
 public function afficherSondagesAdmin(){
 
+	//Vérification de la connexion
 	if(empty($_SESSION['id'])){
 		?>
 		<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Vous devez vous connecter pour accéder à vos sondages. Cliquez ici. </a>
@@ -187,11 +196,14 @@ public function afficherSondagesAdmin(){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
 
-
+		//On crée la liste des sondages avec l"id de l'user en paramètre
 		$ListeSondage = new ListeSondage($_SESSION['id']);
+
+		//On crée un utlisateur pour vérifier son niveau de privilège
 		$user = new User($_SESSION['id']);
 
 
+		//Vérification des privilèges d'admin ou non
 		if($user->getAdministrateurSite() ==1){
 			$admin = 1;
 		}
@@ -264,9 +276,11 @@ public function afficherSondagesPrive(){
 
 
 
-
+//On affiche les sondages d'un groupe
 public function afficherSondagesGroupe($idGroupe=null){
 
+
+	//Vérification de la connexion
 	if(empty($_SESSION['id'])){
 		?>
 		<a href="<?= ABSOLUTE_ROOT . '/controllers/ControllerUser.php?action=afficherConnexion' ?>">Vous devez vous connecter pour accéder à vos sondages. Cliquez ici. </a>
@@ -280,9 +294,11 @@ public function afficherSondagesGroupe($idGroupe=null){
 			$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 
 
+		//On crée la liste des sondages appartenant au groupe passé en paramètre
 		$ListeSondage = new ListeSondage($_SESSION['id'], $idGroupe);
 
 
+		//Création de l'utilisateur pour vérifier s'il est admin ou non
 		$user = new User($_SESSION['id']);
 
 		if($user->getAdministrateurSite() ==1){
@@ -292,16 +308,21 @@ public function afficherSondagesGroupe($idGroupe=null){
 			$admin = 0;
 		}
 		
+		//On crée un groupe avec l'ID passé en paramètre et on crée la liste des sous groupes appartenant à ce groupe
 		$groupe = new Groupe($idGroupe);
 		$sousGroupes = new ListeSousGroupes($idGroupe);
 
 		$b = -1;
+
+		//On parcours la liste des sous groupes on mets les sondages correspondant à ces sous groupes dans un tableau indexé par les ID des sous groupes, afin de le transmettre à la vue
 		foreach($sousGroupes->getArrayGroupes() as $key=>$sousGroupe){
 			${$sousGroupe->getId()}= new ListeSondage($sousGroupe->getId() , $b, $b, $b, $b, $b);
 			$a = $sousGroupe->getId();
 			$ListeSondageSous[$a] = ${$sousGroupe->getId()};
 		}
 		
+
+		// On transmet à la vue les informations, avec ou sans les sondages des sous groupes selon s'ils existent
 		if(isset($ListeSondageSous)){
 		$this->vue->generer(array("ListeSondage" => $ListeSondage->getArraySondage(),  "pageSelected" => "sondages", "admin" => $admin, "groupe" => $groupe, "user" => $user, "sousGroupes" => $sousGroupes, "ListeSondagesSous" => $ListeSondageSous));	
 		}
@@ -313,12 +334,17 @@ public function afficherSondagesGroupe($idGroupe=null){
 
 
 
+	//Affichage des informations d'un sondage et des options pour voter
 	public function afficherFicheSondage(){
 		$this->vue = new Vue("Sondage");
 		//Si le contrôlleur possède des erreurs de référencées
 			if( !empty($this->erreurs) )
 				$this->vue->setErreurs($this->erreurs);//Envoi des erreurs à la vue
 	
+
+
+		//On crée un sondage a l'aide des paramètres de l'URL, et on récupère ses options et ses commentaire, puis on vérifie si l'utilisateur connecté à déjà voté ou non
+
 		$sondage = new Sondage($_GET['params']);
 
 		$ListeOption = new ListeOption($_GET['params']);
@@ -337,6 +363,8 @@ public function afficherSondagesGroupe($idGroupe=null){
 		}
 	}
 
+
+//Redirection si un vote est terminé
 public function afficherVoteTermine(){
 
 	$this->vue = new Vue("VoteTermine");
@@ -347,12 +375,17 @@ public function afficherVoteTermine(){
 
 }
 
+//Fonction permettant de voter
 public function ajoutVote(){
 
+	//On récupère le sondage à l'aide du paramètre de l'URL
 	$sondage = new Sondage($_GET['params']);
 
+	// On récupère le nombre d"options (pour la méthode de Borda)
 	$nbopt = $sondage->nombreOptions();
 
+
+	// Application de la méthode de Borda :  pour chacune des options on lui attribue un score n en fonction de son classement par l'utilisateur, puis on l'ajoute en base à l'aide de add()
 	foreach ($_POST as $key => $value) {
 
 
@@ -377,6 +410,7 @@ public function ajoutVote(){
 
 	}
 
+	//On vérifie que le vote s'est déroulé sans erreurs
 	if (ctype_digit($id_vote)) {
 			$this->afficherVoteTermine();
 		}
@@ -389,6 +423,8 @@ public function ajoutVote(){
 	
 }
 
+
+	//Affichage de la liste des utilisateurs que l'ont peut ajouter à un sondage
 	public function afficheAjoutUserSondage(){
 		$this->vue = new Vue("AjoutUserSondage");
 		//Si le contrôlleur possède des erreurs de référencées
@@ -409,6 +445,7 @@ public function ajoutVote(){
 
 	}
 
+
 	public function afficheAjoutUserSondageTermine(){
 		$this->vue = new Vue("AjoutUserSondage");
 		//Si le contrôlleur possède des erreurs de référencées
@@ -427,7 +464,7 @@ public function ajoutVote(){
 		$this->vue->generer(array("ListeUser" => $ListeUser->getArrayUser(), "membreTermine" => "1", "idSondage" => $sondage->getId(), "NomSondage" => $sondage->getTitre()));
 	}
 
-
+	//Ajout d'un utilisateur à un sondage privé
 	public function ajoutUserSondage(){
 
 		//Récupération des champs du formulaire et insertion dans le modèle
@@ -518,14 +555,14 @@ public function ajoutVote(){
 				$this->afficherNouveauSondage(); // On réaffiche le formulaire de creation avec les erreurs
 			}
 
-		// Ajout de l'utilisateur en base
+		// Ajout de l'option en base
 		} else{
 			
 
 			// Ajout du membre en base et récupération de l'identifiant (ou du message d'erreur)
 			$id_option = $this->option->add();
 
-			// Si la base de données a bien voulu ajouter l'utliisateur (pas de doublons)
+			// Si la base de données a bien voulu ajouter l'option (pas de doublons)
 			if (ctype_digit($id_option)) {
 				
 	
@@ -549,11 +586,11 @@ public function ajoutVote(){
 					$this->addErreur(sprintf("Erreur ajout SQL (SQLSTATE = %d).", $erreur[0]));
 				}
 	
-				if(isset($array["redirect"])){//Si le formulaire d'inscription provient d'une autre page que la page d'inscription
+				if(isset($array["redirect"])){//Si le formulaire d'ajout provient d'une autre page que la page d'ajout
 					//Redirection vers la page contenant le formulaire avec envoi des erreurs
 					header("Location:" . $_POST["redirect"] . "&erreurs=" . serialize($this->erreurs));
 				} else{
-					// On reaffiche le formulaire d'inscription avec l'erreur de doublon
+					// On reaffiche le formulaire d'ajout avec l'erreur de doublon
 					$this->afficherNouveauSondage();
 				}
 			}			
@@ -589,6 +626,8 @@ public function ajoutVote(){
 	
 	}
 
+
+		//Gestion des erreurs de la vue
 		public function afficherErreur() {
 		$this->vue = new Vue("ErreurSondage");
 
@@ -599,6 +638,8 @@ public function ajoutVote(){
 		$this->vue->generer(array("erreur" => $this->erreurs[0]));
 	}
 
+
+	//Affichage des résultats d'un sondage
 	public function resultat(){
 	$this->vue = new Vue("Resultat");
 		//Si le contrôlleur possède des erreurs de référencées
@@ -613,7 +654,7 @@ public function ajoutVote(){
 			die();
 		}
 
-
+		//On récupère la liste des options et des commentaires du sondage
 	
 		$ListeOption = new ListeOption($_GET['params']);
 	
@@ -624,6 +665,8 @@ public function ajoutVote(){
 
 		$listeUser = new ListeUser($_GET['params'], $a);
 
+
+		//On récupère les score de chaque options du sondage, puis on les ajoute dans un tableau indexé par l'ID de chacune des options
 		foreach($ListeOption->getArrayOption() as $key=>$option){
 		${'score'.$option->getId()}= new Score($option->getId() ,$_GET['params']);
 		$a = $option->getId();
